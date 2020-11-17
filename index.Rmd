@@ -1,0 +1,25 @@
+---
+title: "Past benchmarking"
+author: "Kate Chalmers"
+date: "17/11/2020"
+output: html_document
+---
+
+### Welcome to the MDCR unit's GitHub page!
+
+This page is a collection of the results for the Multi-dimensional Country Review's Past Benchmarking algorithm.
+
+This algorithm finds an indicator's present day value for a Country of Interest and searches the past for similar levels. Countries who have been at or near the same value become Benchmark Candidate Countries, which are then filtered further by a "goal" each of these countries have met. This goal is explicitly defined for each indicator and is adjusted by the application of the algorithm. The Candidate Countries are then summarized into a data table with information such as matching year, length of time to reach goal and other relevant information. A series of time series graphs for each of the Candidate Countries is also included to evaluate sustained performance over time. 
+
+The uses of this algorithm are multi-faceted. Seeing how other, comparable countries have developed over time for an indicator can help us find stories in the past, provide reference points for effective policies and guide feasible goal-setting. 
+
+The following indicators are currently available: <p>
+* Constant GDP per capita (2010 USD) <br>
+* Employment to population (%) <br>
+* Literacy rate (%) <br>
+* Mean years of schooling <br>
+* Percent of population without schooling <br>
+* Economic complexity index <br>
+* Output per worker (GDP constant 2010 USD) <br>
+
+________
