@@ -3,15 +3,25 @@ title: "Past Benchmarking - Albania"
 author: "OECD Development Centre - MDCR Unit"
 date: "17-November-2020"
 output: html_document
-knit: (function(input_file, encoding) {
-  out_dir <- 'docs';
-  rmarkdown::render(input_file,
- encoding=encoding,
- output_file=file.path(dirname(input_file), out_dir, 'Past_benchmarking_Albania_overview.html'))})
 ---
 
+This page is a collection of the results for the Multi-dimensional Country Review's Past Benchmarking algorithm for the country **Albania**.
 
-This is a summary of the results from the Past Benchmarking algorithm for the country Albania.
+This algorithm finds an indicator's present day value for Albania and searches for countries with similar levels in the past. Countries who have been at or near the same value become Benchmark Candidate Countries, which are then filtered further by a "goal" each of these countries have met. This goal is explicitly defined for each indicator and is adjusted by the application of the algorithm. The Candidate Countries are then summarized into a data table with information such as matching year, length of time to reach goal and other relevant information. A series of time series graphs for each of the Candidate Countries is also included to evaluate sustained performance over time. 
+The uses of this algorithm are multi-faceted. Seeing how other, comparable countries have developed over time for an indicator can help us find stories in the past, provide reference points for effective policies and guide feasible goal-setting. 
+
+The following indicators are currently available: <p>
+* Constant GDP per capita (2010 USD) <br>
+* Employment to population (%) <br>
+* Literacy rate (%) <br>
+* Mean years of schooling <br>
+* Percent of population without schooling <br>
+* Economic complexity index <br>
+* Output per worker (GDP constant 2010 USD) <br>
+
+The summary of the results for Albania for each of these indicators are found below. 
+
+---
 
 #### **Indicator:** Constant GDP per capita (2010 USD)
 ##### **Source:** WDI

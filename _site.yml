@@ -1,12 +1,14 @@
 name: "Past-Benchmarking"
 output_dir: "docs"
 navbar:
-  title: "Past Benchmarking"
+  title: "MDCR Unit"
   left:
     - text: "Home"
       href: index.html
-    - text: "Albania"
+    - text: "Albania Past Benchmarking"
       href: Past_benchmarking_Albania_overview.html
+    - text: "Benchmark Database Update"
+      href: User_guide.html
 output:
   html_document:
     theme: cosmo
