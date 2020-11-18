@@ -9,9 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="A user’s guide to accessing APIs and remote downloading in R for the benchmarking module" />
 
 
-<title>User_guide.utf8</title>
+<title>Automatic Updating for the Benchmarking Database</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -439,14 +440,13 @@ $(document).ready(function () {
 
 
 
+<h1 class="title toc-ignore">Automatic Updating for the Benchmarking Database</h1>
+<h4 class="author">A user’s guide to accessing APIs and remote downloading in R for the benchmarking module</h4>
+<h4 class="date">17-November-2020</h4>
 
 </div>
 
 
-<div id="automatic-updating-for-the-benchmarking-database" class="section level1">
-<h1>Automatic Updating for the Benchmarking Database</h1>
-<div id="a-users-guide-to-accessing-apis-and-remote-downloading-in-r-for-the-benchmarking-module" class="section level4">
-<h4>A user’s guide to accessing APIs and remote downloading in R for the benchmarking module</h4>
 <p>There are several sources that are used in Benchmarking Database each with their own unique methods for searching, downloading and cleaning the datasets. This guide details these methods for the following sources:</p>
 <ul>
 <li>FAOSTAT</li>
@@ -458,7 +458,6 @@ $(document).ready(function () {
 <p>Two other databases are accessed with Stata where they are joined with this one and cleaned for executing found under the file name <strong>Benchmark Database.do</strong>. Different methods of integration may be attempted later to move the Benchmarking Database onto a single software.</p>
 <p>Note: this R script has been cleaned and prepared to match the data in Stata - if data cleaning methods are adjusted on Stata file then they should also be adjusted here.</p>
 <hr />
-</div>
 <div id="installing-libraries" class="section level3">
 <h3>Installing libraries</h3>
 <p>To start, install/update the packages that will be used. The libraries should be loaded in stages rather than all at the start because there may be commands that are masked by other libraries.</p>
@@ -1042,7 +1041,6 @@ I think there are several things that may be possible to make this process more 
 <li><p>If indicators are added make sure they are correctly categorized and sub-categorized with the existing code. It may be advised eventually to change the code to assign cat and subcat individually (like indicator name and code).</p></li>
 </ol>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>benchmark &lt;-<span class="st"> &quot;&quot;</span></span></code></pre></div>
-</div>
 </div>
 </div>
 
