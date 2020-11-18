@@ -5,10 +5,12 @@ date: "17-November-2020"
 output: html_document
 ---
 
-This page is a collection of the results for the Multi-dimensional Country Review's Past Benchmarking algorithm for the country **Albania**.
+This page is a collection of the results for the Multi-dimensional Country Review's Past Benchmarking algorithm for the country **Albania**. <br>
 
-This algorithm finds an indicator's present day value for Albania and searches for countries with similar levels in the past. Countries who have been at or near the same value become Benchmark Candidate Countries, which are then filtered further by a "goal" each of these countries have met. This goal is explicitly defined for each indicator and is adjusted by the application of the algorithm. The Candidate Countries are then summarized into a data table with information such as matching year, length of time to reach goal and other relevant information. A series of time series graphs for each of the Candidate Countries is also included to evaluate sustained performance over time. 
+This algorithm finds an indicator's present day value for Albania and searches for countries with similar levels in the past. Countries who have been at or near the same value become Benchmark Candidate Countries, which are then filtered further by a "goal" each of these countries have met. This goal is explicitly defined for each indicator and is adjusted by the application of the algorithm. The Candidate Countries are then summarized into a data table with information such as matching year, length of time to reach goal and other relevant information. A series of time series graphs for each of the Candidate Countries is also included to evaluate sustained performance over time. <br>
+
 The uses of this algorithm are multi-faceted. Seeing how other, comparable countries have developed over time for an indicator can help us find stories in the past, provide reference points for effective policies and guide feasible goal-setting. 
+<br>
 
 The following indicators are currently available: <p>
 * Constant GDP per capita (2010 USD) <br>
