@@ -1,12 +1,11 @@
 ---
+title: "Automatic Updating for the Benchmarking Database"
+author: "A user's guide to accessing APIs and remote downloading in R for the benchmarking module"
+date: "17-November-2020"
 output:
   html_document: 
     highlight: tango
-  
 ---
-
-# Automatic Updating for the Benchmarking Database 
-#### A user's guide to accessing APIs and remote downloading in R for the benchmarking module
 
 There are several sources that are used in Benchmarking Database each with their own unique methods for searching, downloading and cleaning the datasets. This guide details these methods for the following sources:
 

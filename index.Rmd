@@ -1,6 +1,4 @@
 ---
-title: "Past benchmarking"
-date: "17/11/2020"
 output: html_document
 ---
 
