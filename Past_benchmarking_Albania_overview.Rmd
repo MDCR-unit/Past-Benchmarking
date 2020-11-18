@@ -35,7 +35,7 @@ The summary of the results for Albania for each of these indicators are found be
 
 Below is a map populated with each country that met the matching criteria. 
 
-```{r , message=FALSE, class.source="bg-success", echo=FALSE}
+```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
 library(maps)
 library(rbokeh)
@@ -187,7 +187,7 @@ ________
 **2019 Employment in Albania :** 48.86% <br>
 **Goal :** 1.25x
 
-```{r , message=FALSE, class.source="bg-success", echo=FALSE}
+```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
 
 caps<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/map_figures.xlsx")
@@ -292,7 +292,7 @@ ________
 **Goal :** 1.25x
 
 
-```{r , message=FALSE, class.source="bg-success", echo=FALSE}
+```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
 
 caps<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/map_figures.xlsx")
@@ -392,7 +392,7 @@ ________
 **2010 percentage of population with no schooling in Albania :**  3.86% <br>
 **Goal :** Half (-0.5x)
 
-```{r , message=FALSE, class.source="bg-success", echo=FALSE}
+```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
 caps<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/map_figures.xlsx")
 nskool <- read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/2019_ALB_noschool.xlsx")
@@ -496,7 +496,7 @@ ________
 **2019 economic complexity in Albania :** -0.781571 <br>
 **Goal :** +0.5
 
-```{r , message=FALSE, class.source="bg-success", echo=FALSE}
+```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
   
 caps<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/map_figures.xlsx")
@@ -587,7 +587,7 @@ ________
 **2019 output per worker in Albania :**  12 955.88 USD <br>
 **Goal :** 1.5x
 
-```{r , message=FALSE, class.source="bg-success", echo=FALSE}
+```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
 
 caps<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/map_figures.xlsx")

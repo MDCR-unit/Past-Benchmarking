@@ -1,8 +1,8 @@
 ---
+title: "Welcome to the MDCR GitHub page!"
+date: "17-November-2010"
 output: html_document
 ---
-
-### Welcome to the MDCR unit's GitHub page!
 
 Here you will find the current projects that the Multi-Dimensional Country Review unit is working on.
 
