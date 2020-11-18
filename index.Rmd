@@ -8,7 +8,7 @@ output: html_document
 
 Here you will find the current projects that the Multi-Dimensional Country Review unit is working on.
 
-Works in progress include:
-* Past Benchmarking
-* Database Updating
-* Covid risk module
+Works in progress include: <p>
+* Past Benchmarking <p>
+* Database Updating <p>
+* Covid risk module <p>
