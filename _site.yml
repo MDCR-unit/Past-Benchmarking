@@ -11,6 +11,8 @@ navbar:
       href: Past_benchmarking_SLV_overview.html
     - text: "Laos Past Benchmarking"
       href: Past_benchmarking_Laos_overview.html
+    - text: "Cote d'Ivoire Past Benchmarking"
+      href: Past_benchmarking_CIV_overview.html
     - text: "Benchmark Database Update"
       href: User_guide.html
 output:
