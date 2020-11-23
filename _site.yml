@@ -3,17 +3,17 @@ output_dir: "docs"
 navbar:
   title: "MDCR Unit"
   left:
-    - text: "Home"
+    - text: "Past Benchmarking"
       href: index.html
-    - text: "Albania Past Benchmark"
+    - text: "Albania"
       href: Past_benchmarking_Albania_overview.html
-    - text: "El Salvador Past Benchmark"
+    - text: "El Salvador"
       href: Past_benchmarking_SLV_overview.html
-    - text: "Laos Past Benchmarking"
+    - text: "Laos"
       href: Past_benchmarking_Laos_overview.html
-    - text: "Cote d'Ivoire Past Benchmark"
+    - text: "Cote d'Ivoire"
       href: Past_benchmarking_CIV_overview.html
-    - text: "Benchmark Database Update"
+    - text: "Database Update"
       href: User_guide.html
 output:
   html_document:
