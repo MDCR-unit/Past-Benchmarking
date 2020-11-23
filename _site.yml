@@ -5,13 +5,13 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "Albania Past Benchmarking"
+    - text: "Albania Past Benchmark"
       href: Past_benchmarking_Albania_overview.html
-    - text: "El Salvador Past Benchmarking"
+    - text: "El Salvador Past Benchmark"
       href: Past_benchmarking_SLV_overview.html
     - text: "Laos Past Benchmarking"
       href: Past_benchmarking_Laos_overview.html
-    - text: "Cote d'Ivoire Past Benchmarking"
+    - text: "Cote d'Ivoire Past Benchmark"
       href: Past_benchmarking_CIV_overview.html
     - text: "Benchmark Database Update"
       href: User_guide.html
