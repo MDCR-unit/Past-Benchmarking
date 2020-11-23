@@ -346,7 +346,7 @@ ts.plotter<-function(x){
     geom_line(data = COI, aes(y=value, x=year), linetype=3,color="black")+
     labs(title=cname[[x]], x="Year",y="Literacy Rate")+
     theme(plot.title = element_text(hjust = 0.5))+
-    xlim(1960,2010)+
+    xlim(1972,2020)+
    geom_vline(xintercept=vertical.lines,
                linetype=2, colour="black")+
     annotate("rect", xmin=myear[x], xmax =gyear[x], ymin=-Inf, ymax=Inf,alpha = .1)+
