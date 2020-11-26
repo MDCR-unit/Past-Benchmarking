@@ -1,0 +1,183 @@
+---
+title: "GDP Structure Analysis"
+author: "Kate Chalmers & Hicham Moustaine"
+date: "11/25/2020"
+output:
+  html_document:
+    highlight: tango
+
+---
+
+### Estimation & Outlier Removal
+
+```{r setup, include=FALSE}
+
+library(readxl)
+library(tidyverse)
+library(naniar)
+
+gdp.dev<-read_excel("~/OneDrive/OECD_Files_KChalmers/Covid risk report/GDP Structure/gdp_by_sector_DEV_new.xlsx")
+gdp.oecd<-read_excel("~/OneDrive/OECD_Files_KChalmers/Covid risk report/GDP Structure/gdp_by_sector_oecd.xlsx", 
+                     sheet="gdp.by.sector.raw")
+
+gdp.oecd <-gdp.oecd[,-3]
+colnames(gdp.dev)[1]<-"subject"
+
+gdp.dev <- filter(gdp.dev, !(country=="Colombia"))
+gdp.dev$subject[gdp.dev$subject=="Real Gross Domestic Product"]<-"Gross domestic product at market prices - output approach"
+
+gdp.tot <- rbind(gdp.dev,gdp.oecd)
+
+gdp.tot<-gdp.tot %>% arrange(subject)
+gdp.tot<-gdp.tot[,c(1,6,8)]
+
+tot.wide <- spread(gdp.tot, key=subject, value=Q2.change)
+
+tot.wide<-filter(tot.wide, !(country %in% c("Algeria","Mexico","Canada","NA")))
+
+tot.wide <- tot.wide[-36,-c(7,16:18)]
+
+#rownames(tot.wide) <- tot.wide$country
+#tot.wide <- tot.wide[,-1]
+
+colnames(tot.wide)[2:14]<-c("agri","cons","trade","fin","gdp","industry","info","manuf","other","tech","public","estate","services")
+mar.gdp <-filter(tot.wide, (country=="Morocco"))
+tot.wide$mar.gdp <- mar.gdp$gdp
+
+colnames(tot.wide)[15]<-"mar.gdp"
+
+tot.wide <-filter(tot.wide, !(country=="Morocco"))
+
+
+```
+
+A simple OLS regression is run in order to evaluate how well our sample of country explains Morocco's 2020 Q2 GDP growth. 
+
+Breaking down GDP into 12 contributing sub-sectors by country, we regress the average value of these sectors first onto GDP to see how well the model fits overall.
+
+The following countries are included in our estimation:
+```{r country}
+unique(tot.wide$country)
+```
+
+The first regression is the full set of countries, excluding Morocco to avoid multi-colinearity issues. We also drop Egypt from our estimation, but would like to keep it in mind later on in case we would like to evaluate robustness through its inclusion.
+
+```{r egypt, include=FALSE}
+tot.wide<-filter(tot.wide, !(country=="Egypt"))
+```
+```{r results}
+full.set<-lm(gdp ~ agri + cons + trade + fin + industry + info + manuf + other + tech + public + estate + services, data=tot.wide)
+
+summary(full.set)
+```
+
+It is useful to note that the R-squared is very high so our model does fit the data well. But the relationship between sectors is only weakly significant. This could be influenced by the outliers that we noted in our analysis. So we can try removing observations to see how this improves the model. 
+
+We run some quick plots to evaluate linearity and check those with high standard deviations to decide which values to drop.
+
+```{r plotsx, include=FALSE}
+p1 <- tot.wide %>%
+  ggplot(aes(x = gdp, y = agri)) +
+  geom_point(colour = "red")+
+  labs(title="Agriculture")+
+  theme_linedraw()
+
+p2<-tot.wide %>%
+  ggplot(aes(x = gdp, y = other)) +
+  geom_point(colour = "red")+
+  labs(title="Other services")+
+  theme_linedraw()
+
+p3<-tot.wide %>%
+  ggplot(aes(x = gdp, y = estate)) +
+  geom_point(colour = "red")+
+  labs(title="Real estate")+
+  theme_linedraw()
+
+
+```
+```{r , message=FALSE, warning = FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="33%"}
+plot(p1)
+plot(p2)
+plot(p3)
+
+```
+
+Given the bunching in Agriculture which is the result of a far outlying value in Ireland, we remove that observation and another one from Estonia. We also remove the outlier in Other Services (Ireland again) and a final one in Estate.
+
+Perhaps later we can try a more rigorous method of outlier removal. 
+
+```{r removing, include=FALSE}
+tot.wide$agri[tot.wide$agri == -207.082043343653] <- "NA"
+tot.wide$agri[tot.wide$agri == -57.9825258141382] <- "NA"
+tot.wide$other[tot.wide$other == -209.841726618705] <- "NA"
+tot.wide$estate[tot.wide$estate == -44.3211488250653] <-"NA"
+
+tot.wide$agri <-as.numeric(tot.wide$agri)
+tot.wide$other <-as.numeric(tot.wide$other)
+tot.wide$estate <-as.numeric(tot.wide$estate)
+
+```
+
+```{r plotsx2, include=FALSE}
+p1 <- tot.wide %>%
+  ggplot(aes(x = gdp, y = agri)) +
+  geom_point(colour = "red")+
+  labs(title="Agriculture")+
+  theme_linedraw()
+
+p2<-tot.wide %>%
+  ggplot(aes(x = gdp, y = other)) +
+  geom_point(colour = "red")+
+  labs(title="Other services")+
+  theme_linedraw()
+
+p3<-tot.wide %>%
+  ggplot(aes(x = gdp, y = estate)) +
+  geom_point(colour = "red")+
+  labs(title="Real estate")+
+  theme_linedraw()
+
+```
+
+We can see that this has led to a more linear shape, meaning better estimates can be made from the data.
+
+```{r , message=FALSE, warning = FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="33%"}
+plot(p1)
+plot(p2)
+plot(p3)
+```
+
+Re-running the model with these values gone:
+
+```{r cleaned}
+full.set<-lm(gdp ~ agri + cons + trade + fin + industry + info + manuf + other + tech + public + estate + services, data=tot.wide)
+
+summary(full.set)
+```
+
+### Prediction
+
+The model has improved slightly for GDP with a higher R-squared and more significant variables. Now we can see how well it predicts GDP for Morocco. We use only the sectors that are found in the data we have for Morocco, build the model with them and run the training model. Then we add in Morocco as the validation portion to see how well this model predicts GDP.
+
+```{r predict}
+
+train<-lm(gdp ~ agri + trade + fin + manuf + other + tech + public + services, data=tot.wide)
+
+predict(train, newdata = mar.gdp, interval = "prediction")
+
+```
+
+The fitted value shows that this model predicts Morocco's GDP to be at **-11.32872**.
+
+This is not far from the actual observed value of **-9.3424**. This could mean that this model does a decent job of representing Covid's impact by sector and could be applied to other applications in the future.  
+
+Next steps: <p>
+* Running this for a number of countries to see how it predicts those<p>
+* Improving prediction through adding more samples<p>
+* Robustness checks and further evaluation of predictive ability<p>
+
+
+
+
+
