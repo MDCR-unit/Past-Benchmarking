@@ -435,12 +435,6 @@ $(document).ready(function () {
 <li>
   <a href="Past_benchmarking_CIV_overview.html">Cote d'Ivoire</a>
 </li>
-<li>
-  <a href="User_guide.html">Database Update</a>
-</li>
-<li>
-  <a href="Morocco_GDP_prediction.html">MAR prediction</a>
-</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -466,13 +460,15 @@ $(document).ready(function () {
 <p>Breaking down GDP into 12 contributing sub-sectors by country, we regress the average value of these sectors first onto GDP to see how well the model fits overall.</p>
 <p>The following countries are included in our estimation:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">unique</span>(tot.wide<span class="op">$</span>country)</span></code></pre></div>
-<pre><code>##  [1] &quot;Austria&quot;        &quot;Belgium&quot;        &quot;Bulgaria&quot;       &quot;Colombia&quot;       &quot;Costa Rica&quot;    
-##  [6] &quot;Czechia&quot;        &quot;Denmark&quot;        &quot;Estonia&quot;        &quot;Finland&quot;        &quot;France&quot;        
-## [11] &quot;Germany&quot;        &quot;Greece&quot;         &quot;Hungary&quot;        &quot;India&quot;          &quot;Ireland&quot;       
-## [16] &quot;Italy&quot;          &quot;Latvia&quot;         &quot;Lithuania&quot;      &quot;Luxembourg&quot;     &quot;Netherlands&quot;   
-## [21] &quot;Norway&quot;         &quot;Poland&quot;         &quot;Portugal&quot;       &quot;Romania&quot;        &quot;Slovakia&quot;      
-## [26] &quot;Slovenia&quot;       &quot;South Korea&quot;    &quot;Spain&quot;          &quot;Sweden&quot;         &quot;Switzerland&quot;   
-## [31] &quot;Tunisia&quot;        &quot;Turkey&quot;         &quot;Ukraine&quot;        &quot;United Kingdom&quot;</code></pre>
+<pre><code>##  [1] &quot;Austria&quot;        &quot;Belgium&quot;        &quot;Bulgaria&quot;       &quot;Colombia&quot;      
+##  [5] &quot;Costa Rica&quot;     &quot;Czechia&quot;        &quot;Denmark&quot;        &quot;Estonia&quot;       
+##  [9] &quot;Finland&quot;        &quot;France&quot;         &quot;Germany&quot;        &quot;Greece&quot;        
+## [13] &quot;Hungary&quot;        &quot;India&quot;          &quot;Ireland&quot;        &quot;Italy&quot;         
+## [17] &quot;Latvia&quot;         &quot;Lithuania&quot;      &quot;Luxembourg&quot;     &quot;Netherlands&quot;   
+## [21] &quot;Norway&quot;         &quot;Poland&quot;         &quot;Portugal&quot;       &quot;Romania&quot;       
+## [25] &quot;Slovakia&quot;       &quot;Slovenia&quot;       &quot;South Korea&quot;    &quot;Spain&quot;         
+## [29] &quot;Sweden&quot;         &quot;Switzerland&quot;    &quot;Tunisia&quot;        &quot;Turkey&quot;        
+## [33] &quot;Ukraine&quot;        &quot;United Kingdom&quot;</code></pre>
 <p>The first regression is the full set of countries, excluding Morocco to avoid multi-colinearity issues. We also drop Egypt from our estimation, but would like to keep it in mind later on in case we would like to evaluate robustness through its inclusion.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>full.set&lt;-<span class="kw">lm</span>(gdp <span class="op">~</span><span class="st"> </span>agri <span class="op">+</span><span class="st"> </span>cons <span class="op">+</span><span class="st"> </span>trade <span class="op">+</span><span class="st"> </span>fin <span class="op">+</span><span class="st"> </span>industry <span class="op">+</span><span class="st"> </span>info <span class="op">+</span><span class="st"> </span>manuf <span class="op">+</span><span class="st"> </span>other <span class="op">+</span><span class="st"> </span>tech <span class="op">+</span><span class="st"> </span>public <span class="op">+</span><span class="st"> </span>estate <span class="op">+</span><span class="st"> </span>services, <span class="dt">data=</span>tot.wide)</span>
 <span id="cb3-2"><a href="#cb3-2"></a></span>

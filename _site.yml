@@ -13,10 +13,6 @@ navbar:
       href: Past_benchmarking_Laos_overview.html
     - text: "Cote d'Ivoire"
       href: Past_benchmarking_CIV_overview.html
-    - text: "Database Update"
-      href: User_guide.html
-    - text: "MAR prediction"
-      href: Morocco_GDP_prediction.html
 output:
   html_document:
     theme: cosmo
