@@ -1,0 +1,12 @@
+name: "Covid compound risk"
+output_dir: "docs"
+navbar:
+  title: "Covid risk module"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "GDP structure prediction analysis"
+      href: Morocco_GDP_prediction.html
+output:
+  html_document:
+    theme: cosmo

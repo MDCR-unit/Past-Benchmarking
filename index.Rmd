@@ -1,0 +1,7 @@
+---
+title: "Covid Risk Module"
+author: "MDCR Unit"
+output: html_document
+---
+
+Welcome to the Multi-Dimensional Country Review's unit GitHub page for the Covid compound risk project. Here is a repository of completed projects for easy access. 
