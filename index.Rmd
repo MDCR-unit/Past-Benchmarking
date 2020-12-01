@@ -1,12 +1,16 @@
 ---
-title: "Welcome to the MDCR GitHub page!"
-date: "17-November-2010"
+title: "Welcome to the MDCR's Past Benchmarking page!"
 output: html_document
 ---
 
-Here you will find the current projects that the Multi-Dimensional Country Review unit is working on.
 
-Works in progress include: <p>
-* Past Benchmarking <p>
-* Database Updating <p>
-* Covid risk module <p>
+Here you will find the one the current projects that the Multi-Dimensional Country Review unit is working on. We currently have **4** country reports available for PB, **Albania, Laos, Côte d'Ivoire and El Salvador**. Select one of these countries from the bar above for a description of the project and a summary of the results. 
+
+
+Forthcoming additions to the project include: <p>
+* Similarity measures: a simple way to evaluate results <p>
+* Improved display maps <p>
+
+
+
+

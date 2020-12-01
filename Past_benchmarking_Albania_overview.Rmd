@@ -42,8 +42,10 @@ library(rbokeh)
 library(readxl)
 library(dplyr)
 
-caps<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/map_figures.xlsx")
-gdp <- read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/2019_ALB_gdp.xlsx")
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+
+caps<-read_excel("0_Indicator_Tables/map_figures.xlsx")
+gdp <- read_excel("0_Indicator_Tables/2019_ALB_gdp.xlsx")
 names(gdp)[2]<-"country"
 
 clist <- gdp$country
@@ -75,9 +77,11 @@ library(ggplot2)
 library(foreach)
 library(dplyr)
 library(DT)
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+
 
 # Upload excel of output of GDP function through changing file path
-gdp.output <- read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/2019_ALB_gdp.xlsx")
+gdp.output <- read_excel("0_Indicator_Tables/2019_ALB_gdp.xlsx")
 
 # Data cleaning
 gdp.output <- gdp.output[,-1]
@@ -94,9 +98,11 @@ DT::datatable(gdp.output, rownames = FALSE)
 These graphs show the full time series for the indicator, constant GDP per capita. The vertical dashed lines show the time window from which the country indicator value matched current day Albania until it surpasses its goal - doubling in this case. The dotted line is the time series for the country of interest, Albania. 
 
 ```{r , message=FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"} 
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+
 # Upload indicator database & output table
-ind.db<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/indicator.db.xlsx")
-gdp.output <- read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/2019_ALB_gdp.xlsx")
+ind.db<-read_excel("indicator.db.xlsx")
+gdp.output <- read_excel("0_Indicator_Tables/2019_ALB_gdp.xlsx")
 
 # Parse out time series
 indicator <- ind.db[,c(1:2,3)]
@@ -189,9 +195,10 @@ ________
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
 
-caps<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/map_figures.xlsx")
-emp <- read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/2019_ALB_employ.xlsx")
+caps<-read_excel("0_Indicator_Tables/map_figures.xlsx")
+emp <- read_excel("0_Indicator_Tables/2019_ALB_employ.xlsx")
 names(emp)[2]<-"country"
 
 clist <- emp$country
@@ -216,7 +223,9 @@ figure(width = 800, height = 450, padding_factor = 0) %>%
 
 ```{r , message=FALSE, warning = FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"}
 library(readxl)
-emp.output <- read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/2019_ALB_employ.xlsx")
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+
+emp.output <- read_excel("0_Indicator_Tables/2019_ALB_employ.xlsx")
 
 emp.output <- emp.output[,-1]
 
@@ -225,7 +234,7 @@ emp.output$`Value at goal`<-round(emp.output$`Value at goal`, digits=2)
 
 DT::datatable(emp.output, rownames = FALSE)
 
-ind.db<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/indicator.db.xlsx")
+ind.db<-read_excel("indicator.db.xlsx")
 
 indicator <- ind.db[,c(1:2,4)]
 names(indicator)[3]<-"value"
@@ -293,10 +302,10 @@ ________
 
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
 
-
-caps<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/map_figures.xlsx")
-myr <- read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/2019_ALB_meanyrs.xlsx")
+caps<-read_excel("0_Indicator_Tables/map_figures.xlsx")
+myr <- read_excel("0_Indicator_Tables/2019_ALB_meanyrs.xlsx")
 names(myr)[2]<-"country"
 
 clist <- myr$country
@@ -319,15 +328,18 @@ figure(width = 800, height = 450, padding_factor = 0) %>%
 
 
 ```{r , class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%", message=FALSE}
-myrs.output<- read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/2019_ALB_meanyrs.xlsx")
+
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+
+myrs.output<- read_excel("0_Indicator_Tables/2019_ALB_meanyrs.xlsx")
 
 myrs.output <- myrs.output[,-1]
 
 DT::datatable(myrs.output, rownames = FALSE)
 
-myrs.ts<- read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/2010_ALB_myrs_ts.xlsx")
+myrs.ts<- read_excel("0_Indicator_Tables/2010_ALB_myrs_ts.xlsx")
 
-ind.db<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/indicator.db.xlsx")
+ind.db<-read_excel("indicator.db.xlsx")
 
 indicator <- ind.db[,c(1:2,7)]
 names(indicator)[3]<-"value"
@@ -393,9 +405,10 @@ ________
 **Goal :** Half (-0.5x)
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
 
-caps<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/map_figures.xlsx")
-nskool <- read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/2019_ALB_noschool.xlsx")
+caps<-read_excel("0_Indicator_Tables/map_figures.xlsx")
+nskool <- read_excel("0_Indicator_Tables/2019_ALB_noschool.xlsx")
 names(nskool)[2]<-"country"
 
 clist <- nskool$country
@@ -417,14 +430,16 @@ figure(width = 800, height = 450, padding_factor = 0) %>%
 ```
 
 ```{r , message=FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"}
-noskl.output<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/2019_ALB_noschool.xlsx")
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+
+noskl.output<-read_excel("0_Indicator_Tables/2019_ALB_noschool.xlsx")
 
 noskl.output <- noskl.output[order(noskl.output$`Comparison country`),]
 noskl.output <- noskl.output[,-1]
 
 DT::datatable(noskl.output, rownames = FALSE)
 
-ind.db<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/indicator.db.xlsx")
+ind.db<-read_excel("indicator.db.xlsx")
 
 indicator <- ind.db[,c(1:2,6)]
 names(indicator)[3]<-"value"
@@ -498,9 +513,10 @@ ________
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
   
-caps<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/map_figures.xlsx")
-eci <- read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/2019_ALB_eci.xlsx")
+caps<-read_excel("0_Indicator_Tables/map_figures.xlsx")
+eci <- read_excel("0_Indicator_Tables/2019_ALB_eci.xlsx")
 names(eci)[2]<-"country"
 
 clist <- eci$country
@@ -522,13 +538,15 @@ figure(width = 800, height = 450, padding_factor = 0) %>%
 ```
 
 ```{r , class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%", message=FALSE}
-eci.output<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/2019_ALB_eci.xlsx")
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+
+eci.output<-read_excel("0_Indicator_Tables/2019_ALB_eci.xlsx")
 
 eci.output <- eci.output[,-1]
 
 DT::datatable(eci.output, rownames = FALSE)
 
-ind.db<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/indicator.db.xlsx")
+ind.db<-read_excel("indicator.db.xlsx")
 
 indicator <- ind.db[,c(1:2,8)]
 names(indicator)[3]<-"value"
@@ -588,10 +606,10 @@ ________
 **Goal :** 1.5x
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
 
-
-caps<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/map_figures.xlsx")
-output <- read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/2019_ALB_lab.xlsx")
+caps<-read_excel("0_Indicator_Tables/map_figures.xlsx")
+output <- read_excel("0_Indicator_Tables/2019_ALB_lab.xlsx")
 names(output)[2]<-"country"
 
 clist <- output$country
@@ -613,14 +631,17 @@ figure(width = 800, height = 450, padding_factor = 0) %>%
 ```
 
 ```{r , message=FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"}
-lab.output<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/0_Indicator_Tables/2019_ALB_lab.xlsx")
+
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+
+lab.output<-read_excel("0_Indicator_Tables/2019_ALB_lab.xlsx")
 
 lab.output <- lab.output[,-1]
 
 lab.output$`Match value`<-round(lab.output$`Match value`, digits=2)
 DT::datatable(lab.output, rownames = FALSE)
 
-ind.db<-read_excel("~/OneDrive/OECD_Files_KChalmers/Past_Benchmarking/indicator.db.xlsx")
+ind.db<-read_excel("indicator.db.xlsx")
 
 indicator <- ind.db[,c(1:2,9)]
 names(indicator)[3]<-"value"
