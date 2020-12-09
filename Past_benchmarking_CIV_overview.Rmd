@@ -1,7 +1,6 @@
 ---
 title: "Past Benchmarking - Cote d'Ivoire"
 author: "OECD Development Centre - MDCR Unit"
-date: "17-November-2020"
 output: html_document
 ---
 
@@ -13,76 +12,112 @@ The uses of this algorithm are multi-faceted. Seeing how other, comparable count
 <br>
 
 The following indicators are currently available: <p>
-* Constant GDP per capita (2010 USD) <br>
-* Employment to population (%) <br>
-* Literacy rate (%) <br>
-* Mean years of schooling <br>
-* Percent of population without schooling <br>
-* Economic complexity index <br>
-* Output per worker (GDP constant 2010 USD) <br>
+* [Constant GDP per capita (2010 USD)](#GDP) <br>
+* [Employment to population (%)](#Emp) <br>
+* [Literacy rate (%)](#Lit)<br>
+* [Mean years of schooling](#Mskool) <br>
+* [Percent of population without schooling](#Noskool) <br>
+* [Economic complexity index](#ECI) <br>
+* [Output per worker (GDP constant 2010 USD)](#Lab) <br>
 
 The summary of the results for Cote d'Ivoire for each of these indicators are found below. 
 
 ---
 
-#### **Indicator:** Constant GDP per capita (2010 USD)
-##### **Source:** WDI
+#### **Indicator:** Constant GDP per capita (2010 USD) {#GDP} 
 
 **2019 Constant GDP per capita in Cote d'Ivoire :** 1 735.80 USD <br>
-**Goal :** Double (2x)
+**Match threshold :** ±250 USD<br> 
+**Goal :** Double (2x) <br>
+**Source :** WDI <p>
 
 ##### **Map of comparison countries**
 
 Below is a map populated with each country that met the matching criteria. 
 
-```{r , message=FALSE, class.source="bg-success", echo=FALSE}
+```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
 library(maps)
 library(rbokeh)
 library(readxl)
 library(dplyr)
 
-caps<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/map_figures.xlsx")
-gdp <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_gdp.xlsx")
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+
+caps<-read_excel("0_Indicator_Tables/map_figures.xlsx") 
+caps <- caps[,-5]
+gdp <- read_excel("0_Indicator_Tables/2019_CIV_gdp.xlsx")
 names(gdp)[2]<-"country"
 
 clist <- gdp$country
 gdp$`Match value`<-round(gdp$`Match value`, digits=2)
 
 caps<-subset(caps, country %in% clist)
-info.cols<-gdp[,c(2,4,5,7)]
+info.cols<-gdp[,c(2:5,7)]
 caps<-left_join(info.cols,caps)
+
+indicators <- read_excel("Similarity measures/sim.indicators.xlsx")
+indicators[,4:10] <- zoo::na.fill(indicators[,4:10], "extend")
+
+ind.filter <- gdp[,2:3]
+num <- nrow(gdp)
+real.val <-""
+
+for(i in 1:num){
+  slice <- ind.filter[i,]
+  list <- indicators[indicators$country==slice$country & indicators$year==slice$`Match year`, ]
+  real.val <- rbind(real.val,list)
+}
+
+info.val <- real.val[-1,-c(1,11)]
+info.val[3:9] <- sapply(info.val[3:9], as.numeric)
+info.val[3:9]<-round(info.val[3:9], digits=2)
+info.val$Land.area<-formatC(info.val$Land.area, format="d", big.mark=",")
+info.val$Pop.density<-formatC(info.val$Pop.density, format="d", big.mark=",")
+info.val$Population<-formatC(info.val$Population, format="d", big.mark=",")
+
+caps<-merge(info.val,caps,by="country")
 
 colnames(caps)[1]<-"Country"
 
 figure(width = 800, height = 450, padding_factor = 0) %>%
   ly_map("world", col = "gray", line_color="black",line_alpha=0.5,fill_alpha=0.75) %>%
   ly_points(long, lat, data = caps, size = 10,
-            hover = c(Country,`Match value`,`Value at goal`,
+            hover = c(Country,`Match year`,
                       `Years to reach goal`,
-                      Employment,Population))
-
+                      Employment,Population,Land.area,
+                      Pop.density,Industry,Services,Oil.rents,
+                      Agriculture.land))
 ```
 
 ##### **Table output of comparison countries**
 
 This table is a summary of the results of the algorithm.
 
-```{r , message=FALSE, class.source="bg-success", echo=FALSE, figures-side, fig.show="hold", out.width="50%"} 
+```{r , message=FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"} 
 
 library(readxl)
 library(ggplot2)
 library(foreach)
 library(dplyr)
 library(DT)
+library(ggpubr)
 
-# Upload excel of output of GDP function through changing file path
+# Upload excel of output of GDP function through changing file path ISO3C
 gdp.output <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_gdp.xlsx")
+# Upload similarity measure
+sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "gdp.sim.sum")
+
+# Keep only values wanted on table
+sim.val <- sim.val[,c(1,9)]
+colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
+gdp.output <- merge(gdp.output,sim.val)
 
 # Data cleaning
-gdp.output <- gdp.output[,-1]
-gdp.output$`Match value`<-round(gdp$`Match value`, digits=2)
-gdp.output$`Value at goal`<-round(gdp$`Value at goal`, digits=2)
+gdp.output <- gdp.output[,-2]
+gdp.output$`Match value`<-round(gdp.output$`Match value`, digits=2)
+gdp.output$`Value at goal`<-round(gdp.output$`Value at goal`, digits=2)
+gdp.output$`Similarity value`<-round(gdp.output$`Similarity value`, digits=2)
 
 # Data table of output
 DT::datatable(gdp.output, rownames = FALSE)
@@ -91,18 +126,19 @@ DT::datatable(gdp.output, rownames = FALSE)
 
 ##### **Time series of comparison countries**
 
-These graphs show the full time series for the indicator, constant GDP per capita. The vertical dashed lines show the time window from which the country indicator value matched current day Cote d'Ivoire until it surpasses its goal - doubling in this case. The dotted line is the time series for the country of interest, Cote d'Ivoire. 
+These graphs show the full time series for the indicator. The solid line represents the comparison country whereas the dotted line is the time series for the country of interest, Cote d'Ivoire. The red dots indicate the match values for both countries. Finally, the vertical dashed lines show the window from which the country indicator value matched current day Cote d'Ivoire until it surpasses its goal.  
 
 ```{r , message=FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"} 
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+
 # Upload indicator database & output table
-ind.db<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/indicator.db.xlsx")
-gdp.output <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_gdp.xlsx")
+ind.db<-read_excel("indicator.db.xlsx")
+gdp.output <- read_excel("0_Indicator_Tables/2019_CIV_gdp.xlsx")
 
 # Parse out time series
 indicator <- ind.db[,c(1:2,3)]
 names(indicator)[3]<-"value"
 indicator<-na.omit(indicator)
-
 cname <-gdp.output$`Comparison country`
 gdp.ts <- indicator[indicator$country %in% c("Cote d'Ivoire",cname) ,]
 gdp.ts$country[gdp.ts$country=="Cote d'Ivoire"] <-"aaaCote d'Ivoire"
@@ -111,8 +147,10 @@ gdp.output <- gdp.output[order(gdp.output$`Comparison country`),]
 gdp.ts <- gdp.ts[order(gdp.ts$country),]
 
 # Set lists to create time series graphs
+cname <-gdp.output$`Comparison country`
 myear <- gdp.output$`Match year`
 gyear <- gdp.output$`Year reached goal`
+mval <- gdp.output$`Match value`
 
 # Split ts by country
 glist<-gdp.ts%>%
@@ -120,6 +158,9 @@ glist<-gdp.ts%>%
 
 # Change COI # to the one of country of interest in glist then remove using same #
 COI <- glist[[1]]
+coi.current <- COI %>% filter(abs(year) == max(abs(year)))
+cur.val <- coi.current$value
+cur.year <- coi.current$year
 glist<-glist[-1]
 
 # Plotting function for every country 
@@ -132,6 +173,8 @@ ts.plotter<-function(x){
     geom_line(data = COI, aes(y=value, x=year), linetype=3,color="black")+
     labs(title=cname[[x]], x="Year",y="Constant GDP per capita")+
     theme(plot.title = element_text(hjust = 0.5))+
+    geom_point(aes(x=myear[x],y=mval[x]), color="red")+
+    geom_point(aes(x=cur.year,y=cur.val), color="red")+
     xlim(1960,2020)+
     geom_vline(xintercept=vertical.lines,
                linetype=2, colour="black")+
@@ -139,116 +182,183 @@ ts.plotter<-function(x){
     theme(axis.text = element_text(face="bold"))
 }
 
+num<-nrow(gdp.output)
+
 # Plots graph for each country 
-# ** IMPORTANT: Here 21 will change by # of comparison countries
-gdp.plots<-foreach(x=1:23) %do%
+gdp.plots<-foreach(x=1:num) %do%
   ts.plotter(x)
 
 # Graph upload
 # ** IMPORTANT: Here # of plots will change by # of comparison countries (obs in envi)
-gdp.plots[[1]]
-gdp.plots[[2]]
-gdp.plots[[3]]
 
-gdp.plots[[4]]
-gdp.plots[[5]]
-gdp.plots[[6]]
-
-gdp.plots[[7]]
-gdp.plots[[8]]
-gdp.plots[[9]]
-
-gdp.plots[[10]]
-gdp.plots[[11]]
-gdp.plots[[12]]
-
-gdp.plots[[13]]
-gdp.plots[[14]]
-gdp.plots[[15]]
-
-gdp.plots[[16]]
-gdp.plots[[17]]
-gdp.plots[[18]]
-
-gdp.plots[[19]]
-gdp.plots[[20]]
-gdp.plots[[21]]
-
-gdp.plots[[22]]
-gdp.plots[[23]]
-
+for(i in 1:num)
+{plot(gdp.plots[[i]])}
 
 ```
 
+##### **Similarity measure**
 
+In order to narrow down the list of candidate countries further, a similarity measure is constructed. To calculate this, we compare country structures through standardizing the values of certain structural indicators of the comparison country at the match year with present day Cote d'Ivoire. We calculate this value for seven indicators: <br>
 
+*	Total land area (sq. km)<br>
+*	Population density (people per sq. km of land area)<br>
+*	Services, valued added (% of GDP)<br>
+*	Industry (including construction), valued added (% of GDP)<br>
+*	Oil rents (% of GDP)<br>
+*	Agricultural land (% of land area)<br>
+*	Total population<br>
 
+The values closest to zero being the most similar to Cote d'Ivoire, when we sum these we want the smallest value possible. The results of this summation are seen above under Similarity Measure in the table of the algorithm's results. 
+
+It also possible to compare using radar charts, which gives a global idea of which countries had similar values for each structural indicators. This makes it possible to compare countries when a particular structural indicator is more important for your comparison, such as by size, economic composition, etc.
+
+```{r,fig.show="hold", out.width="33%",message=FALSE,echo=FALSE}
+library(fmsb)
+library(readxl)
+
+sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "gdp.sim.sum")
+sim.val <- na.omit(sim.val)
+
+wheel.slice <- sim.val[,-c(1,9)]
+
+mytitle<-sim.val$country
+row <- nrow(sim.val)
+
+par(mar=rep(0.8,4))
+
+for(i in 1:row){
+  slice.1 <- wheel.slice[i,]
+  slice.1 <- abs(slice.1)
+  col <- ncol(slice.1)
+  
+  for(x in 1:col){
+    slice.1[x]<-ifelse(slice.1[x] > 3, (slice.1[x]/4), slice.1[x])
+    }
+
+  max.1 <- max(slice.1)
+  min.1 <- min(slice.1)
+  data <- rbind(rep(0,1) , rep(max.1,1) , slice.1)
+  data2 = data
+  data2[2:1,] = data2[1:2,]
+  data2[2:1,] = data2[1:2,]
+
+  radarchart(data2, axistype = 2, 
+             pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=2 ,
+             cglcol="grey", cglty=1, axislabcol="grey",
+             caxislabels=seq(1,1,-1), cglwd=0.9,
+             vlcex=0.8,
+             title=mytitle[i]
+             )
+}
+
+```
 
 ________
 
-#### **Indicator:** Employment to population (%)
-##### **Source:** WDI
+#### **Indicator:** Employment to population (%){#Emp}
 
 **2019 Employment in Cote d'Ivoire :** 55.06% <br>
+**Match threshold :** ±2.5% <br>
 **Goal :** 1.25x
+**Source**: WDI
 
-```{r , message=FALSE, class.source="bg-success", echo=FALSE}
+```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
-caps<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/map_figures.xlsx")
-emp <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_employ.xlsx")
-names(emp)[2]<-"country"
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
 
-clist <- emp$country
-emp$`Match value`<-round(emp$`Match value`, digits=2)
-emp$`Value at goal`<-round(emp$`Value at goal`, digits=2)
+caps<-read_excel("0_Indicator_Tables/map_figures.xlsx") 
+caps <- caps[,-5]
+employ <- read_excel("0_Indicator_Tables/2019_CIV_employ.xlsx")
+names(employ)[2]<-"country"
+
+clist <- employ$country
+employ$`Match value`<-round(employ$`Match value`, digits=2)
 
 caps<-subset(caps, country %in% clist)
-info.cols<-emp[,c(2,4,5,7)]
+info.cols<-employ[,c(2:5,7)]
 caps<-left_join(info.cols,caps)
+
+indicators <- read_excel("Similarity measures/sim.indicators.xlsx")
+indicators[,4:10] <- zoo::na.fill(indicators[,4:10], "extend")
+
+ind.filter <- employ[,2:3]
+num <- nrow(employ)
+real.val <-""
+
+for(i in 1:num){
+  slice <- ind.filter[i,]
+  list <- indicators[indicators$country==slice$country & indicators$year==slice$`Match year`, ]
+  real.val <- rbind(real.val,list)
+}
+
+info.val <- real.val[-1,-c(1,11)]
+info.val[3:9] <- sapply(info.val[3:9], as.numeric)
+info.val[3:9]<-round(info.val[3:9], digits=2)
+info.val$Land.area<-formatC(info.val$Land.area, format="d", big.mark=",")
+info.val$Pop.density<-formatC(info.val$Pop.density, format="d", big.mark=",")
+info.val$Population<-formatC(info.val$Population, format="d", big.mark=",")
+
+caps<-merge(info.val,caps,by="country")
 
 colnames(caps)[1]<-"Country"
 
 figure(width = 800, height = 450, padding_factor = 0) %>%
   ly_map("world", col = "gray", line_color="black",line_alpha=0.5,fill_alpha=0.75) %>%
   ly_points(long, lat, data = caps, size = 10,
-            hover = c(Country,`Match value`,`Value at goal`,
+            hover = c(Country,`Match year`,
                       `Years to reach goal`,
-                      Employment,Population))
-
+                      Employment,Population,Land.area,
+                      Pop.density,Industry,Services,Oil.rents,
+                      Agriculture.land))
 ```
 
+##### **Table output of comparison countries** 
 
 ```{r , message=FALSE, warning = FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"}
-library(readxl)
 emp.output <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_employ.xlsx")
+sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "emp.sim.sum")
 
-emp.output <- emp.output[,-1]
+sim.val <- sim.val[,c(1,9)]
+colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
+emp.output <- merge(emp.output,sim.val)
 
+emp.output <- emp.output[,-2]
 emp.output$`Match value`<-round(emp.output$`Match value`, digits=2)
 emp.output$`Value at goal`<-round(emp.output$`Value at goal`, digits=2)
+emp.output$`Similarity value`<-round(emp.output$`Similarity value`, digits=2)
 
 DT::datatable(emp.output, rownames = FALSE)
+```
 
+##### **Time series of comparison countries** 
+
+These graphs show the full time series for the indicator. The solid line represents the comparison country whereas the dotted line is the time series for the country of interest, Cote d'Ivoire. The red dots indicate the match values for both countries. Finally, the vertical dashed lines show the window from which the country indicator value matched current day Cote d'Ivoire until it surpasses its goal.  
+
+```{r , message=FALSE, warning = FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"}
 ind.db<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/indicator.db.xlsx")
 
 indicator <- ind.db[,c(1:2,4)]
 names(indicator)[3]<-"value"
 indicator<-na.omit(indicator)
-
 cname <-emp.output$`Comparison country`
 emp.ts <- indicator[indicator$country %in% c("Cote d'Ivoire",cname) ,]
 emp.ts$country[emp.ts$country=="Cote d'Ivoire"] <-"aaaCote d'Ivoire"
 
 emp.output <- emp.output[order(emp.output$`Comparison country`),]
-emp.ts <- emp.ts[order(emp.ts$country),]
+emp.ts <- emp.ts[order(gdp.ts$country),]
 
+cname <-emp.output$`Comparison country`
 myear <- emp.output$`Match year`
 gyear <- emp.output$`Year reached goal`
+mval <- emp.output$`Match value`
 
 glist<-emp.ts%>%
   group_split(country)
 
 COI <- glist[[1]]
+coi.current <- COI %>% filter(abs(year) == max(abs(year)))
+cur.val <- coi.current$value
+cur.year <- coi.current$year
 glist<-glist[-1]
 
 ts.plotter<-function(x){
@@ -259,179 +369,175 @@ ts.plotter<-function(x){
     geom_line(data = COI, aes(y=value, x=year), linetype=3,color="black")+
     labs(title=cname[[x]], x="Year",y="Employment to population (%)")+
     theme(plot.title = element_text(hjust = 0.5))+
+    geom_point(aes(x=myear[x],y=mval[x]), color="red")+
+    geom_point(aes(x=cur.year,y=cur.val), color="red")+
     xlim(1991,2020)+
-   geom_vline(xintercept=vertical.lines,
+    geom_vline(xintercept=vertical.lines,
                linetype=2, colour="black")+
     annotate("rect", xmin=myear[x], xmax =gyear[x], ymin=-Inf, ymax=Inf,alpha = .1)+
     theme(axis.text = element_text(face="bold"))
 }
 
-emp.plots<-foreach(x=1:2) %do%
+num<-nrow(emp.output)
+
+gdp.plots<-foreach(x=1:num) %do%
   ts.plotter(x)
 
-emp.plots[[1]]
-emp.plots[[2]]
+for(i in 1:num)
+  {plot(gdp.plots[[i]])}
 
 
 ```
 
+##### **Similarity measure**
+
+```{r,fig.show="hold", out.width="33%",message=FALSE,echo=FALSE}
+library(fmsb)
+library(readxl)
+
+sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "emp.sim.sum")
+
+wheel.slice <- sim.val[,-c(1,9)]
+
+mytitle<-sim.val$country
+row <- nrow(sim.val)
+
+par(mar=rep(1,4))
 
 
+for(i in 1:row){
+  slice.1 <- wheel.slice[i,]
+  slice.1 <- abs(slice.1)
+  col <- ncol(slice.1)
+  
+  for(x in 1:col){
+    slice.1[x]<-ifelse(slice.1[x] > 3, (slice.1[x]/4), slice.1[x])
+    }
 
+  max.1 <- max(slice.1)
+  min.1 <- min(slice.1)
+  data <- rbind(rep(0,1) , rep(max.1,1) , slice.1)
 
-________
-#### **Indicator:** Literacy rate (%)
-##### **Source:** WDI
+  data2 = data
+  data2[2:1,] = data2[1:2,]
+  data2[2:1,] = data2[1:2,]
 
-**2018 literacy rate in Cote d'Ivoire :** 47.16%<br>
-**Goal :**  1.5x
-
-```{r , message=FALSE, class.source="bg-success", echo=FALSE}
-
-
-caps<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/map_figures.xlsx")
-liter <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_liter.xlsx")
-names(liter)[2]<-"country"
-
-clist <- liter$country
-liter$`Match value`<-round(liter$`Match value`, digits=2)
-
-caps<-subset(caps, country %in% clist)
-info.cols<-liter[,c(2,4,5,7)]
-caps<-left_join(info.cols,caps)
-
-colnames(caps)[1]<-"Country"
-
-figure(width = 800, height = 450, padding_factor = 0) %>%
-  ly_map("world", col = "gray", line_color="black",line_alpha=0.5,fill_alpha=0.75) %>%
-  ly_points(long, lat, data = caps, size = 10,
-            hover = c(Country,`Match value`,`Value at goal`,
-                      `Years to reach goal`,
-                      Employment,Population))
-
-```
-
-
-```{r , class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%", message=FALSE}
-liter.output<- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_liter.xlsx")
-
-liter.output <- liter.output[,-1]
-
-DT::datatable(liter.output, rownames = FALSE)
-
-ind.db<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/indicator.db.xlsx")
-
-indicator <- ind.db[,c(1:2,5)]
-names(indicator)[3]<-"value"
-indicator<-na.omit(indicator)
-
-cname <-liter.output$`Comparison country`
-liter.ts <- indicator[indicator$country %in% c("Cote d'Ivoire",cname) ,]
-liter.ts$country[liter.ts$country=="Cote d'Ivoire"] <-"aaaCote d'Ivoire"
-
-liter.output <- liter.output[order(liter.output$`Comparison country`),]
-liter.ts <- liter.ts[order(liter.ts$country),]
-
-myear <- liter.output$`Match year`
-gyear <- liter.output$`Year reached goal`
-
-glist<-liter.ts%>%
-  group_split(country)
-
-COI <- glist[[1]]
-glist<-glist[-1]
-
-ts.plotter<-function(x){
-  vertical.lines <- c(myear[x],gyear[x])
-
-  ggplot(data = glist[[x]])  + theme_linedraw()+
-    geom_line(aes(y = value, x = year))+
-    geom_line(data = COI, aes(y=value, x=year), linetype=3,color="black")+
-    labs(title=cname[[x]], x="Year",y="Literacy rate")+
-    theme(plot.title = element_text(hjust = 0.5))+
-    xlim(1972,2020)+
-   geom_vline(xintercept=vertical.lines,
-               linetype=2, colour="black")+
-    annotate("rect", xmin=myear[x], xmax =gyear[x], ymin=-Inf, ymax=Inf,alpha = .1)+
-    theme(axis.text = element_text(face="bold"))
+  radarchart(data2, axistype = 2, 
+             pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=2 ,
+             cglcol="grey", cglty=1, axislabcol="grey",
+             caxislabels=seq(1,1,-1), cglwd=0.9,
+             vlcex=0.8,
+             title=mytitle[i]
+             )
 }
-
-liter.plots<-foreach(x=1:1) %do%
-  ts.plotter(x)
-
-liter.plots[[1]]
-
-
-
 ```
-
-
-
-
-
 
 ________
 
-#### **Indicator:** Mean years of schooling
-##### **Source:** Barro-Lee Education Attainment dataset
+#### **Indicator:** Mean years of schooling {#Mskool}
 
 **2010 mean years of schooling in Cote d'Ivoire :** 4.22 years <br>
-**Goal :** Doubled (2x)
+**Match threshold :** ±0.25 years <br>
+**Goal :** 1.25x
+**Source:** Barro-Lee Education Attainment dataset
 
+```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
-```{r , message=FALSE, class.source="bg-success", echo=FALSE}
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
 
+caps<-read_excel("0_Indicator_Tables/map_figures.xlsx") 
+caps <- caps[,-5]
+meanyrs <- read_excel("0_Indicator_Tables/2019_CIV_meanyrs.xlsx")
+names(meanyrs)[2]<-"country"
 
-caps<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/map_figures.xlsx")
-myr <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_meanyrs.xlsx")
-names(myr)[2]<-"country"
-
-clist <- myr$country
-myr$`Match value`<-round(myr$`Match value`, digits=2)
+clist <- meanyrs$country
+meanyrs$`Match value`<-round(meanyrs$`Match value`, digits=2)
 
 caps<-subset(caps, country %in% clist)
-info.cols<-myr[,c(2,4,5,7)]
+info.cols<-meanyrs[,c(2:5,7)]
 caps<-left_join(info.cols,caps)
+
+indicators <- read_excel("Similarity measures/sim.indicators.xlsx")
+indicators[,4:10] <- zoo::na.fill(indicators[,4:10], "extend")
+
+ind.filter <- meanyrs[,2:3]
+num <- nrow(meanyrs)
+real.val <-""
+
+for(i in 1:num){
+  slice <- ind.filter[i,]
+  list <- indicators[indicators$country==slice$country & indicators$year==slice$`Match year`, ]
+  real.val <- rbind(real.val,list)
+}
+
+info.val <- real.val[-1,-c(1,11)]
+info.val[3:9] <- sapply(info.val[3:9], as.numeric)
+info.val[3:9]<-round(info.val[3:9], digits=2)
+info.val$Land.area<-formatC(info.val$Land.area, format="d", big.mark=",")
+info.val$Pop.density<-formatC(info.val$Pop.density, format="d", big.mark=",")
+info.val$Population<-formatC(info.val$Population, format="d", big.mark=",")
+
+caps<-merge(info.val,caps,by="country")
 
 colnames(caps)[1]<-"Country"
 
 figure(width = 800, height = 450, padding_factor = 0) %>%
   ly_map("world", col = "gray", line_color="black",line_alpha=0.5,fill_alpha=0.75) %>%
   ly_points(long, lat, data = caps, size = 10,
-            hover = c(Country,`Match value`,`Value at goal`,
+            hover = c(Country,`Match year`,
                       `Years to reach goal`,
-                      Employment,Population))
-
+                      Employment,Population,Land.area,
+                      Pop.density,Industry,Services,Oil.rents,
+                      Agriculture.land))
 ```
 
+##### **Table output of comparison countries**
 
 ```{r , class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%", message=FALSE}
 myrs.output<- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_meanyrs.xlsx")
+sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "myears.sim.sum")
 
-myrs.output <- myrs.output[,-1]
+sim.val <- sim.val[,c(1,9)]
+colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
+myrs.output <- merge(myrs.output,sim.val)
+
+myrs.output <- myrs.output[,-2]
+myrs.output$`Match value`<-round(myrs.output$`Match value`, digits=2)
+myrs.output$`Value at goal`<-round(myrs.output$`Value at goal`, digits=2)
+myrs.output$`Similarity value`<-round(myrs.output$`Similarity value`, digits=2)
 
 DT::datatable(myrs.output, rownames = FALSE)
+```
 
+##### **Time series of comparison countries**
+
+These graphs show the full time series for the indicator. The solid line represents the comparison country whereas the dotted line is the time series for the country of interest, Cote d'Ivoire. The red dots indicate the match values for both countries. Finally, the vertical dashed lines show the window from which the country indicator value matched current day Cote d'Ivoire until it surpasses its goal.  
+
+```{r , class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%", message=FALSE}
 ind.db<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/indicator.db.xlsx")
 
 indicator <- ind.db[,c(1:2,7)]
 names(indicator)[3]<-"value"
 indicator<-na.omit(indicator)
-
 cname <-myrs.output$`Comparison country`
 myrs.ts <- indicator[indicator$country %in% c("Cote d'Ivoire",cname) ,]
 myrs.ts$country[myrs.ts$country=="Cote d'Ivoire"] <-"aaaCote d'Ivoire"
 
-myrs.output <- myrs.output[order(myrs.output$`Comparison country`),]
 myrs.ts <- myrs.ts[order(myrs.ts$country),]
+myrs.output <- myrs.output[order(myrs.output$`Comparison country`),]
 
+cname <-myrs.output$`Comparison country`
 myear <- myrs.output$`Match year`
 gyear <- myrs.output$`Year reached goal`
+mval <- myrs.output$`Match value`
 
 glist<-myrs.ts%>%
   group_split(country)
 
 COI <- glist[[1]]
+coi.current <- COI %>% filter(abs(year) == max(abs(year)))
+cur.val <- coi.current$value
+cur.year <- coi.current$year
 glist<-glist[-1]
 
 ts.plotter<-function(x){
@@ -442,99 +548,152 @@ ts.plotter<-function(x){
     geom_line(data = COI, aes(y=value, x=year), linetype=3,color="black")+
     labs(title=cname[[x]], x="Year",y="Mean years of schooling")+
     theme(plot.title = element_text(hjust = 0.5))+
+    geom_point(aes(x=myear[x],y=mval[x]), color="red")+
+    geom_point(aes(x=cur.year,y=cur.val), color="red")+
     xlim(1960,2010)+
-   geom_vline(xintercept=vertical.lines,
+    geom_vline(xintercept=vertical.lines,
                linetype=2, colour="black")+
     annotate("rect", xmin=myear[x], xmax =gyear[x], ymin=-Inf, ymax=Inf,alpha = .1)+
     theme(axis.text = element_text(face="bold"))
 }
 
-myrs.plots<-foreach(x=1:24) %do%
+num<-nrow(myrs.output)
+
+myrs.plots<-foreach(x=1:num) %do%
   ts.plotter(x)
 
-myrs.plots[[1]]
-myrs.plots[[2]]
-myrs.plots[[3]]
+for(i in 1:num)
+  {plot(myrs.plots[[i]])}
 
-myrs.plots[[4]]
-myrs.plots[[5]]
-myrs.plots[[6]]
-
-myrs.plots[[7]]
-myrs.plots[[8]]
-myrs.plots[[9]]
-
-myrs.plots[[10]]
-myrs.plots[[11]]
-myrs.plots[[12]]
-
-myrs.plots[[13]]
-myrs.plots[[14]]
-myrs.plots[[15]]
-
-myrs.plots[[16]]
-myrs.plots[[17]]
-myrs.plots[[18]]
-
-myrs.plots[[19]]
-myrs.plots[[20]]
-myrs.plots[[21]]
-
-myrs.plots[[22]]
-myrs.plots[[23]]
-myrs.plots[[24]]
 ```
 
+##### **Similarity measure**
 
+```{r,fig.show="hold", out.width="33%",message=FALSE,echo=FALSE}
+library(fmsb)
 
+sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "myears.sim.sum")
 
+wheel.slice <- sim.val[,-c(1,9)]
 
+mytitle<-sim.val$country
+row <- nrow(sim.val)
+
+par(mar=rep(0.8,4))
+
+for(i in 1:row){
+  slice.1 <- wheel.slice[i,]
+  slice.1 <- abs(slice.1)
+  col <- ncol(slice.1)
+  
+  for(x in 1:col){
+    slice.1[x]<-ifelse(slice.1[x] > 3, (slice.1[x]/4), slice.1[x])
+    }
+
+  max.1 <- max(slice.1)
+  min.1 <- min(slice.1)
+  data <- rbind(rep(0,1) , rep(max.1,1) , slice.1)
+
+  data2 = data
+  data2[2:1,] = data2[1:2,]
+  data2[2:1,] = data2[1:2,]
+
+  radarchart(data2, axistype = 2, 
+             pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=2 ,
+             cglcol="grey", cglty=1, axislabcol="grey",
+             caxislabels=seq(1,1,-1), cglwd=0.9,
+             vlcex=0.8,
+             title=mytitle[i]
+             )
+}
+```
 ________
 
-#### **Indicator:** Percent of population without schooling
-##### **Source:** Barro-Lee Education Attainment dataset
+#### **Indicator:** Percent of population without schooling {#Noskool}
 
 **2010 percentage of population with no schooling in Cote d'Ivoire :**  46.95% <br>
+**Match threshold :** ±0.25%
 **Goal :** Half (-0.5x)
+**Source:** Barro-Lee Education Attainment dataset
 
-```{r , message=FALSE, class.source="bg-success", echo=FALSE}
+```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
-caps<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/map_figures.xlsx")
-nskool <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_noschool.xlsx")
-names(nskool)[2]<-"country"
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
 
-clist <- nskool$country
-nskool$`Match value`<-round(nskool$`Match value`, digits=2)
+caps<-read_excel("0_Indicator_Tables/map_figures.xlsx") 
+caps <- caps[,-5]
+noschool <- read_excel("0_Indicator_Tables/2019_CIV_noschool.xlsx")
+names(noschool)[2]<-"country"
+
+clist <- noschool$country
+noschool$`Match value`<-round(noschool$`Match value`, digits=2)
 
 caps<-subset(caps, country %in% clist)
-info.cols<-nskool[,c(2,4,5,7)]
+info.cols<-noschool[,c(2:5,7)]
 caps<-left_join(info.cols,caps)
+
+indicators <- read_excel("Similarity measures/sim.indicators.xlsx")
+indicators[,4:10] <- zoo::na.fill(indicators[,4:10], "extend")
+
+ind.filter <- noschool[,2:3]
+num <- nrow(noschool)
+real.val <-""
+
+for(i in 1:num){
+  slice <- ind.filter[i,]
+  list <- indicators[indicators$country==slice$country & indicators$year==slice$`Match year`, ]
+  real.val <- rbind(real.val,list)
+}
+
+info.val <- real.val[-1,-c(1,11)]
+info.val[3:9] <- sapply(info.val[3:9], as.numeric)
+info.val[3:9]<-round(info.val[3:9], digits=2)
+info.val$Land.area<-formatC(info.val$Land.area, format="d", big.mark=",")
+info.val$Pop.density<-formatC(info.val$Pop.density, format="d", big.mark=",")
+info.val$Population<-formatC(info.val$Population, format="d", big.mark=",")
+
+caps<-merge(info.val,caps,by="country")
 
 colnames(caps)[1]<-"Country"
 
 figure(width = 800, height = 450, padding_factor = 0) %>%
   ly_map("world", col = "gray", line_color="black",line_alpha=0.5,fill_alpha=0.75) %>%
   ly_points(long, lat, data = caps, size = 10,
-            hover = c(Country,`Match value`,`Value at goal`,
+            hover = c(Country,`Match year`,
                       `Years to reach goal`,
-                      Employment,Population))
-
+                      Employment,Population,Land.area,
+                      Pop.density,Industry,Services,Oil.rents,
+                      Agriculture.land))
 ```
+
+##### **Table output of comparison countries**
 
 ```{r , message=FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"}
 noskl.output<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_noschool.xlsx")
+sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "noskl.sim.sum")
 
-noskl.output <- noskl.output[order(noskl.output$`Comparison country`),]
-noskl.output <- noskl.output[,-1]
+sim.val <- sim.val[,c(1,9)]
+colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
+noskl.output <- merge(noskl.output,sim.val)
+
+noskl.output <- noskl.output[,-2]
+noskl.output$`Match value`<-round(noskl.output$`Match value`, digits=2)
+noskl.output$`Value at goal`<-round(noskl.output$`Value at goal`, digits=2)
+noskl.output$`Similarity value`<-round(noskl.output$`Similarity value`, digits=2)
 
 DT::datatable(noskl.output, rownames = FALSE)
+```
 
+##### **Time series of comparison countries**
+
+These graphs show the full time series for the indicator. The solid line represents the comparison country whereas the dotted line is the time series for the country of interest, Cote d'Ivoire. The red dots indicate the match values for both countries. Finally, the vertical dashed lines show the window from which the country indicator value matched current day Cote d'Ivoire until it surpasses its goal.  
+
+```{r , message=FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"}
 ind.db<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/indicator.db.xlsx")
 
 indicator <- ind.db[,c(1:2,6)]
 names(indicator)[3]<-"value"
 indicator<-na.omit(indicator)
-
 cname <-noskl.output$`Comparison country`
 noskl.ts <- indicator[indicator$country %in% c("Cote d'Ivoire",cname) ,]
 noskl.ts$country[noskl.ts$country=="Cote d'Ivoire"] <-"aaaCote d'Ivoire"
@@ -542,13 +701,18 @@ noskl.ts$country[noskl.ts$country=="Cote d'Ivoire"] <-"aaaCote d'Ivoire"
 noskl.output <- noskl.output[order(noskl.output$`Comparison country`),]
 noskl.ts <- noskl.ts[order(noskl.ts$country),]
 
+cname <-noskl.output$`Comparison country`
 myear <- noskl.output$`Match year`
 gyear <- noskl.output$`Year reached goal`
+mval <- noskl.output$`Match value`
 
 glist<-noskl.ts%>%
   group_split(country)
 
 COI <- glist[[1]]
+coi.current <- COI %>% filter(abs(year) == max(abs(year)))
+cur.val <- coi.current$value
+cur.year <- coi.current$year
 glist<-glist[-1]
 
 ts.plotter<-function(x){
@@ -559,86 +723,171 @@ ts.plotter<-function(x){
     geom_line(data = COI, aes(y=value, x=year), linetype=3,color="black")+
     labs(title=cname[[x]], x="Year",y="Population without schooling (%)")+
     theme(plot.title = element_text(hjust = 0.5))+
+    geom_point(aes(x=myear[x],y=mval[x]), color="red")+
+    geom_point(aes(x=cur.year,y=cur.val), color="red")+
     xlim(1960,2010)+
-   geom_vline(xintercept=vertical.lines,
+    geom_vline(xintercept=vertical.lines,
                linetype=2, colour="black")+
     annotate("rect", xmin=myear[x], xmax =gyear[x], ymin=-Inf, ymax=Inf,alpha = .1)+
     theme(axis.text = element_text(face="bold"))
 }
 
-noskl.plots<-foreach(x=1:3) %do%
+num<-nrow(noskl.output)
+
+noskl.plots<-foreach(x=1:num) %do%
   ts.plotter(x)
 
-noskl.plots[[1]]
-noskl.plots[[2]]
-noskl.plots[[3]]
-
+for(i in 1:num)
+  {plot(noskl.plots[[i]])}
 
 ```
 
+##### **Similarity measure**
 
+```{r,fig.show="hold", out.width="33%",message=FALSE,echo=FALSE}
+library(fmsb)
 
+sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "noskl.sim.sum")
 
+wheel.slice <- sim.val[,-c(1,9)]
+
+mytitle<-sim.val$country
+row <- nrow(sim.val)
+
+par(mar=rep(0.8,4))
+
+for(i in 1:row){
+  slice.1 <- wheel.slice[i,]
+  slice.1 <- abs(slice.1)
+  col <- ncol(slice.1)
+  
+  for(x in 1:col){
+    slice.1[x]<-ifelse(slice.1[x] > 3, (slice.1[x]/4), slice.1[x])
+    }
+
+  max.1 <- max(slice.1)
+  min.1 <- min(slice.1)
+  data <- rbind(rep(0,1) , rep(max.1,1) , slice.1)
+
+  data2 = data
+  data2[2:1,] = data2[1:2,]
+  data2[2:1,] = data2[1:2,]
+
+  radarchart(data2, axistype = 2, 
+             pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=2 ,
+             cglcol="grey", cglty=1, axislabcol="grey",
+             caxislabels=seq(1,1,-1), cglwd=0.9,
+             vlcex=0.8,
+             title=mytitle[i]
+             )
+}
+```
 
 ________
-#### **Indicator:** Economic complexity index 
-##### **Source:** OEC
+#### **Indicator:** Economic complexity index {#ECI}
 
-**2019 economic complexity in Cote d'Ivoire :** -1.12772 <br>
+**2019 economic complexity in Cote d'Ivoire :** -1.127 <br>
+**Match threshold :** ±0.01
 **Goal :** +0.5
+**Source:** OEC
 
-```{r , message=FALSE, class.source="bg-success", echo=FALSE}
+```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
-caps<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/map_figures.xlsx")
-eci <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_eci.xlsx")
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+
+caps<-read_excel("0_Indicator_Tables/map_figures.xlsx") 
+caps <- caps[,-5]
+eci <- read_excel("0_Indicator_Tables/2019_CIV_eci.xlsx")
 names(eci)[2]<-"country"
 
 clist <- eci$country
 eci$`Match value`<-round(eci$`Match value`, digits=2)
 
 caps<-subset(caps, country %in% clist)
-info.cols<-eci[,c(2,4,5,7)]
+info.cols<-eci[,c(2:5,7)]
 caps<-left_join(info.cols,caps)
+
+indicators <- read_excel("Similarity measures/sim.indicators.xlsx")
+indicators[,4:10] <- zoo::na.fill(indicators[,4:10], "extend")
+
+ind.filter <- eci[,2:3]
+num <- nrow(eci)
+real.val <-""
+
+for(i in 1:num){
+  slice <- ind.filter[i,]
+  list <- indicators[indicators$country==slice$country & indicators$year==slice$`Match year`, ]
+  real.val <- rbind(real.val,list)
+}
+
+info.val <- real.val[-1,-c(1,11)]
+info.val[3:9] <- sapply(info.val[3:9], as.numeric)
+info.val[3:9]<-round(info.val[3:9], digits=2)
+info.val$Land.area<-formatC(info.val$Land.area, format="d", big.mark=",")
+info.val$Pop.density<-formatC(info.val$Pop.density, format="d", big.mark=",")
+info.val$Population<-formatC(info.val$Population, format="d", big.mark=",")
+
+caps<-merge(info.val,caps,by="country")
 
 colnames(caps)[1]<-"Country"
 
 figure(width = 800, height = 450, padding_factor = 0) %>%
   ly_map("world", col = "gray", line_color="black",line_alpha=0.5,fill_alpha=0.75) %>%
   ly_points(long, lat, data = caps, size = 10,
-            hover = c(Country,`Match value`,`Value at goal`,
+            hover = c(Country,`Match year`,
                       `Years to reach goal`,
-                      Employment,Population))
-
+                      Employment,Population,Land.area,
+                      Pop.density,Industry,Services,Oil.rents,
+                      Agriculture.land))
 ```
+
+##### **Table output of comparison countries**
 
 ```{r , class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%", message=FALSE}
 eci.output<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_eci.xlsx")
+sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "eci.sim.sum")
 
-eci.output <- eci.output[,-1]
+sim.val <- sim.val[,c(1,9)]
+colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
+eci.output <- merge(eci.output,sim.val)
+
+eci.output <- eci.output[,-2]
+eci.output$`Match value`<-round(eci.output$`Match value`, digits=2)
+eci.output$`Value at goal`<-round(eci.output$`Value at goal`, digits=2)
+eci.output$`Similarity value`<-round(eci.output$`Similarity value`, digits=2)
 
 DT::datatable(eci.output, rownames = FALSE)
+```
 
+##### **Time series of comparison countries**
+
+These graphs show the full time series for the indicator. The solid line represents the comparison country whereas the dotted line is the time series for the country of interest, Cote d'Ivoire. The red dots indicate the match values for both countries. Finally, the vertical dashed lines show the window from which the country indicator value matched current day Cote d'Ivoire until it surpasses its goal.  
+
+```{r , class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%", message=FALSE}
 ind.db<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/indicator.db.xlsx")
 
 indicator <- ind.db[,c(1:2,8)]
 names(indicator)[3]<-"value"
 indicator<-na.omit(indicator)
-
 cname <-eci.output$`Comparison country`
 eci.ts <- indicator[indicator$country %in% c("Cote d'Ivoire",cname) ,]
 eci.ts$country[eci.ts$country=="Cote d'Ivoire"] <-"aaaCote d'Ivoire"
 
-
 eci.output <- eci.output[order(eci.output$`Comparison country`),]
 eci.ts <- eci.ts[order(eci.ts$country),]
 
+cname <-eci.output$`Comparison country`
 myear <- eci.output$`Match year`
 gyear <- eci.output$`Year reached goal`
+mval <- eci.output$`Match value`
 
 glist<-eci.ts%>%
   group_split(country)
 
 COI <- glist[[1]]
+coi.current <- COI %>% filter(abs(year) == max(abs(year)))
+cur.val <- coi.current$value
+cur.year <- coi.current$year
 glist<-glist[-1]
 
 ts.plotter<-function(x){
@@ -649,75 +898,153 @@ ts.plotter<-function(x){
     geom_line(data = COI, aes(y=value, x=year), linetype=3,color="black")+
     labs(title=cname[[x]], x="Year",y="Economic complexity index")+
     theme(plot.title = element_text(hjust = 0.5))+
+    geom_point(aes(x=myear[x],y=mval[x]), color="red")+
+    geom_point(aes(x=cur.year,y=cur.val), color="red")+
     xlim(1964,2020)+
-   geom_vline(xintercept=vertical.lines,
+    geom_vline(xintercept=vertical.lines,
                linetype=2, colour="black")+
     annotate("rect", xmin=myear[x], xmax =gyear[x], ymin=-Inf, ymax=Inf,alpha = .1)+
     theme(axis.text = element_text(face="bold"))
 }
 
-eci.plots<-foreach(x=1:4) %do%
+num<-nrow(eci.output)
+
+eci.plots<-foreach(x=1:num) %do%
   ts.plotter(x)
 
-eci.plots[[1]]
-eci.plots[[2]]
-eci.plots[[3]]
-
-eci.plots[[4]]
-
+for(i in 1:num)
+  {plot(eci.plots[[i]])}
 
 ```
 
+##### **Similarity measure**
 
+```{r,fig.show="hold", out.width="33%",message=FALSE,echo=FALSE}
+library(fmsb)
 
+sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "eci.sim.sum")
 
+wheel.slice <- sim.val[,-c(1,9)]
+
+mytitle<-sim.val$country
+row <- nrow(sim.val)
+
+par(mar=rep(0.8,4))
+
+for(i in 1:row){
+  slice.1 <- wheel.slice[i,]
+  slice.1 <- abs(slice.1)
+  col <- ncol(slice.1)
+  
+  for(x in 1:col){
+    slice.1[x]<-ifelse(slice.1[x] > 3, (slice.1[x]/4), slice.1[x])
+    }
+
+  max.1 <- max(slice.1)
+  min.1 <- min(slice.1)
+  data <- rbind(rep(0,1) , rep(max.1,1) , slice.1)
+
+  data2 = data
+  data2[2:1,] = data2[1:2,]
+  data2[2:1,] = data2[1:2,]
+
+  radarchart(data2, axistype = 2, 
+             pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=2 ,
+             cglcol="grey", cglty=1, axislabcol="grey",
+             caxislabels=seq(1,1,-1), cglwd=0.9,
+             vlcex=0.8,
+             title=mytitle[i]
+             )
+}
+```
 
 ________
-#### **Indicator:** Output per worker (GDP constant 2010 USD)
-##### **Source:** ILO
+#### **Indicator:** Output per worker (GDP constant 2010 USD){#Lab}
 
 **2019 output per worker in Cote d'Ivoire :** 5 532.63 USD <br>
-**Goal :** 2x
+**Match threshold :** ±250 USD <br>
+**Goal :** 1.5x
+**Source:** ILO
 
-```{r , message=FALSE, class.source="bg-success", echo=FALSE}
+```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
-caps<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/map_figures.xlsx")
-output <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_lab.xlsx")
-names(output)[2]<-"country"
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
 
-clist <- output$country
+caps<-read_excel("0_Indicator_Tables/map_figures.xlsx") 
+caps <- caps[,-5]
+lab <- read_excel("0_Indicator_Tables/2019_CIV_lab.xlsx")
+names(lab)[2]<-"country"
 
-output$`Match value`<-round(output$`Match value`, digits=2)
+clist <- lab$country
+lab$`Match value`<-round(lab$`Match value`, digits=2)
 
 caps<-subset(caps, country %in% clist)
-info.cols<-output[,c(2,4,5,7)]
+info.cols<-lab[,c(2:5,7)]
 caps<-left_join(info.cols,caps)
 
-colnames(caps)[c(1:4,7)]<-c("Country","Match.value","Years.to.reach.goal","Value.at.goal","Employment.rate")
+indicators <- read_excel("Similarity measures/sim.indicators.xlsx")
+indicators[,4:10] <- zoo::na.fill(indicators[,4:10], "extend")
+
+ind.filter <- lab[,2:3]
+num <- nrow(lab)
+real.val <-""
+
+for(i in 1:num){
+  slice <- ind.filter[i,]
+  list <- indicators[indicators$country==slice$country & indicators$year==slice$`Match year`, ]
+  real.val <- rbind(real.val,list)
+}
+
+info.val <- real.val[-1,-c(1,11)]
+info.val[3:9] <- sapply(info.val[3:9], as.numeric)
+info.val[3:9]<-round(info.val[3:9], digits=2)
+info.val$Land.area<-formatC(info.val$Land.area, format="d", big.mark=",")
+info.val$Pop.density<-formatC(info.val$Pop.density, format="d", big.mark=",")
+info.val$Population<-formatC(info.val$Population, format="d", big.mark=",")
+
+caps<-merge(info.val,caps,by="country")
+
+colnames(caps)[1]<-"Country"
 
 figure(width = 800, height = 450, padding_factor = 0) %>%
   ly_map("world", col = "gray", line_color="black",line_alpha=0.5,fill_alpha=0.75) %>%
   ly_points(long, lat, data = caps, size = 10,
-            hover = c(Country,Match.value, Value.at.goal,
-                      Years.to.reach.goal,
-                      Employment.rate,Population))
-
+            hover = c(Country,`Match year`,
+                      `Years to reach goal`,
+                      Employment,Population,Land.area,
+                      Pop.density,Industry,Services,Oil.rents,
+                      Agriculture.land))
 ```
+
+##### **Table output of comparison countries**
 
 ```{r , message=FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"}
 lab.output<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_lab.xlsx")
+sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "lab.sim.sum")
 
-lab.output <- lab.output[,-1]
+sim.val <- sim.val[,c(1,9)]
+colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
+lab.output <- merge(lab.output,sim.val)
 
+lab.output <- lab.output[,-2]
 lab.output$`Match value`<-round(lab.output$`Match value`, digits=2)
+lab.output$`Value at goal`<-round(lab.output$`Value at goal`, digits=2)
+lab.output$`Similarity value`<-round(lab.output$`Similarity value`, digits=2)
+
 DT::datatable(lab.output, rownames = FALSE)
+```
+
+##### **Time series of comparison countries**
+
+These graphs show the full time series for the indicator. The solid line represents the comparison country whereas the dotted line is the time series for the country of interest, Cote d'Ivoire. The red dots indicate the match values for both countries. Finally, the vertical dashed lines show the window from which the country indicator value matched current day Cote d'Ivoire until it surpasses its goal.  
+
+```{r , message=FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"}
 
 ind.db<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/indicator.db.xlsx")
 
 indicator <- ind.db[,c(1:2,9)]
 names(indicator)[3]<-"value"
 indicator<-na.omit(indicator)
-
 cname <-lab.output$`Comparison country`
 lab.ts <- indicator[indicator$country %in% c("Cote d'Ivoire",cname) ,]
 lab.ts$country[lab.ts$country=="Cote d'Ivoire"] <-"aaaCote d'Ivoire"
@@ -725,13 +1052,18 @@ lab.ts$country[lab.ts$country=="Cote d'Ivoire"] <-"aaaCote d'Ivoire"
 lab.output <- lab.output[order(lab.output$`Comparison country`),]
 lab.ts <- lab.ts[order(lab.ts$country),]
 
+cname <-lab.output$`Comparison country`
 myear <- lab.output$`Match year`
 gyear <- lab.output$`Year reached goal`
+mval <- lab.output$`Match value`
 
 glist<-lab.ts%>%
   group_split(country)
 
 COI <- glist[[1]]
+coi.current <- COI %>% filter(abs(year) == max(abs(year)))
+cur.val <- coi.current$value
+cur.year <- coi.current$year
 glist<-glist[-1]
 
 ts.plotter<-function(x){
@@ -743,29 +1075,239 @@ ts.plotter<-function(x){
     labs(title=cname[[x]], x="Year",y="Output per worker (GDP constant 2010 USD)")+
     theme(plot.title = element_text(hjust = 0.5),
           axis.text = element_text(face="bold",size=10))+
+    geom_point(aes(x=myear[x],y=mval[x]), color="red")+
+    geom_point(aes(x=cur.year,y=cur.val), color="red")+
     xlim(1991,2020)+
     geom_vline(xintercept=vertical.lines,
                linetype=2, colour="black")+
     annotate("rect", xmin=myear[x], xmax =gyear[x], ymin=-Inf, ymax=Inf,alpha = .1)
 }
 
-lab.plots<-foreach(x=1:9) %do%
+num<-nrow(lab.output)
+
+lab.plots<-foreach(x=1:num) %do%
   ts.plotter(x)
 
-lab.plots[[1]]
-lab.plots[[2]]
-lab.plots[[3]]
-
-lab.plots[[4]]
-lab.plots[[5]]
-lab.plots[[6]]
-
-lab.plots[[7]]
-lab.plots[[8]]
-lab.plots[[9]]
-
+for(i in 1:num)
+  {plot(lab.plots[[i]])}
 
 ```
 
+##### **Similarity measure**
 
+```{r,fig.show="hold", out.width="33%",message=FALSE,echo=FALSE}
+library(fmsb)
 
+sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "lab.sim.sum")
+
+wheel.slice <- sim.val[,-c(1,9)]
+
+mytitle<-sim.val$country
+row <- nrow(sim.val)
+
+par(mar=rep(0.8,4))
+
+for(i in 1:row){
+  slice.1 <- wheel.slice[i,]
+  slice.1 <- abs(slice.1)
+  col <- ncol(slice.1)
+  
+  for(x in 1:col){
+    slice.1[x]<-ifelse(slice.1[x] > 3, (slice.1[x]/4), slice.1[x])
+    }
+
+  max.1 <- max(slice.1)
+  min.1 <- min(slice.1)
+  data <- rbind(rep(0,1) , rep(max.1,1) , slice.1)
+
+  data2 = data
+  data2[2:1,] = data2[1:2,]
+  data2[2:1,] = data2[1:2,]
+
+  radarchart(data2, axistype = 2, 
+             pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=2 ,
+             cglcol="grey", cglty=1, axislabcol="grey",
+             caxislabels=seq(1,1,-1), cglwd=0.9,
+             vlcex=0.8,
+             title=mytitle[i]
+             )
+}
+```
+
+________
+
+#### **Indicator:** Literacy rate (%){#Lit}
+
+**2018 literacy rate in Cote d'Ivoire :** 47.16%<br>
+**Match threshold :** ±1.0% <br>
+**Goal :** >98.1%
+**Source:** WDI
+
+```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
+
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+
+caps<-read_excel("0_Indicator_Tables/map_figures.xlsx") 
+caps <- caps[,-5]
+lit <- read_excel("0_Indicator_Tables/2019_CIV_liter.xlsx")
+names(lit)[2]<-"country"
+
+clist <- lit$country
+lit$`Match value`<-round(lit$`Match value`, digits=2)
+
+caps<-subset(caps, country %in% clist)
+info.cols<-lit[,c(2:5,7)]
+caps<-left_join(info.cols,caps)
+
+indicators <- read_excel("Similarity measures/sim.indicators.xlsx")
+indicators[,4:10] <- zoo::na.fill(indicators[,4:10], "extend")
+
+ind.filter <- lit[,2:3]
+num <- nrow(lit)
+real.val <-""
+
+for(i in 1:num){
+  slice <- ind.filter[i,]
+  list <- indicators[indicators$country==slice$country & indicators$year==slice$`Match year`, ]
+  real.val <- rbind(real.val,list)
+}
+
+info.val <- real.val[-1,-c(1,11)]
+info.val[,3:9] <- lapply(info.val[,3:9],as.numeric)
+info.val[3:9]<-round(info.val[3:9], digits=2)
+info.val$Land.area<-formatC(info.val$Land.area, format="d", big.mark=",")
+info.val$Pop.density<-formatC(info.val$Pop.density, format="d", big.mark=",")
+info.val$Population<-formatC(info.val$Population, format="d", big.mark=",")
+
+caps<-merge(info.val,caps,by="country")
+
+colnames(caps)[1]<-"Country"
+
+figure(width = 800, height = 450, padding_factor = 0) %>%
+  ly_map("world", col = "gray", line_color="black",line_alpha=0.5,fill_alpha=0.75) %>%
+  ly_points(long, lat, data = caps, size = 10,
+            hover = c(Country,`Match year`,
+                      `Years to reach goal`,
+                      Employment,Population,Land.area,
+                      Pop.density,Industry,Services,Oil.rents,
+                      Agriculture.land))
+```
+
+##### **Table output of comparison countries**
+
+```{r , message=FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"}
+library(readxl)
+
+lit.output<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_liter.xlsx")
+sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "lit.sim.sum")
+
+sim.val <- sim.val[,c(1,9)]
+colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
+lit.output <- merge(lit.output,sim.val)
+
+lit.output <- lit.output[,-2]
+lit.output$`Match value`<-round(lit.output$`Match value`, digits=2)
+lit.output$`Value at goal`<-round(lit.output$`Value at goal`, digits=2)
+lit.output$`Similarity value`<-round(lit.output$`Similarity value`, digits=2)
+
+DT::datatable(lit.output, rownames = FALSE)
+```
+
+##### **Time series of comparison countries**
+
+These graphs show the full time series for the indicator. The solid line represents the comparison country whereas the dotted line is the time series for the country of interest, Cote d'Ivoire. The red dots indicate the match values for both countries. Finally, the vertical dashed lines show the window from which the country indicator value matched current day Cote d'Ivoire until it surpasses its goal.  
+
+```{r , message=FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"}
+ind.db<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/indicator.db.xlsx")
+
+indicator <- ind.db[,c(1:2,5)]
+names(indicator)[3]<-"value"
+indicator<-na.omit(indicator)
+cname <-lit.output$`Comparison country`
+lit.ts <- indicator[indicator$country %in% c("Cote d'Ivoire",cname) ,]
+lit.ts$country[lit.ts$country=="Cote d'Ivoire"] <-"aaaCote d'Ivoire"
+
+lit.output <- lit.output[order(lit.output$`Comparison country`),]
+lit.ts <- lit.ts[order(lit.ts$country),]
+
+cname <-lit.output$`Comparison country`
+myear <- lit.output$`Match year`
+gyear <- lit.output$`Year reached goal`
+mval <- lit.output$`Match value`
+
+glist<-lit.ts%>%
+  group_split(country)
+
+COI <- glist[[1]]
+coi.current <- COI %>% filter(abs(year) == max(abs(year)))
+cur.val <- coi.current$value
+cur.year <- coi.current$year
+glist<-glist[-1]
+
+ts.plotter<-function(x){
+  vertical.lines <- c(myear[x],gyear[x])
+
+  ggplot(data = glist[[x]])  + theme_linedraw()+
+    geom_line(aes(y = value, x = year))+
+    geom_line(data = COI, aes(y=value, x=year), linetype=3,color="black")+
+    labs(title=cname[[x]], x="Year",y="Literacy rate (%)")+
+    theme(plot.title = element_text(hjust = 0.5),
+          axis.text = element_text(face="bold",size=10))+
+    geom_point(aes(x=myear[x],y=mval[x]), color="red")+
+    geom_point(aes(x=cur.year,y=cur.val), color="red")+
+    xlim(1972,2020)+
+    geom_vline(xintercept=vertical.lines,
+               linetype=2, colour="black")+
+    annotate("rect", xmin=myear[x], xmax =gyear[x], ymin=-Inf, ymax=Inf,alpha = .1)
+}
+
+num<-nrow(lit.output)
+
+lit.plots<-foreach(x=1:num) %do%
+  ts.plotter(x)
+
+for(i in 1:num)
+  {plot(lit.plots[[i]])}
+
+```
+
+##### **Similarity measure**
+
+```{r,fig.show="hold", out.width="33%",message=FALSE,echo=FALSE}
+library(fmsb)
+
+sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "lit.sim.sum")
+
+wheel.slice <- sim.val[,-c(1,9)]
+
+mytitle<-sim.val$country
+row <- nrow(sim.val)
+
+par(mar=rep(0.8,4))
+
+for(i in 1:row){
+  slice.1 <- wheel.slice[i,]
+  slice.1 <- abs(slice.1)
+  col <- ncol(slice.1)
+  
+  for(x in 1:col){
+    slice.1[x]<-ifelse(slice.1[x] > 3, (slice.1[x]/4), slice.1[x])
+    }
+
+  max.1 <- max(slice.1)
+  min.1 <- min(slice.1)
+  data <- rbind(rep(0,1) , rep(max.1,1) , slice.1)
+
+  data2 = data
+  data2[2:1,] = data2[1:2,]
+  data2[2:1,] = data2[1:2,]
+
+  radarchart(data2, axistype = 2, 
+             pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=2 ,
+             cglcol="grey", cglty=1, axislabcol="grey",
+             caxislabels=seq(1,1,-1), cglwd=0.9,
+             vlcex=0.8,
+             title=mytitle[i]
+             )
+}
+```
