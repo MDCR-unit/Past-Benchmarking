@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="A user’s guide to accessing APIs and remote downloading in R for the benchmarking module" />
+
+
+<title>Automatic Updating for the Benchmarking Database</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      code.sourceCode > span { display: inline-block; line-height: 1.25; }
+  code.sourceCode > span { color: inherit; text-decoration: inherit; }
+  code.sourceCode > span:empty { height: 1.2em; }
+  .sourceCode { overflow: visible; }
+  code.sourceCode { white-space: pre; position: relative; }
+  div.sourceCode { margin: 1em 0; }
+  pre.sourceCode { margin: 0; }
+  @media screen {
+  div.sourceCode { overflow: auto; }
+  }
+  @media print {
+  code.sourceCode { white-space: pre-wrap; }
+  code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+  }
+  pre.numberSource code
+    { counter-reset: source-line 0; }
+  pre.numberSource code > span
+    { position: relative; left: -4em; counter-increment: source-line; }
+  pre.numberSource code > span > a:first-child::before
+    { content: counter(source-line);
+      position: relative; left: -1em; text-align: right; vertical-align: baseline;
+      border: none; display: inline-block;
+      -webkit-touch-callout: none; -webkit-user-select: none;
+      -khtml-user-select: none; -moz-user-select: none;
+      -ms-user-select: none; user-select: none;
+      padding: 0 4px; width: 4em;
+      color: #aaaaaa;
+    }
+  pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+  div.sourceCode
+    {  background-color: #f8f8f8; }
+  @media screen {
+  code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+  }
+  code span.al { color: #ef2929; } /* Alert */
+  code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+  code span.at { color: #c4a000; } /* Attribute */
+  code span.bn { color: #0000cf; } /* BaseN */
+  code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+  code span.ch { color: #4e9a06; } /* Char */
+  code span.cn { color: #000000; } /* Constant */
+  code span.co { color: #8f5902; font-style: italic; } /* Comment */
+  code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+  code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+  code span.dt { color: #204a87; } /* DataType */
+  code span.dv { color: #0000cf; } /* DecVal */
+  code span.er { color: #a40000; font-weight: bold; } /* Error */
+  code span.ex { } /* Extension */
+  code span.fl { color: #0000cf; } /* Float */
+  code span.fu { color: #000000; } /* Function */
+  code span.im { } /* Import */
+  code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+  code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+  code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+  code span.ot { color: #8f5902; } /* Other */
+  code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+  code span.sc { color: #000000; } /* SpecialChar */
+  code span.ss { color: #4e9a06; } /* SpecialString */
+  code span.st { color: #4e9a06; } /* String */
+  code span.va { color: #000000; } /* Variable */
+  code span.vs { color: #4e9a06; } /* VerbatimString */
+  code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+    </style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">MDCR Unit</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="Morocco_GDP_prediction.html">GDP Prediction Analysis</a>
+</li>
+<li>
+  <a href="User_guide.html">Database update guide</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Past benchmarking
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Past_benchmarking_Albania_overview.html">Albania</a>
+    </li>
+    <li>
+      <a href="Past_benchmarking_SLV_overview.html">El Salvador</a>
+    </li>
+    <li>
+      <a href="Past_benchmarking_Laos_overview.html">Laos</a>
+    </li>
+    <li>
+      <a href="Past_benchmarking_CIV_overview.html">Cote d'Ivoire</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Automatic Updating for the Benchmarking Database</h1>
+<h4 class="author">A user’s guide to accessing APIs and remote downloading in R for the benchmarking module</h4>
+<h4 class="date">17-November-2020</h4>
+
+</div>
+
+
+<p>There are several sources that are used in Benchmarking Database each with their own unique methods for searching, downloading and cleaning the datasets. This guide details these methods for the following sources:</p>
+<ul>
+<li>FAOSTAT</li>
+<li>UIS (UNESCO)</li>
+<li>ILO</li>
+<li>WHO</li>
+<li>OECD</li>
+</ul>
+<p>Two other databases are accessed with Stata where they are joined with this one and cleaned for executing found under the file name <strong>Benchmark Database.do</strong>. Different methods of integration may be attempted later to move the Benchmarking Database onto a single software.</p>
+<p>Note: this R script has been cleaned and prepared to match the data in Stata - if data cleaning methods are adjusted on Stata file then they should also be adjusted here.</p>
+<hr />
+<div id="installing-libraries" class="section level3">
+<h3>Installing libraries</h3>
+<p>To start, install/update the packages that will be used. The libraries should be loaded in stages rather than all at the start because there may be commands that are masked by other libraries.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>())</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">install.packages</span>(<span class="kw">c</span>(<span class="st">&quot;imfr&quot;</span>,<span class="st">&quot;rgho&quot;</span>,<span class="st">&quot;MazamaSpatialUtils&quot;</span>,<span class="st">&quot;Rilostat&quot;</span>,<span class="st">&quot;countrycode&quot;</span>,</span>
+<span id="cb1-4"><a href="#cb1-4"></a>                    <span class="st">&quot;OECD&quot;</span>,<span class="st">&quot;BIS&quot;</span>,<span class="st">&quot;lubridate&quot;</span>,<span class="st">&quot;dplyr&quot;</span>,<span class="st">&quot;devtools&quot;</span>,<span class="st">&quot;FAOSTAT&quot;</span>))</span></code></pre></div>
+<hr />
+</div>
+<div id="faostat-dataset" class="section level3">
+<h3>FAOSTAT Dataset</h3>
+<p>The FAOSTAT database can be found at this <a href="http://www.fao.org/faostat/en/#home">link</a>. Under <strong>Database description</strong> you can select the XML option - also found <a href="http://fenixservices.fao.org/faostat/static/bulkdownloads/datasets_E.xml">here</a>. The required datasets can be located within this link by searching keywords using CTRL+F, finding the dataset you are looking for and copying the zip file link.</p>
+<p>For example search “land use”, read the dataset description to ensure it is the one you want and copy the corresponding zip url - which is found between the “<file location>” brackets. This method avoids downloading the entire database which would be much slower.</p>
+<p>The indicators we are searching for come from the <strong>Agri-Environmental Indicators: Land use indicators</strong> dataset, libraries countrycode (to change country names to iso3) and dplyr (a data manipulation library) are employed. The zip file url is designated as url.land and unzipped using a temporary file.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(countrycode)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># Land use data</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>url.land&lt;-<span class="st">&quot;http://fenixservices.fao.org/faostat/static/bulkdownloads/Environment_LandUse_E_All_Data_(Normalized).zip&quot;</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a></span>
+<span id="cb2-7"><a href="#cb2-7"></a>temp &lt;-<span class="st"> </span><span class="kw">tempfile</span>()</span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="kw">download.file</span>(url.land, temp)</span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="kw">unzip</span>(temp, <span class="st">&quot;Environment_LandUse_E_All_Data_(Normalized).csv&quot;</span>)</span>
+<span id="cb2-10"><a href="#cb2-10"></a>landuse &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;Environment_LandUse_E_All_Data_(Normalized).csv&quot;</span>)</span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="kw">unlink</span>(temp)</span>
+<span id="cb2-12"><a href="#cb2-12"></a></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="kw">View</span>(landuse)</span></code></pre></div>
+The next step is to view the dataset and find the desired indicators. For land use we are looking for:
+<p>
+<ul>
+<li>Agricultural land (% of land area)</li>
+<li>Arable land (% of land area)</li>
+<li>Forest area (% of land area)</li>
+</ul>
+<p>We see these are separated by country under the column name <strong>Item</strong> when using the <code>View</code> command to look at the dataset. Using dplyr the different variables are subsetted, cleaned, assigned indicator names/codes then rejoined.</p>
+There should be 5 variables total and the column headers should all match. The names should be:
+<p>
+<ul>
+<li>“iso3c”<br />
+</li>
+<li>“year”</li>
+<li>“VALUE”</li>
+<li>“indicatorcode”</li>
+<li>“source”</li>
+</ul>
+<p>Iso3c is the code for each country which should be checked to be in proper denotation (done at the end). Cat and subcat are the categories, where 3 organizes the indicators by the 3 P’s and subcat divides them further into more specific groups. Denotations are found on the <em>Benchmarking List of Indicators</em> excel sheet. Finally, please note that R commands are case sensitive so ensure that the column names match above.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># % Agricultural</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>agriland &lt;-<span class="st"> </span>landuse[landuse<span class="op">$</span>Item <span class="op">%in%</span><span class="st"> &quot;Agricultural land&quot;</span>,]</span>
+<span id="cb3-3"><a href="#cb3-3"></a>agriland&lt;-agriland[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span><span class="op">:</span><span class="dv">6</span>,<span class="dv">8</span><span class="op">:</span><span class="dv">9</span>,<span class="dv">11</span>)]</span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="kw">names</span>(agriland)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>agriland<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Agricultural land (% of land area)&quot;</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>agriland<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;FAO.AGRI&quot;</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="co"># % Arable</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>arabland&lt;-landuse[landuse<span class="op">$</span>Item <span class="op">%in%</span><span class="st"> &quot;Arable land&quot;</span>,]</span>
+<span id="cb3-10"><a href="#cb3-10"></a>arabland&lt;-arabland[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span><span class="op">:</span><span class="dv">6</span>,<span class="dv">8</span><span class="op">:</span><span class="dv">9</span>,<span class="dv">11</span>)]</span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="kw">names</span>(arabland)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]&lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb3-12"><a href="#cb3-12"></a>arabland<span class="op">$</span>indicatorname&lt;-<span class="st">&quot;Arable land (% of land area)&quot;</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>arabland<span class="op">$</span>indicatorcode&lt;-<span class="st">&quot;FAO.ARABLE&quot;</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a></span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="co"># % Forest</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a>forestland&lt;-landuse[landuse<span class="op">$</span>Item <span class="op">%in%</span><span class="st"> &quot;Forest land&quot;</span>,]</span>
+<span id="cb3-17"><a href="#cb3-17"></a>forestland&lt;-forestland[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span><span class="op">:</span><span class="dv">6</span>,<span class="dv">8</span><span class="op">:</span><span class="dv">9</span>,<span class="dv">11</span>)]</span>
+<span id="cb3-18"><a href="#cb3-18"></a><span class="kw">names</span>(forestland)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>]&lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb3-19"><a href="#cb3-19"></a>forestland<span class="op">$</span>indicatorname&lt;-<span class="st">&quot;Forest area (% of land area)&quot;</span></span>
+<span id="cb3-20"><a href="#cb3-20"></a>forestland<span class="op">$</span>indicatorcode&lt;-<span class="st">&quot;FAO.FOREST&quot;</span></span>
+<span id="cb3-21"><a href="#cb3-21"></a></span>
+<span id="cb3-22"><a href="#cb3-22"></a>fao &lt;-<span class="st"> </span><span class="kw">rbind</span>(agriland,arabland,forestland)</span></code></pre></div>
+<p><strong>Note:</strong> This dataset is very easy to clean because the same cleaning code can be used for each indicator, but this is not always the case. Always make sure to edit the code to match the data.</p>
+<p>Further cleaning for these indicators include removing region designations, outdated country names and broken values using dplyr. A list of countries to be removed The remaining country names are reassigned to ISO3 codes. Finally the source is assigned.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>Country&lt;-<span class="kw">c</span>(<span class="st">&quot;Africa&quot;</span>, <span class="st">&quot;Americas&quot;</span>, <span class="st">&quot;Asia&quot;</span>, <span class="st">&quot;Australia and New Zealand&quot;</span>, <span class="st">&quot;Belgium-Luxembourg&quot;</span>, </span>
+<span id="cb4-2"><a href="#cb4-2"></a>          <span class="st">&quot;Caribbean&quot;</span>, <span class="st">&quot;Central America&quot;</span>,<span class="st">&quot;Central Asia&quot;</span>, <span class="st">&quot;Channel Islands&quot;</span>, <span class="st">&quot;Czechoslovakia&quot;</span>, </span>
+<span id="cb4-3"><a href="#cb4-3"></a>          <span class="st">&quot;Eastern Africa&quot;</span>, <span class="st">&quot;Eastern Asia&quot;</span>, <span class="st">&quot;Eastern Europe&quot;</span>, <span class="st">&quot;Europe&quot;</span>, <span class="st">&quot;European Union (27)&quot;</span>, </span>
+<span id="cb4-4"><a href="#cb4-4"></a>          <span class="st">&quot;European Union (28)&quot;</span>, <span class="st">&quot;Land Locked Developing Countries&quot;</span>, <span class="st">&quot;Least Developed Countries&quot;</span>, </span>
+<span id="cb4-5"><a href="#cb4-5"></a>          <span class="st">&quot;Low Income Food Deficit Countries&quot;</span>, <span class="st">&quot;Melanesia&quot;</span>, <span class="st">&quot;Micronesia&quot;</span>, <span class="st">&quot;Middle Africa&quot;</span>, </span>
+<span id="cb4-6"><a href="#cb4-6"></a>          <span class="st">&quot;Net Food Importing Developing Countries&quot;</span>, <span class="st">&quot;Netherlands Antilles (former)&quot;</span>, </span>
+<span id="cb4-7"><a href="#cb4-7"></a>          <span class="st">&quot;Northern Africa&quot;</span>, <span class="st">&quot;Northern America&quot;</span>,<span class="st">&quot;Northern Europe&quot;</span>, <span class="st">&quot;Oceania&quot;</span>, <span class="st">&quot;OECD&quot;</span>, </span>
+<span id="cb4-8"><a href="#cb4-8"></a>          <span class="st">&quot;Pacific Islands Trust Territory&quot;</span>, <span class="st">&quot;Polynesia&quot;</span>, <span class="st">&quot;R&lt;e9&gt;union&quot;</span>, </span>
+<span id="cb4-9"><a href="#cb4-9"></a>          <span class="st">&quot;Serbia and Montenegro&quot;</span>,<span class="st">&quot;Small Island Developing States&quot;</span>, <span class="st">&quot;South America&quot;</span>, </span>
+<span id="cb4-10"><a href="#cb4-10"></a>          <span class="st">&quot;South-eastern Asia&quot;</span>, <span class="st">&quot;Southern Africa&quot;</span>, <span class="st">&quot;Southern Asia&quot;</span>, <span class="st">&quot;Southern Europe&quot;</span>, </span>
+<span id="cb4-11"><a href="#cb4-11"></a>          <span class="st">&quot;Western Africa&quot;</span>, <span class="st">&quot;Western Asia&quot;</span>, <span class="st">&quot;Western Europe&quot;</span>, <span class="st">&quot;World&quot;</span>,<span class="st">&quot;Yugoslav SFR&quot;</span>)</span>
+<span id="cb4-12"><a href="#cb4-12"></a></span>
+<span id="cb4-13"><a href="#cb4-13"></a>fao &lt;-<span class="st"> </span><span class="kw">filter</span>(fao, <span class="op">!</span>(iso3c <span class="op">%in%</span><span class="st"> </span>Country))</span>
+<span id="cb4-14"><a href="#cb4-14"></a></span>
+<span id="cb4-15"><a href="#cb4-15"></a>fao1&lt;-<span class="kw">countrycode</span>(fao<span class="op">$</span>iso3c, <span class="dt">origin =</span> <span class="st">&#39;country.name&#39;</span>, <span class="dt">destination =</span> <span class="st">&#39;iso3c&#39;</span>)</span>
+<span id="cb4-16"><a href="#cb4-16"></a>fao&lt;-<span class="kw">data.frame</span>(fao,fao1)</span>
+<span id="cb4-17"><a href="#cb4-17"></a></span>
+<span id="cb4-18"><a href="#cb4-18"></a>fao&lt;-fao[,<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb4-19"><a href="#cb4-19"></a><span class="kw">names</span>(fao)[<span class="dv">5</span>] &lt;-<span class="st">&quot;iso3c&quot;</span></span>
+<span id="cb4-20"><a href="#cb4-20"></a></span>
+<span id="cb4-21"><a href="#cb4-21"></a>fao<span class="op">$</span>cat &lt;-<span class="st"> &quot;0. Structural&quot;</span> </span>
+<span id="cb4-22"><a href="#cb4-22"></a>fao<span class="op">$</span>subcat &lt;-<span class="st"> &quot;0.1 Natural endowments&quot;</span></span>
+<span id="cb4-23"><a href="#cb4-23"></a>fao<span class="op">$</span>source &lt;-<span class="st"> &quot;FAO&quot;</span></span></code></pre></div>
+<p>This completes the FAOSTAT database.</p>
+<hr />
+</div>
+<div id="uis-dataset" class="section level3">
+<h3>UIS Dataset</h3>
+<p>The UIS UNESCO database is moving towards a subscription based SDMX API - which poses challenges - but also provides bulk data downloading which is similar to what we did before with FAOSTAT.</p>
+<p>The main difference is finding the dataset you want to use, which is done online at this <a href="https://apiportal.uis.unesco.org/bdds">link</a>. Once on the website you can toggle between <strong>Education, Science, Culture, etc.</strong> to find the relevant dataset. Next hover over the <strong>Download the data</strong> button for the chosen dataset, right click and select <strong>Copy Link Address</strong>. This is a link to the dataset’s zip file which will be used to remote download.</p>
+<p>For UIS, the indicators used in the Benchmarking Database are focused on education. So we use both available datasets under the education option; <strong>National Monitoring</strong> and <strong>SDG Global and Thematic Indicators</strong>. We name the zip url link and upload it onto the environment using a temporary file like we did with FAOSTAT but also capture the labels so we know what we are looking at. We can then find the indicators we want using either using the <code>View</code> command for the label dataset and then CTRL+F, finding code. Once found, the dataset is parsed out using the code id and dplyr then cleaned to 7 variables, as before. Finally it is combined with FAOSTAT using <code>rbind</code>.</p>
+<div id="uis-national-monitoring-indicators" class="section level4">
+<h4>UIS National Monitoring Indicators</h4>
+For this dataset we are looking for:
+<p>
+<ul>
+<li>Government expenditure on education, total (% of GDP)</li>
+<li>School enrollment, primary (% net)</li>
+<li>School enrollment, secondary (% gross)</li>
+<li>School enrollment, primary and secondary (gross), gender parity index (GPI)</li>
+<li>Mean years of schooling (ISCED 1 or higher), population 25+ years, both sexes</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># ******** UIS Education indicators ********</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>urluis&lt;-<span class="st">&quot;ftp://ftp.uis.unesco.org/BDDS/NATMON.zip&quot;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a></span>
+<span id="cb5-4"><a href="#cb5-4"></a>temp &lt;-<span class="st"> </span><span class="kw">tempfile</span>()</span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="kw">download.file</span>(urluis, temp)</span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="kw">unzip</span>(temp, <span class="st">&quot;NATMON_DATA_NATIONAL.csv&quot;</span>)</span>
+<span id="cb5-7"><a href="#cb5-7"></a>uis &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;NATMON_DATA_NATIONAL.csv&quot;</span>)</span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="kw">unlink</span>(temp)</span>
+<span id="cb5-9"><a href="#cb5-9"></a></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="co"># Govt exp on educ</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>educexp &lt;-<span class="st"> </span>uis[uis<span class="op">$</span>INDICATOR_ID <span class="op">%in%</span><span class="st"> &quot;XGDP.FSgov&quot;</span> ,]</span>
+<span id="cb5-12"><a href="#cb5-12"></a>educexp&lt;-educexp[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">6</span>)]</span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="kw">names</span>(educexp)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb5-14"><a href="#cb5-14"></a>educexp<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Government expenditure on education, total (% of GDP)&quot;</span></span>
+<span id="cb5-15"><a href="#cb5-15"></a>educexp<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;uis.XPD.TOTL.GD.ZS&quot;</span></span>
+<span id="cb5-16"><a href="#cb5-16"></a></span>
+<span id="cb5-17"><a href="#cb5-17"></a><span class="co"># Primary enroll (net)</span></span>
+<span id="cb5-18"><a href="#cb5-18"></a>netprim &lt;-<span class="st"> </span>uis[uis<span class="op">$</span>INDICATOR_ID <span class="op">%in%</span><span class="st"> &quot;NERT.1.cp&quot;</span> ,]</span>
+<span id="cb5-19"><a href="#cb5-19"></a>netprim&lt;-netprim[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">6</span>)]</span>
+<span id="cb5-20"><a href="#cb5-20"></a><span class="kw">names</span>(netprim)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb5-21"><a href="#cb5-21"></a>netprim<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;School enrollment, primary (% net)&quot;</span></span>
+<span id="cb5-22"><a href="#cb5-22"></a>netprim<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;uis.PRM.NENR&quot;</span></span>
+<span id="cb5-23"><a href="#cb5-23"></a></span>
+<span id="cb5-24"><a href="#cb5-24"></a><span class="co"># Secondary enroll (gross)</span></span>
+<span id="cb5-25"><a href="#cb5-25"></a>grosecond &lt;-<span class="st"> </span>uis[uis<span class="op">$</span>INDICATOR_ID <span class="op">%in%</span><span class="st"> &quot;GER.2t3&quot;</span> ,]</span>
+<span id="cb5-26"><a href="#cb5-26"></a>grosecond&lt;-grosecond[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">6</span>)]</span>
+<span id="cb5-27"><a href="#cb5-27"></a><span class="kw">names</span>(grosecond)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb5-28"><a href="#cb5-28"></a>grosecond<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;School enrollment, secondary (% net)&quot;</span></span>
+<span id="cb5-29"><a href="#cb5-29"></a>grosecond<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;uis.SEC.NENR&quot;</span></span>
+<span id="cb5-30"><a href="#cb5-30"></a></span>
+<span id="cb5-31"><a href="#cb5-31"></a><span class="co"># Enrollment ratio (GPI)</span></span>
+<span id="cb5-32"><a href="#cb5-32"></a>enrolld &lt;-<span class="st"> </span>uis[uis<span class="op">$</span>INDICATOR_ID <span class="op">%in%</span><span class="st"> &quot;GER.1t3.GPI&quot;</span> ,]</span>
+<span id="cb5-33"><a href="#cb5-33"></a>enrolld&lt;-enrolld[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">6</span>)]</span>
+<span id="cb5-34"><a href="#cb5-34"></a><span class="kw">names</span>(enrolld)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb5-35"><a href="#cb5-35"></a>enrolld<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;School enrollment, primary and secondary (gross), gender parity index (GPI)&quot;</span></span>
+<span id="cb5-36"><a href="#cb5-36"></a>enrolld<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;UIS.ENR.PRSC.FM.ZS&quot;</span></span>
+<span id="cb5-37"><a href="#cb5-37"></a>enrolld<span class="op">$</span>subcat &lt;-<span class="st"> &quot;1.8 Gender equality&quot;</span></span>
+<span id="cb5-38"><a href="#cb5-38"></a></span>
+<span id="cb5-39"><a href="#cb5-39"></a><span class="co"># Mean schooling</span></span>
+<span id="cb5-40"><a href="#cb5-40"></a>avgschool &lt;-<span class="st"> </span>uis[uis<span class="op">$</span>INDICATOR_ID <span class="op">%in%</span><span class="st"> &quot;MYS.1t8.Ag25t99&quot;</span> ,]</span>
+<span id="cb5-41"><a href="#cb5-41"></a>avgschool&lt;-avgschool[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">6</span>)]</span>
+<span id="cb5-42"><a href="#cb5-42"></a><span class="kw">names</span>(avgschool)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb5-43"><a href="#cb5-43"></a>avgschool<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Mean years of schooling (ISCED 1 or higher), population 25+ years, both sexes&quot;</span></span>
+<span id="cb5-44"><a href="#cb5-44"></a>avgschool<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;uis.SCHOOLING&quot;</span></span>
+<span id="cb5-45"><a href="#cb5-45"></a></span>
+<span id="cb5-46"><a href="#cb5-46"></a>uis1 &lt;-<span class="kw">rbind</span>(educexp,netprim,grosecond,avgschool)</span>
+<span id="cb5-47"><a href="#cb5-47"></a>uis1<span class="op">$</span>subcat &lt;-<span class="st">&quot;1.6 Education&quot;</span></span>
+<span id="cb5-48"><a href="#cb5-48"></a></span>
+<span id="cb5-49"><a href="#cb5-49"></a>uisdf &lt;-<span class="st"> </span><span class="kw">rbind</span>(uis1, enrolld)</span></code></pre></div>
+</div>
+<div id="uis-sdg-global-and-thematic-indicators" class="section level4">
+<h4>UIS SDG Global and Thematic Indicators</h4>
+We now move on to the SDG Global dataset using the new zip link and follow the same methods for the following indicators:
+<p>
+<ul>
+<li>School enrollment, preprimary (% gross)</li>
+<li>Primary completion rate, total (% of relevant age group)</li>
+<li>Pupil-(qualified) teacher ratio, primary</li>
+<li>Proportion of students at the end of primary education achieving at least a minimum proficiency level in mathematics, both sexes (%)</li>
+<li>Proportion of students at the end of primary education achieving at least a minimum proficiency level in reading, both sexes (%)</li>
+<li>Literacy rate, adult total (% of people ages 15 and above)</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># ******** UIS SDG education indicators ********</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>urlsdg &lt;-<span class="st">&quot;ftp://ftp.uis.unesco.org/BDDS/SDG.zip&quot;</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a>temp &lt;-<span class="st"> </span><span class="kw">tempfile</span>()</span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="kw">download.file</span>(urlsdg, temp)</span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="kw">unzip</span>(temp, <span class="st">&quot;SDG_DATA_NATIONAL.csv&quot;</span>)</span>
+<span id="cb6-7"><a href="#cb6-7"></a>sdg &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;SDG_DATA_NATIONAL.csv&quot;</span>)</span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="kw">unlink</span>(temp)</span>
+<span id="cb6-9"><a href="#cb6-9"></a></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co"># Pre primary enrollment</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a>preprim &lt;-<span class="st"> </span>sdg[sdg<span class="op">$</span>INDICATOR_ID <span class="op">%in%</span><span class="st"> &quot;GER.02&quot;</span> ,]</span>
+<span id="cb6-12"><a href="#cb6-12"></a>preprim&lt;-preprim[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">6</span>)]</span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="kw">names</span>(preprim)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb6-14"><a href="#cb6-14"></a>preprim<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;School enrollment, preprimary (% gross)&quot;</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a>preprim<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;uis.PRE.ENRR&quot;</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a></span>
+<span id="cb6-17"><a href="#cb6-17"></a><span class="co"># Primary completion</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a>complet &lt;-<span class="st"> </span>sdg[sdg<span class="op">$</span>INDICATOR_ID <span class="op">%in%</span><span class="st"> &quot;CR.1&quot;</span> ,]</span>
+<span id="cb6-19"><a href="#cb6-19"></a>complet&lt;-complet[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">6</span>)]</span>
+<span id="cb6-20"><a href="#cb6-20"></a><span class="kw">names</span>(complet)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb6-21"><a href="#cb6-21"></a>complet<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Primary completion rate, total (% of relevant age group)&quot;</span></span>
+<span id="cb6-22"><a href="#cb6-22"></a>complet<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;uis.COMPLRATE.PRIMARY&quot;</span></span>
+<span id="cb6-23"><a href="#cb6-23"></a></span>
+<span id="cb6-24"><a href="#cb6-24"></a><span class="co"># Pupil (qualified) teacher ratio</span></span>
+<span id="cb6-25"><a href="#cb6-25"></a>tratio &lt;-<span class="st"> </span>sdg[sdg<span class="op">$</span>INDICATOR_ID <span class="op">%in%</span><span class="st"> &quot;PTRHC.1.qualified&quot;</span> ,]</span>
+<span id="cb6-26"><a href="#cb6-26"></a>tratio&lt;-tratio[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">6</span>)]</span>
+<span id="cb6-27"><a href="#cb6-27"></a><span class="kw">names</span>(tratio)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb6-28"><a href="#cb6-28"></a>tratio<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Pupil-teacher ratio, primary&quot;</span></span>
+<span id="cb6-29"><a href="#cb6-29"></a>tratio<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;uis.PRM.ENRL.TC.ZS&quot;</span></span>
+<span id="cb6-30"><a href="#cb6-30"></a></span>
+<span id="cb6-31"><a href="#cb6-31"></a><span class="co"># Math proficiency </span></span>
+<span id="cb6-32"><a href="#cb6-32"></a>math &lt;-<span class="st"> </span>sdg[sdg<span class="op">$</span>INDICATOR_ID <span class="op">%in%</span><span class="st"> &quot;Math.Primary&quot;</span> ,]</span>
+<span id="cb6-33"><a href="#cb6-33"></a>math&lt;-math[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">6</span>)]</span>
+<span id="cb6-34"><a href="#cb6-34"></a><span class="kw">names</span>(math)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb6-35"><a href="#cb6-35"></a>math<span class="op">$</span>indicatorname &lt;-<span class="st">&quot;Proportion of students at the end of primary education achieving at least a minimum proficiency level in mathematics, both sexes (%)&quot;</span></span>
+<span id="cb6-36"><a href="#cb6-36"></a>math<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;uis_math&quot;</span></span>
+<span id="cb6-37"><a href="#cb6-37"></a></span>
+<span id="cb6-38"><a href="#cb6-38"></a><span class="co"># Reading proficiency </span></span>
+<span id="cb6-39"><a href="#cb6-39"></a>read &lt;-<span class="st"> </span>sdg[sdg<span class="op">$</span>INDICATOR_ID <span class="op">%in%</span><span class="st"> &quot;Read.Primary&quot;</span> ,]</span>
+<span id="cb6-40"><a href="#cb6-40"></a>read&lt;-read[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">6</span>)]</span>
+<span id="cb6-41"><a href="#cb6-41"></a><span class="kw">names</span>(read)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb6-42"><a href="#cb6-42"></a>read<span class="op">$</span>indicatorname &lt;-<span class="st">&quot;Proportion of students at the end of primary education achieving at least a minimum proficiency level in reading, both sexes (%)&quot;</span></span>
+<span id="cb6-43"><a href="#cb6-43"></a>read<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;uis_reading&quot;</span></span>
+<span id="cb6-44"><a href="#cb6-44"></a></span>
+<span id="cb6-45"><a href="#cb6-45"></a><span class="co"># Literacy rate</span></span>
+<span id="cb6-46"><a href="#cb6-46"></a>lit &lt;-<span class="st"> </span>sdg[sdg<span class="op">$</span>INDICATOR_ID <span class="op">%in%</span><span class="st"> &quot;LR.Ag15t99&quot;</span> ,]</span>
+<span id="cb6-47"><a href="#cb6-47"></a>lit&lt;-lit[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">6</span>)]</span>
+<span id="cb6-48"><a href="#cb6-48"></a><span class="kw">names</span>(lit)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb6-49"><a href="#cb6-49"></a>lit<span class="op">$</span>indicatorname &lt;-<span class="st">&quot;Literacy rate, adult total (% of people ages 15 and above)&quot;</span></span>
+<span id="cb6-50"><a href="#cb6-50"></a>lit<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;uis.ADT.LITR.ZS&quot;</span></span>
+<span id="cb6-51"><a href="#cb6-51"></a></span>
+<span id="cb6-52"><a href="#cb6-52"></a>sdg &lt;-<span class="st"> </span><span class="kw">rbind</span>(math,read,lit,tratio,complet,preprim)</span>
+<span id="cb6-53"><a href="#cb6-53"></a>sdg<span class="op">$</span>subcat &lt;-<span class="st"> &quot;1.6 Education&quot;</span></span></code></pre></div>
+<p>Once that is finished the data is binded and the source is assigned. Now the full benchmark dataframe will start to be established by combining the FAO and UIS dataframes.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>unesco&lt;-<span class="kw">rbind</span>(uisdf,sdg)</span>
+<span id="cb7-2"><a href="#cb7-2"></a>unesco<span class="op">$</span>source &lt;-<span class="st"> &quot;UIS&quot;</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>unesco<span class="op">$</span>cat &lt;-<span class="st"> &quot;1. People&quot;</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a></span>
+<span id="cb7-5"><a href="#cb7-5"></a>benchmark &lt;-<span class="st"> </span><span class="kw">rbind</span>(fao,unesco)</span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="ilostat-dataset" class="section level3">
+<h3>ILOSTAT dataset</h3>
+<p>We now move onto the ILO database. This data is sourced using a pre-built library that accesses the API, parses the HTML and provides a clean data format for its users. Since the package is updated and maintained by ILO we can be sure of its quality. The link for the CRAN library and commands can be found <a href="https://cran.r-project.org/web/packages/Rilostat/Rilostat.pdf">here</a> and a user-guide <a href="https://cran.r-project.org/web/packages/Rilostat/vignettes/Rilostat.html">here</a>.</p>
+<p>This dataset is not as straightforward as before. This is because, rather than parsing from one global dataset, one must first search the ILO database for the corresponding dataset using the <code>get_ilostat_toc</code> command, find here the correct dataset, input the corresponding <strong>id</strong> code into the <code>get_ilostat</code> command to call the dataset and then parse the indicators from there.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">library</span>(Rilostat)</span>
+<span id="cb8-2"><a href="#cb8-2"></a></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co"># Search database for indicators</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>toc &lt;-<span class="st"> </span><span class="kw">get_ilostat_toc</span>()</span></code></pre></div>
+In ILO we are looking for the following indicators:
+<p>
+<ul>
+<li>Unemployment, total (% of total labor force) (modeled ILO estimate)</li>
+<li>Labor force participation rate, total (% of total population ages 15+) (modeled ILO estimate)</li>
+<li>Labor force participation rate, female (% of female population ages 15+) (modeled ILO estimate)</li>
+<li>Unemployment, youth total (% of total labor force ages 15-24) (modeled ILO estimate)</li>
+<li>Employment in agriculture (% of total employment) (modeled ILO estimate)</li>
+<li>Employment in industry (% of total employment) (modeled ILO estimate)</li>
+<li>Employment in services (% of total employment) (modeled ILO estimate)</li>
+<li>Share of labour force with basic education (25+ yo)</li>
+<li>Share of labour force with intermediate education (25+ yo)</li>
+<li>Share of labour force with advanced education (25+ yo)</li>
+</ul>
+<p>It is possible to filter the data with the <code>get_ilostat</code> command to improve downloading speeds, but usually the full dataset will have to be downloaded first. This is so you can understand what needs to be filtered in order to find the correct indicator among available data. The code included here is already filtered to improve download times, but this should be kept in mind in case the Benchmark indicators are changed.</p>
+<p>The first example is for total unemployment. We use <code>get_ilostat</code> with the id code found through the search function, which is <strong>SDG_0852_SEX_AGE_RT_A</strong>, segment set to indicator (rather than ref area which will give you country/regional data) as well as the appropriate filters for this dataset using column names and specifying which values you want. Here we have specified <strong>sex=T</strong> for both sexes (a common one for ILO data) and the age group desired under the classif1 column. Excess columns are then dropped, columns renamed and indicator code/names, cat/subcat are assigned.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Total unemployment % labor force (15-64) </span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>unemp &lt;-<span class="st"> </span><span class="kw">get_ilostat</span>(<span class="dt">id =</span> <span class="st">&quot;SDG_0852_SEX_AGE_RT_A&quot;</span>, <span class="dt">segment =</span> <span class="st">&#39;indicator&#39;</span>, <span class="dt">filters=</span><span class="kw">list</span>(<span class="dt">sex=</span><span class="st">&quot;T&quot;</span>,<span class="dt">classif1=</span><span class="st">&quot;AGE_YTHADULT_Y15-64&quot;</span>))</span>
+<span id="cb9-3"><a href="#cb9-3"></a>unemp&lt;-unemp[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">8</span><span class="op">:</span><span class="dv">11</span>)]</span>
+<span id="cb9-4"><a href="#cb9-4"></a></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="kw">names</span>(unemp)[<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb9-6"><a href="#cb9-6"></a>unemp<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Unemployment, total (% of total labor force) (modeled ILO estimate)&quot;</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a>unemp<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;ILO.UNEMP.15&quot;</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a>unemp<span class="op">$</span>subcat &lt;-<span class="st"> &quot;2.2 Labour market&quot;</span></span></code></pre></div>
+<p>The rest of the dataset is similar. More often than not more than one indicator is found in a dataset and they are subsetted using dplyr’s %in% command. Filtering is done as necessary.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Youth employment</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>youth &lt;-<span class="st"> </span><span class="kw">get_ilostat</span>(<span class="dt">id =</span> <span class="st">&quot;UNE_2UNE_SEX_AGE_NB_A&quot;</span>, <span class="dt">segment =</span> <span class="st">&#39;indicator&#39;</span>,<span class="dt">filters =</span> <span class="kw">list</span>(<span class="dt">sex=</span><span class="st">&quot;T&quot;</span>,<span class="dt">classif1=</span><span class="st">&quot;AGE_YTHADULT_Y15-24&quot;</span>)) </span>
+<span id="cb10-3"><a href="#cb10-3"></a>youth&lt;-youth[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">8</span>)]</span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="kw">names</span>(youth)[<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb10-5"><a href="#cb10-5"></a>youth<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Unemployment, youth total (% of total labor force ages 15-24) (modeled ILO estimate)&quot;</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>youth<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;ILO.UNEMP.1524&quot;</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a>youth<span class="op">$</span>subcat &lt;-<span class="st"> &quot;2.2 Labour market&quot;</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="co"># --- Labor force participation ---</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a>lpartic &lt;-<span class="st"> </span><span class="kw">get_ilostat</span>(<span class="dt">id =</span> <span class="st">&quot;EAP_2WAP_SEX_AGE_RT_A&quot;</span>, <span class="dt">filters =</span> <span class="kw">list</span>(<span class="dt">classif1 =</span> <span class="st">&#39;AGE_AGGREGATE_TOTAL&#39;</span>),<span class="dt">segment =</span> <span class="st">&#39;indicator&#39;</span>) </span>
+<span id="cb10-11"><a href="#cb10-11"></a></span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="co"># Total labor force participation </span></span>
+<span id="cb10-13"><a href="#cb10-13"></a>partic &lt;-<span class="st"> </span>lpartic[lpartic<span class="op">$</span>sex <span class="op">%in%</span><span class="st"> &quot;SEX_T&quot;</span>,]</span>
+<span id="cb10-14"><a href="#cb10-14"></a>partic&lt;-partic[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">8</span>)]</span>
+<span id="cb10-15"><a href="#cb10-15"></a><span class="kw">names</span>(partic)[<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb10-16"><a href="#cb10-16"></a>partic<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Labor force participation rate, total (% of total population ages 15+) (modeled ILO estimate)&quot;</span></span>
+<span id="cb10-17"><a href="#cb10-17"></a>partic<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;ILO.LF&quot;</span></span>
+<span id="cb10-18"><a href="#cb10-18"></a>partic<span class="op">$</span>subcat &lt;-<span class="st"> &quot;2.2 Labour market&quot;</span></span>
+<span id="cb10-19"><a href="#cb10-19"></a></span>
+<span id="cb10-20"><a href="#cb10-20"></a><span class="co"># Female labor force participation </span></span>
+<span id="cb10-21"><a href="#cb10-21"></a>female &lt;-<span class="st"> </span>lpartic[lpartic<span class="op">$</span>sex <span class="op">%in%</span><span class="st"> &quot;SEX_F&quot;</span>,]</span>
+<span id="cb10-22"><a href="#cb10-22"></a>female&lt;-female[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">8</span>)]</span>
+<span id="cb10-23"><a href="#cb10-23"></a><span class="kw">names</span>(female)[<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb10-24"><a href="#cb10-24"></a>female<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Labor force participation rate, female (% of female population ages 15+) (modeled ILO estimate)&quot;</span></span>
+<span id="cb10-25"><a href="#cb10-25"></a>female<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;UIS.TLF.CACT.FE.ZS&quot;</span></span>
+<span id="cb10-26"><a href="#cb10-26"></a>female<span class="op">$</span>cat &lt;-<span class="st"> &quot;1. People&quot;</span></span>
+<span id="cb10-27"><a href="#cb10-27"></a>female<span class="op">$</span>subcat &lt;-<span class="st"> &quot;1.8 Gender equality&quot;</span></span>
+<span id="cb10-28"><a href="#cb10-28"></a></span>
+<span id="cb10-29"><a href="#cb10-29"></a><span class="co"># --- Employment by economic activity ---</span></span>
+<span id="cb10-30"><a href="#cb10-30"></a>econact &lt;-<span class="st"> </span><span class="kw">get_ilostat</span>(<span class="dt">id =</span> <span class="st">&quot;EMP_TEMP_SEX_ECO_DT_A&quot;</span>, <span class="dt">segment =</span> <span class="st">&#39;indicator&#39;</span>, <span class="dt">filters =</span> <span class="kw">list</span>(<span class="dt">sex =</span> <span class="st">&#39;T&#39;</span>,<span class="dt">classif1=</span><span class="kw">c</span>(<span class="st">&quot;ECO_SECTOR_IND&quot;</span>,<span class="st">&quot;ECO_SECTOR_AGR&quot;</span>,<span class="st">&quot;ECO_SECTOR_SER&quot;</span>))) </span>
+<span id="cb10-31"><a href="#cb10-31"></a></span>
+<span id="cb10-32"><a href="#cb10-32"></a><span class="co"># Agriculture employment</span></span>
+<span id="cb10-33"><a href="#cb10-33"></a>agri &lt;-<span class="st"> </span>econact[econact<span class="op">$</span>classif1 <span class="op">%in%</span><span class="st"> &quot;ECO_SECTOR_AGR&quot;</span>,]</span>
+<span id="cb10-34"><a href="#cb10-34"></a>agri&lt;-agri[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">8</span><span class="op">:</span><span class="dv">11</span>)]</span>
+<span id="cb10-35"><a href="#cb10-35"></a><span class="kw">names</span>(agri)[<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb10-36"><a href="#cb10-36"></a>agri<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Employment in agriculture (% of total employment) (modeled ILO estimate)&quot;</span></span>
+<span id="cb10-37"><a href="#cb10-37"></a>agri<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;ILO.EMPL.AGRI&quot;</span></span>
+<span id="cb10-38"><a href="#cb10-38"></a>agri<span class="op">$</span>subcat &lt;-<span class="st"> &quot;2.2 Labour market&quot;</span></span>
+<span id="cb10-39"><a href="#cb10-39"></a></span>
+<span id="cb10-40"><a href="#cb10-40"></a><span class="co"># Industrial employment</span></span>
+<span id="cb10-41"><a href="#cb10-41"></a>indus &lt;-<span class="st"> </span>econact[econact<span class="op">$</span>classif1 <span class="op">%in%</span><span class="st"> &quot;ECO_SECTOR_IND&quot;</span>,]</span>
+<span id="cb10-42"><a href="#cb10-42"></a>indus&lt;-indus[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">8</span><span class="op">:</span><span class="dv">11</span>)]</span>
+<span id="cb10-43"><a href="#cb10-43"></a><span class="kw">names</span>(indus)[<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb10-44"><a href="#cb10-44"></a>indus<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Employment in industry (% of total employment) (modeled ILO estimate)&quot;</span></span>
+<span id="cb10-45"><a href="#cb10-45"></a>indus<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;ILO.EMPL.INDUSTRY&quot;</span></span>
+<span id="cb10-46"><a href="#cb10-46"></a>indus<span class="op">$</span>subcat &lt;-<span class="st"> &quot;2.2 Labour market&quot;</span></span>
+<span id="cb10-47"><a href="#cb10-47"></a></span>
+<span id="cb10-48"><a href="#cb10-48"></a><span class="co"># Service employment </span></span>
+<span id="cb10-49"><a href="#cb10-49"></a>serv &lt;-<span class="st"> </span>econact[econact<span class="op">$</span>classif1 <span class="op">%in%</span><span class="st"> &quot;ECO_SECTOR_SER&quot;</span>,]</span>
+<span id="cb10-50"><a href="#cb10-50"></a>serv&lt;-serv[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">8</span><span class="op">:</span><span class="dv">11</span>)]</span>
+<span id="cb10-51"><a href="#cb10-51"></a><span class="kw">names</span>(serv)[<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb10-52"><a href="#cb10-52"></a>serv<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Employment in services (% of total employment) (modeled ILO estimate)&quot;</span></span>
+<span id="cb10-53"><a href="#cb10-53"></a>serv<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;ILO.EMPL.SERVICES&quot;</span></span>
+<span id="cb10-54"><a href="#cb10-54"></a>serv<span class="op">$</span>subcat &lt;-<span class="st"> &quot;2.2 Labour market&quot;</span></span>
+<span id="cb10-55"><a href="#cb10-55"></a></span>
+<span id="cb10-56"><a href="#cb10-56"></a><span class="co"># --- Labor force by education level ---</span></span>
+<span id="cb10-57"><a href="#cb10-57"></a>educ &lt;-<span class="st"> </span><span class="kw">get_ilostat</span>(<span class="dt">id =</span> <span class="st">&quot;EAP_TEAP_SEX_AGE_EDU_DT_A&quot;</span>, <span class="dt">segment =</span> <span class="st">&#39;indicator&#39;</span>,<span class="dt">filters =</span> <span class="kw">list</span>(<span class="dt">sex =</span> <span class="st">&#39;T&#39;</span>,<span class="dt">classif1=</span><span class="st">&quot;AGE_AGGREGATE_TOTAL&quot;</span>)) </span>
+<span id="cb10-58"><a href="#cb10-58"></a></span>
+<span id="cb10-59"><a href="#cb10-59"></a><span class="co"># % with basic education</span></span>
+<span id="cb10-60"><a href="#cb10-60"></a>bas&lt;-educ[educ<span class="op">$</span>classif2 <span class="op">%in%</span><span class="st"> &quot;EDU_AGGREGATE_BAS&quot;</span>,]</span>
+<span id="cb10-61"><a href="#cb10-61"></a>bas&lt;-bas[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>,<span class="dv">9</span><span class="op">:</span><span class="dv">12</span>)]</span>
+<span id="cb10-62"><a href="#cb10-62"></a><span class="kw">names</span>(bas)[<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb10-63"><a href="#cb10-63"></a>bas<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Share of labour force with basic education (25+ yo)&quot;</span></span>
+<span id="cb10-64"><a href="#cb10-64"></a>bas<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;ILO.EMPL.EDUBASIC&quot;</span></span>
+<span id="cb10-65"><a href="#cb10-65"></a>bas<span class="op">$</span>subcat &lt;-<span class="st"> &quot;2.3 Productive capabilities&quot;</span></span>
+<span id="cb10-66"><a href="#cb10-66"></a></span>
+<span id="cb10-67"><a href="#cb10-67"></a><span class="co"># % with intermediate education</span></span>
+<span id="cb10-68"><a href="#cb10-68"></a>int&lt;-educ[educ<span class="op">$</span>classif2 <span class="op">%in%</span><span class="st"> &quot;EDU_AGGREGATE_INT&quot;</span>,]</span>
+<span id="cb10-69"><a href="#cb10-69"></a>int&lt;-int[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>,<span class="dv">9</span><span class="op">:</span><span class="dv">12</span>)]</span>
+<span id="cb10-70"><a href="#cb10-70"></a><span class="kw">names</span>(int)[<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb10-71"><a href="#cb10-71"></a>int<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Share of labour force with intermediate education (25+ yo)&quot;</span></span>
+<span id="cb10-72"><a href="#cb10-72"></a>int<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;ILO.EMPL.EDUINTER&quot;</span></span>
+<span id="cb10-73"><a href="#cb10-73"></a>int<span class="op">$</span>subcat &lt;-<span class="st"> &quot;2.3 Productive capabilities&quot;</span></span>
+<span id="cb10-74"><a href="#cb10-74"></a></span>
+<span id="cb10-75"><a href="#cb10-75"></a><span class="co"># % with advanced education</span></span>
+<span id="cb10-76"><a href="#cb10-76"></a>adv&lt;-educ[educ<span class="op">$</span>classif2 <span class="op">%in%</span><span class="st"> &quot;EDU_AGGREGATE_ADV&quot;</span>,]</span>
+<span id="cb10-77"><a href="#cb10-77"></a>adv&lt;-adv[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">6</span>,<span class="dv">9</span><span class="op">:</span><span class="dv">12</span>)]</span>
+<span id="cb10-78"><a href="#cb10-78"></a><span class="kw">names</span>(adv)[<span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb10-79"><a href="#cb10-79"></a>adv<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Share of labour force with advanced education (25+ yo)&quot;</span></span>
+<span id="cb10-80"><a href="#cb10-80"></a>adv<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;ILO.EMPL.EDUADV&quot;</span></span>
+<span id="cb10-81"><a href="#cb10-81"></a>adv<span class="op">$</span>subcat &lt;-<span class="st"> &quot;2.3 Productive capabilities&quot;</span></span></code></pre></div>
+<p>Finally, as usual, a dataframe is created for all ILO indicators, a source is added then it is tacked on to the Benchmark dataframe.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>ilo &lt;-<span class="st"> </span><span class="kw">rbind</span>(partic,unemp, youth, agri, indus, serv, bas, int, adv)</span>
+<span id="cb11-2"><a href="#cb11-2"></a>ilo<span class="op">$</span>cat &lt;-<span class="st"> &quot;2. Prosperity&quot;</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a></span>
+<span id="cb11-4"><a href="#cb11-4"></a>ilo &lt;-<span class="st"> </span><span class="kw">rbind</span> (ilo,female)</span>
+<span id="cb11-5"><a href="#cb11-5"></a>ilo<span class="op">$</span>source &lt;-<span class="st"> &quot;ILO&quot;</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a></span>
+<span id="cb11-7"><a href="#cb11-7"></a>benchmark &lt;-<span class="kw">rbind</span>(ilo,benchmark)</span></code></pre></div>
+<hr />
+</div>
+<div id="who-dataset" class="section level3">
+<h3>WHO dataset</h3>
+<p>WHO has it’s own R package as well whose directory can be found <a href="https://cran.r-project.org/web/packages/rgho/rgho.pdf">here</a>. While this package is not endorsed by WHO it is maintained and updated regularly so it is unlikely there are issues in the package’s API access. However, periodic checks to ensure data quality may be advised.</p>
+<p>The WHO library is easier than ILO as there are fewer layers. All one has to do is search the available WHO datasets and find the relevant indicators within. It is easiest to search for the indicator’s codes by calling the <code>get_gho_codes</code> command and then toggling <strong>Help</strong> in the bottom right window in R studio. <strong>Codes for the GHO Dimension</strong> should pop up and an easy CTRL+F using keywords should help you find the correct indicator.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">library</span>(rgho)</span>
+<span id="cb12-2"><a href="#cb12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="co"># Search database for indicators</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="kw">get_gho_codes</span>() </span></code></pre></div>
+In the WHO database we are looking for the following indicators:
+<p>
+<ul>
+<li>Health expenditure, total (% of GDP)</li>
+<li>Out-of-pocket health expenditure (% of total expenditure on health</li>
+<li>Population using at least basic sanitation services (%)</li>
+<li>Mortality rate, infant (per 1,000 live births)</li>
+<li>Prevalence of HIV, total (% of population ages 15-49)</li>
+<li>Prevalence of stunting, weight for age (% of children under 5)</li>
+<li>Prevalence of underweight, weight for age (% of children under 5)</li>
+<li>Prevalence of overweight, weight for height (% of children under 5)</li>
+<li>Physicians (per 1000 people)</li>
+<li>Hospital beds (per 10 000 people)</li>
+<li>Health expenditure per capita, PPP (constant 2011 international $)</li>
+</ul>
+<p>For the example: After finding the ID code for health expenditure we use the command <code>get_gho_data</code> with dimension set to “GHO” and the code set to <strong>GHED_CHEGDP_SHA2011</strong>, calling the desired indicator. Columns are then removed, renamed and indicator codes/names are assigned.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Health expenditure %GDP</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>health &lt;-<span class="st"> </span><span class="kw">get_gho_data</span>(<span class="dt">dimension =</span> <span class="st">&quot;GHO&quot;</span>, <span class="dt">code =</span> <span class="st">&quot;GHED_CHEGDP_SHA2011&quot;</span>)</span>
+<span id="cb13-3"><a href="#cb13-3"></a>health&lt;-health[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,<span class="dv">4</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">8</span><span class="op">:</span><span class="dv">11</span>)]</span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="kw">names</span>(health)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;year&quot;</span>,<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb13-5"><a href="#cb13-5"></a>health<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Health expenditure, total (% of GDP)&quot;</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a>health<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;HEALTH.EXP.GPD&quot;</span></span></code></pre></div>
+<p>The rest follow the same format, although id code and number of excess columns should be changed to suit each indicator. Also note that filtering is not an available option with this package so some subsetting may need to be done. Always ensure the correct indicator is parsed using the <code>View</code> command.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># Out of pocket expenditure</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>oop &lt;-<span class="st"> </span><span class="kw">get_gho_data</span>(<span class="dt">dimension =</span> <span class="st">&quot;GHO&quot;</span>, <span class="dt">code =</span> <span class="st">&quot;GHED_OOPSCHE_SHA2011&quot;</span>)</span>
+<span id="cb14-3"><a href="#cb14-3"></a>oop&lt;-oop[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,<span class="dv">4</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">8</span><span class="op">:</span><span class="dv">11</span>)]</span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="kw">names</span>(oop)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;year&quot;</span>,<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb14-5"><a href="#cb14-5"></a>oop<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Out-of-pocket health expenditure (% of total expenditure on health&quot;</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a>oop<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;HEALTH.OOPS.EXP&quot;</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="co"># Access to sanitation </span></span>
+<span id="cb14-9"><a href="#cb14-9"></a>sani &lt;-<span class="st"> </span><span class="kw">get_gho_data</span>(<span class="dt">dimension =</span> <span class="st">&quot;GHO&quot;</span>, <span class="dt">code =</span> <span class="st">&quot;WSH_SANITATION_BASIC&quot;</span>)</span>
+<span id="cb14-10"><a href="#cb14-10"></a>sani&lt;-<span class="st"> </span>sani[sani<span class="op">$</span>RESIDENCEAREATYPE <span class="op">%in%</span><span class="st"> &quot;TOTL&quot;</span>,]</span>
+<span id="cb14-11"><a href="#cb14-11"></a>sani&lt;-sani[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">6</span><span class="op">:</span><span class="dv">7</span>,<span class="dv">9</span><span class="op">:</span><span class="dv">11</span>)]</span>
+<span id="cb14-12"><a href="#cb14-12"></a><span class="kw">names</span>(sani)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;year&quot;</span>,<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb14-13"><a href="#cb14-13"></a>sani<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Population using at least basic sanitation services (%)&quot;</span></span>
+<span id="cb14-14"><a href="#cb14-14"></a>sani<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;HEALTH.SANITATION.POP&quot;</span></span>
+<span id="cb14-15"><a href="#cb14-15"></a></span>
+<span id="cb14-16"><a href="#cb14-16"></a><span class="co"># Infant mortality rate (probability of death between birth and 1)</span></span>
+<span id="cb14-17"><a href="#cb14-17"></a>infan &lt;-<span class="st"> </span><span class="kw">get_gho_data</span>(<span class="dt">dimension =</span> <span class="st">&quot;GHO&quot;</span>, <span class="dt">code =</span> <span class="st">&quot;MDG_0000000001&quot;</span>, <span class="dt">filters=</span><span class="kw">list</span>(<span class="dt">SEX=</span><span class="st">&quot;TOTL&quot;</span>))</span>
+<span id="cb14-18"><a href="#cb14-18"></a>infan&lt;-infan[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,<span class="dv">4</span><span class="op">:</span><span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span><span class="op">:</span><span class="dv">13</span>)]</span>
+<span id="cb14-19"><a href="#cb14-19"></a><span class="kw">names</span>(infan)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;year&quot;</span>,<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb14-20"><a href="#cb14-20"></a>infan<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Mortality rate, infant (per 1,000 live births)&quot;</span></span>
+<span id="cb14-21"><a href="#cb14-21"></a>infan<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;HEALTH.MORTALITY.PROB&quot;</span></span>
+<span id="cb14-22"><a href="#cb14-22"></a></span>
+<span id="cb14-23"><a href="#cb14-23"></a><span class="co"># Prevalence of HIV </span></span>
+<span id="cb14-24"><a href="#cb14-24"></a>hiv &lt;-<span class="st"> </span><span class="kw">get_gho_data</span>(<span class="dt">dimension =</span> <span class="st">&quot;GHO&quot;</span>, <span class="dt">code =</span> <span class="st">&quot;MDG_0000000029&quot;</span>)</span>
+<span id="cb14-25"><a href="#cb14-25"></a>hiv&lt;-hiv[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">8</span><span class="op">:</span><span class="dv">10</span>)]</span>
+<span id="cb14-26"><a href="#cb14-26"></a><span class="kw">names</span>(hiv)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;year&quot;</span>,<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb14-27"><a href="#cb14-27"></a>hiv<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Prevalence of HIV, total (% of population ages 15-49)&quot;</span></span>
+<span id="cb14-28"><a href="#cb14-28"></a>hiv<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;HEALTH.HIV.PROB&quot;</span></span>
+<span id="cb14-29"><a href="#cb14-29"></a></span>
+<span id="cb14-30"><a href="#cb14-30"></a><span class="co"># Stunting </span></span>
+<span id="cb14-31"><a href="#cb14-31"></a>stunt &lt;-<span class="st"> </span><span class="kw">get_gho_data</span>(<span class="dt">dimension =</span> <span class="st">&quot;GHO&quot;</span>, <span class="dt">code =</span> <span class="st">&quot;stunt5&quot;</span>)</span>
+<span id="cb14-32"><a href="#cb14-32"></a>stunt&lt;-stunt[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">7</span><span class="op">:</span><span class="dv">14</span>,<span class="dv">16</span><span class="op">:</span><span class="dv">18</span>)]</span>
+<span id="cb14-33"><a href="#cb14-33"></a><span class="kw">names</span>(stunt)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;year&quot;</span>,<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb14-34"><a href="#cb14-34"></a>stunt &lt;-<span class="st"> </span><span class="kw">aggregate</span>(VALUE <span class="op">~</span><span class="st"> </span>year <span class="op">+</span><span class="st"> </span>iso3c, stunt, <span class="dt">FUN =</span> mean)</span>
+<span id="cb14-35"><a href="#cb14-35"></a>stunt<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Prevalence of stunting, weight for age (% of children under 5)&quot;</span></span>
+<span id="cb14-36"><a href="#cb14-36"></a>stunt<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;HEALTH.STUNTING&quot;</span></span>
+<span id="cb14-37"><a href="#cb14-37"></a></span>
+<span id="cb14-38"><a href="#cb14-38"></a><span class="co"># Underweight</span></span>
+<span id="cb14-39"><a href="#cb14-39"></a>under &lt;-<span class="st"> </span><span class="kw">get_gho_data</span>(<span class="dt">dimension =</span> <span class="st">&quot;GHO&quot;</span>, <span class="dt">code =</span> <span class="st">&quot;uweight5&quot;</span>)</span>
+<span id="cb14-40"><a href="#cb14-40"></a>under&lt;-under[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">7</span><span class="op">:</span><span class="dv">12</span>,<span class="dv">14</span><span class="op">:</span><span class="dv">16</span>)]</span>
+<span id="cb14-41"><a href="#cb14-41"></a><span class="kw">names</span>(under)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;year&quot;</span>,<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb14-42"><a href="#cb14-42"></a>under &lt;-<span class="st"> </span><span class="kw">aggregate</span>(VALUE <span class="op">~</span><span class="st"> </span>year <span class="op">+</span><span class="st"> </span>iso3c, under, <span class="dt">FUN =</span> mean)</span>
+<span id="cb14-43"><a href="#cb14-43"></a>under<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Prevalence of underweight, weight for age (% of children under 5)&quot;</span></span>
+<span id="cb14-44"><a href="#cb14-44"></a>under<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;HEALTH.UNDERWEIGHT&quot;</span></span>
+<span id="cb14-45"><a href="#cb14-45"></a></span>
+<span id="cb14-46"><a href="#cb14-46"></a><span class="co"># Overweight</span></span>
+<span id="cb14-47"><a href="#cb14-47"></a>over &lt;-<span class="st"> </span><span class="kw">get_gho_data</span>(<span class="dt">dimension =</span> <span class="st">&quot;GHO&quot;</span>, <span class="dt">code =</span> <span class="st">&quot;overwgt5&quot;</span>)</span>
+<span id="cb14-48"><a href="#cb14-48"></a>over&lt;-over[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">7</span><span class="op">:</span><span class="dv">14</span>,<span class="dv">16</span><span class="op">:</span><span class="dv">18</span>)]</span>
+<span id="cb14-49"><a href="#cb14-49"></a><span class="kw">names</span>(over)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;year&quot;</span>,<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb14-50"><a href="#cb14-50"></a>over &lt;-<span class="st"> </span><span class="kw">aggregate</span>(VALUE <span class="op">~</span><span class="st"> </span>year <span class="op">+</span><span class="st"> </span>iso3c, over, <span class="dt">FUN =</span> mean)</span>
+<span id="cb14-51"><a href="#cb14-51"></a>over<span class="op">$</span>indicatorname &lt;-<span class="st"> &quot;Prevalence of overweight, weight for height (% of children under 5)&quot;</span></span>
+<span id="cb14-52"><a href="#cb14-52"></a>over<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;HEALTH.OVERWEIGHT&quot;</span></span>
+<span id="cb14-53"><a href="#cb14-53"></a></span>
+<span id="cb14-54"><a href="#cb14-54"></a><span class="co"># Physicians per 1,000 (replacing 10,000)</span></span>
+<span id="cb14-55"><a href="#cb14-55"></a>phys &lt;-<span class="st"> </span><span class="kw">get_gho_data</span>(<span class="dt">dimension =</span> <span class="st">&quot;GHO&quot;</span>, <span class="dt">code =</span> <span class="st">&quot;HRH_26&quot;</span>)</span>
+<span id="cb14-56"><a href="#cb14-56"></a>phys&lt;-phys[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">7</span><span class="op">:</span><span class="dv">10</span>)]</span>
+<span id="cb14-57"><a href="#cb14-57"></a><span class="kw">names</span>(phys)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;year&quot;</span>,<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb14-58"><a href="#cb14-58"></a>phys<span class="op">$</span>indicatorname &lt;-<span class="st">&quot;Physicians (per 1000 people)&quot;</span></span>
+<span id="cb14-59"><a href="#cb14-59"></a>phys<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;HEALTH.DOC.POP&quot;</span></span>
+<span id="cb14-60"><a href="#cb14-60"></a></span>
+<span id="cb14-61"><a href="#cb14-61"></a><span class="co"># Hospital beds per 10,000 (DIDNT WORK)</span></span>
+<span id="cb14-62"><a href="#cb14-62"></a>hosp &lt;-<span class="st"> </span><span class="kw">get_gho_data</span>(<span class="dt">dimension =</span> <span class="st">&quot;GHO&quot;</span>, <span class="dt">code =</span> <span class="st">&quot;WHS6_102&quot;</span>)</span>
+<span id="cb14-63"><a href="#cb14-63"></a>hosp&lt;-hosp[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">7</span><span class="op">:</span><span class="dv">10</span>)]</span>
+<span id="cb14-64"><a href="#cb14-64"></a><span class="kw">names</span>(hosp)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;year&quot;</span>,<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb14-65"><a href="#cb14-65"></a>hosp<span class="op">$</span>indicatorname &lt;-<span class="st">&quot;Hospital beds (per 10 000 people)&quot;</span></span>
+<span id="cb14-66"><a href="#cb14-66"></a>hosp<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;HEALTH.BEDS.POP&quot;</span></span>
+<span id="cb14-67"><a href="#cb14-67"></a></span>
+<span id="cb14-68"><a href="#cb14-68"></a><span class="co"># Health exp per capita</span></span>
+<span id="cb14-69"><a href="#cb14-69"></a>exppc &lt;-<span class="st"> </span><span class="kw">get_gho_data</span>(<span class="dt">dimension =</span> <span class="st">&quot;GHO&quot;</span>, <span class="dt">code =</span> <span class="st">&quot;GHED_CHEGDP_SHA2011&quot;</span>)</span>
+<span id="cb14-70"><a href="#cb14-70"></a>exppc&lt;-exppc[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>,<span class="dv">4</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">8</span><span class="op">:</span><span class="dv">11</span>)]</span>
+<span id="cb14-71"><a href="#cb14-71"></a><span class="kw">names</span>(exppc)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;year&quot;</span>,<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb14-72"><a href="#cb14-72"></a>exppc<span class="op">$</span>indicatorname &lt;-<span class="st">&quot;Health expenditure per capita, PPP (constant 2011 international $)&quot;</span></span>
+<span id="cb14-73"><a href="#cb14-73"></a>exppc<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;HEALTH.EXP.PCAP&quot;</span></span></code></pre></div>
+<p>Lastly, bind the data, add source, cat, subcat and combine with the Benchmark dataframe and you’re done.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>who &lt;-<span class="st"> </span><span class="kw">rbind</span>(exppc,hosp,phys,hiv,infan,sani,oop,health,stunt,under,over)</span>
+<span id="cb15-2"><a href="#cb15-2"></a></span>
+<span id="cb15-3"><a href="#cb15-3"></a>who<span class="op">$</span>source &lt;-<span class="st"> &quot;WHO&quot;</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a>who<span class="op">$</span>cat &lt;-<span class="st"> &quot;1. People&quot;</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a>who<span class="op">$</span>subcat &lt;-<span class="st"> &quot;1.5 Health&quot;</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a></span>
+<span id="cb15-7"><a href="#cb15-7"></a>benchmark &lt;-<span class="st"> </span><span class="kw">rbind</span>(benchmark,who)</span></code></pre></div>
+</div>
+<div id="oecd-dataset" class="section level3">
+<h3>OECD Dataset</h3>
+<p>The final database is the OECD’s. There is also a pre-built API library for the OECD but the only OECD data available for remote downloading are those that can be accessed through OECD stat. The rest must be downloaded to Excel sheets then uploaded unfortunately. The user directory can be found <a href="https://cran.r-project.org/web/packages/OECD/OECD.pdf">here</a> and the more in-depth github <a href="https://github.com/expersso/OECD">here</a>. This package is not affiliated with the OECD but is detailed and well-maintained so using it to access the SDMX files remotely should not be a problem.</p>
+<p>This database is the most complicated in this guide as there are many layers and filtering is often necessary otherwise the dataset is too large to download. However, the filtering must be done in order or else they are ignored and since countries comes first in all datasets, a list of the available countries must be made to be used as a placeholder when filtering. (Inputs such as all do not work).</p>
+<p>To browse the available datasets, use the <code>get_datasets</code> command which then can be seen using <code>View</code> or clicking on dataframe in the Global Environment. CTRL+F using keywords to find relevant datasets.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">library</span>(OECD)</span>
+<span id="cb16-2"><a href="#cb16-2"></a></span>
+<span id="cb16-3"><a href="#cb16-3"></a>oecddsets &lt;-<span class="st"> </span><span class="kw">get_datasets</span>()</span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="kw">View</span>(oecddsets)</span></code></pre></div>
+The following indicators are found using this method:
+<p>
+<ul>
+<li>Environmentally related taxes, % total tax revenue</li>
+<li>Restricted civil liberties</li>
+<li>Social Institutions and Gender Index 2019</li>
+<li>Discrimination in the family</li>
+<li>Restricted physical integrity</li>
+<li>Restricted access to productive and financial resources</li>
+</ul>
+<p>For environmental taxes, the code, in this case <strong>ERTR</strong>, is found and so as to keep filtering in order the data structure command is called and a list of the country names in the dataset parsed using it. This is also a good time to look at the structure and find useful filters among the variables. Since we want % total tax revenue we find the code under VAR as <strong>BASE_REV</strong> and include it in the filter (in order of columns), then <strong>TOT</strong> under CAT for all tax revenues (not just energy, transport, etc.) and <strong>TOT</strong> under DOM for entire environment. Next the dataset can be called with <code>get_dataset</code>, the code <strong>ERTR</strong> is input, the filters are added and a start time and end time. The data is then cleaned as usual and the indicator is ready.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Environmental taxes</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>dstrucen &lt;-<span class="st"> </span><span class="kw">get_data_structure</span>(<span class="st">&quot;ERTR&quot;</span>)</span>
+<span id="cb17-3"><a href="#cb17-3"></a>couenv&lt;-dstrucen<span class="op">$</span>COU</span>
+<span id="cb17-4"><a href="#cb17-4"></a>clistenv&lt;-couenv<span class="op">$</span>id</span>
+<span id="cb17-5"><a href="#cb17-5"></a></span>
+<span id="cb17-6"><a href="#cb17-6"></a>envitax&lt;-<span class="st"> </span><span class="kw">get_dataset</span>(<span class="st">&quot;ERTR&quot;</span>,<span class="dt">filter=</span><span class="kw">list</span>(clistenv,<span class="st">&quot;BASE_REV&quot;</span>,<span class="st">&quot;TOT&quot;</span>,<span class="st">&quot;TOT&quot;</span>),</span>
+<span id="cb17-7"><a href="#cb17-7"></a>                      <span class="dt">start_time =</span> <span class="dv">2000</span>, <span class="dt">end_time =</span> <span class="dv">2020</span>)</span>
+<span id="cb17-8"><a href="#cb17-8"></a>envitax &lt;-<span class="st"> </span>envitax[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">5</span>,<span class="dv">8</span>)]</span>
+<span id="cb17-9"><a href="#cb17-9"></a><span class="kw">names</span>(envitax)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb17-10"><a href="#cb17-10"></a>envitax<span class="op">$</span>indicatorname &lt;-<span class="st">&quot;Environmentally related taxes, % total tax revenue&quot;</span></span>
+<span id="cb17-11"><a href="#cb17-11"></a>envitax<span class="op">$</span>indicatorcode &lt;-<span class="st"> &quot;OECD.ENVTAX.REV&quot;</span></span></code></pre></div>
+<p>For the Gender Equality indicators we use the whole dataset so it is easier as not filtering is necessary nor do we have to look at the data structure. This can be done for smaller datasets as well, following similar methodologies as WHO. Additionally, the indicator code already matches so we leave it as is, but divide the dataset to assign names and recombine at the end.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># Gender equality indicators</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>gen &lt;-<span class="kw">get_dataset</span>(<span class="st">&quot;SIGI2019&quot;</span>)</span>
+<span id="cb18-3"><a href="#cb18-3"></a>gen &lt;-<span class="st"> </span>gen[,<span class="op">-</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>)]</span>
+<span id="cb18-4"><a href="#cb18-4"></a><span class="kw">names</span>(gen)[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>] &lt;-<span class="kw">c</span>(<span class="st">&quot;iso3c&quot;</span>,<span class="st">&quot;indicatorcode&quot;</span>,<span class="st">&quot;year&quot;</span>,<span class="st">&quot;VALUE&quot;</span>)</span>
+<span id="cb18-5"><a href="#cb18-5"></a></span>
+<span id="cb18-6"><a href="#cb18-6"></a>gen1 &lt;-<span class="st"> </span>gen[gen<span class="op">$</span>indicatorcode <span class="op">%in%</span><span class="st"> &quot;RCL__2&quot;</span>,]</span>
+<span id="cb18-7"><a href="#cb18-7"></a>gen2 &lt;-<span class="st"> </span>gen[gen<span class="op">$</span>indicatorcode <span class="op">%in%</span><span class="st"> &quot;SIGI_2&quot;</span>,]</span>
+<span id="cb18-8"><a href="#cb18-8"></a>gen3 &lt;-<span class="st"> </span>gen[gen<span class="op">$</span>indicatorcode <span class="op">%in%</span><span class="st"> &quot;DF__2&quot;</span>,]</span>
+<span id="cb18-9"><a href="#cb18-9"></a>gen4 &lt;-<span class="st"> </span>gen[gen<span class="op">$</span>indicatorcode <span class="op">%in%</span><span class="st"> &quot;RPI__2&quot;</span>,]</span>
+<span id="cb18-10"><a href="#cb18-10"></a>gen5 &lt;-<span class="st"> </span>gen[gen<span class="op">$</span>indicatorcode <span class="op">%in%</span><span class="st"> &quot;RAPFR__2&quot;</span>,]</span>
+<span id="cb18-11"><a href="#cb18-11"></a></span>
+<span id="cb18-12"><a href="#cb18-12"></a>gen1<span class="op">$</span>indicatorname&lt;-<span class="st">&quot;Restricted civil liberties&quot;</span></span>
+<span id="cb18-13"><a href="#cb18-13"></a>gen2<span class="op">$</span>indicatorname&lt;-<span class="st">&quot;Social Institutions and Gender Index 2019&quot;</span></span>
+<span id="cb18-14"><a href="#cb18-14"></a>gen3<span class="op">$</span>indicatorname&lt;-<span class="st">&quot;Discrimination in the family&quot;</span></span>
+<span id="cb18-15"><a href="#cb18-15"></a>gen4<span class="op">$</span>indicatorname&lt;-<span class="st">&quot;Restricted physical integrity&quot;</span></span>
+<span id="cb18-16"><a href="#cb18-16"></a>gen5<span class="op">$</span>indicatorname&lt;-<span class="st">&quot;Restricted access to productive and financial resources&quot;</span></span>
+<span id="cb18-17"><a href="#cb18-17"></a></span>
+<span id="cb18-18"><a href="#cb18-18"></a>gen&lt;-<span class="kw">rbind</span>(gen1,gen2,gen3,gen4,gen5)</span></code></pre></div>
+<p>Source is added and the Benchmark dataframe is complete!</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>oecd &lt;-<span class="kw">rbind</span>(gen,envitax)</span>
+<span id="cb19-2"><a href="#cb19-2"></a></span>
+<span id="cb19-3"><a href="#cb19-3"></a>oecd<span class="op">$</span>source &lt;-<span class="st"> &quot;OECD&quot;</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a></span>
+<span id="cb19-5"><a href="#cb19-5"></a>benchmark &lt;-<span class="st"> </span><span class="kw">rbind</span>(oecd,benchmark)</span></code></pre></div>
+<hr />
+</div>
+<div id="housekeeping" class="section level3">
+<h3>Housekeeping</h3>
+<p>Some final data cleaning is done to avoid exporting a unnecessarily large excel file.</p>
+<p>The dataset is checked for repeated values, values before 2000 and the modeled estimates after 2020 are removed. Finally, all NAs are dropped as well.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>benchmark&lt;-benchmark <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">distinct</span>()</span>
+<span id="cb20-2"><a href="#cb20-2"></a></span>
+<span id="cb20-3"><a href="#cb20-3"></a>benchmark &lt;-<span class="st"> </span>benchmark[<span class="kw">which</span>(benchmark<span class="op">$</span>year <span class="op">&gt;=</span><span class="st"> </span><span class="dv">2000</span>),]</span>
+<span id="cb20-4"><a href="#cb20-4"></a>benchmark &lt;-<span class="st"> </span>benchmark[<span class="kw">which</span>(benchmark<span class="op">$</span>year <span class="op">&lt;=</span><span class="st"> </span><span class="dv">2020</span>),]</span>
+<span id="cb20-5"><a href="#cb20-5"></a></span>
+<span id="cb20-6"><a href="#cb20-6"></a>benchmark&lt;-<span class="kw">na.omit</span>(benchmark)</span>
+<span id="cb20-7"><a href="#cb20-7"></a></span>
+<span id="cb20-8"><a href="#cb20-8"></a><span class="co"># Review countries listed/check for missing ones</span></span></code></pre></div>
+<p>Finally, from the iso3c column region indicators are dropped as well as OECD countries and other non-existant country codes. Kosovo and Chad are reassigned.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="kw">unique</span>(benchmark<span class="op">$</span>iso3c)</span>
+<span id="cb21-2"><a href="#cb21-2"></a></span>
+<span id="cb21-3"><a href="#cb21-3"></a>benchmark<span class="op">$</span>iso3c[benchmark<span class="op">$</span>iso3c <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;KOS&quot;</span>,<span class="st">&quot;XKO&quot;</span>)] &lt;-<span class="st"> &quot;XKX&quot;</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a>benchmark<span class="op">$</span>iso3c[benchmark<span class="op">$</span>iso3c <span class="op">%in%</span><span class="st"> &quot;CHA&quot;</span>] &lt;-<span class="st"> &quot;TCD&quot;</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a></span>
+<span id="cb21-6"><a href="#cb21-6"></a>drops &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;X01&quot;</span>, <span class="st">&quot;X02&quot;</span>, <span class="st">&quot;X03&quot;</span>, <span class="st">&quot;X04&quot;</span>, <span class="st">&quot;X05&quot;</span>, <span class="st">&quot;X06&quot;</span>, <span class="st">&quot;X07&quot;</span>, <span class="st">&quot;X08&quot;</span>, <span class="st">&quot;X09&quot;</span>, <span class="st">&quot;X10&quot;</span>, <span class="st">&quot;X11&quot;</span>, <span class="st">&quot;X12&quot;</span>, <span class="st">&quot;X13&quot;</span>, <span class="st">&quot;X14&quot;</span>, </span>
+<span id="cb21-7"><a href="#cb21-7"></a>            <span class="st">&quot;X15&quot;</span>, <span class="st">&quot;X16&quot;</span>, <span class="st">&quot;X17&quot;</span>, <span class="st">&quot;X18&quot;</span>, <span class="st">&quot;X19&quot;</span>, <span class="st">&quot;X20&quot;</span>, <span class="st">&quot;X21&quot;</span>, <span class="st">&quot;X22&quot;</span>, <span class="st">&quot;X23&quot;</span>, <span class="st">&quot;X24&quot;</span>, <span class="st">&quot;X25&quot;</span>, <span class="st">&quot;X26&quot;</span>, <span class="st">&quot;X27&quot;</span>, <span class="st">&quot;X28&quot;</span>, </span>
+<span id="cb21-8"><a href="#cb21-8"></a>            <span class="st">&quot;X29&quot;</span>, <span class="st">&quot;X30&quot;</span>, <span class="st">&quot;X31&quot;</span>, <span class="st">&quot;X32&quot;</span>, <span class="st">&quot;X33&quot;</span>, <span class="st">&quot;X34&quot;</span>, <span class="st">&quot;X35&quot;</span>, <span class="st">&quot;X36&quot;</span>, <span class="st">&quot;X37&quot;</span>, <span class="st">&quot;X38&quot;</span>, <span class="st">&quot;X39&quot;</span>, <span class="st">&quot;X40&quot;</span>, <span class="st">&quot;X41&quot;</span>, <span class="st">&quot;X42&quot;</span>, </span>
+<span id="cb21-9"><a href="#cb21-9"></a>            <span class="st">&quot;X43&quot;</span>, <span class="st">&quot;X44&quot;</span>, <span class="st">&quot;X45&quot;</span>, <span class="st">&quot;X46&quot;</span>, <span class="st">&quot;X47&quot;</span>, <span class="st">&quot;X48&quot;</span>, <span class="st">&quot;X49&quot;</span>, <span class="st">&quot;X51&quot;</span>, <span class="st">&quot;X52&quot;</span>, <span class="st">&quot;X53&quot;</span>, <span class="st">&quot;X54&quot;</span>, <span class="st">&quot;X55&quot;</span>, <span class="st">&quot;X56&quot;</span>, <span class="st">&quot;X57&quot;</span>, </span>
+<span id="cb21-10"><a href="#cb21-10"></a>            <span class="st">&quot;X58&quot;</span>, <span class="st">&quot;X59&quot;</span>, <span class="st">&quot;X60&quot;</span>, <span class="st">&quot;X61&quot;</span>, <span class="st">&quot;X62&quot;</span>, <span class="st">&quot;X63&quot;</span>, <span class="st">&quot;X64&quot;</span>, <span class="st">&quot;X65&quot;</span>, <span class="st">&quot;X66&quot;</span>, <span class="st">&quot;X67&quot;</span>, <span class="st">&quot;X68&quot;</span>, <span class="st">&quot;X69&quot;</span>, <span class="st">&quot;X70&quot;</span>, <span class="st">&quot;X71&quot;</span>, </span>
+<span id="cb21-11"><a href="#cb21-11"></a>            <span class="st">&quot;X72&quot;</span>, <span class="st">&quot;X73&quot;</span>, <span class="st">&quot;X74&quot;</span>, <span class="st">&quot;X75&quot;</span>, <span class="st">&quot;X76&quot;</span>, <span class="st">&quot;X77&quot;</span>, <span class="st">&quot;X78&quot;</span>, <span class="st">&quot;X79&quot;</span>, <span class="st">&quot;X82&quot;</span>, <span class="st">&quot;X83&quot;</span>, <span class="st">&quot;X84&quot;</span>, <span class="st">&quot;X85&quot;</span>, <span class="st">&quot;X86&quot;</span>, <span class="st">&quot;X87&quot;</span>, </span>
+<span id="cb21-12"><a href="#cb21-12"></a>            <span class="st">&quot;X88&quot;</span>, <span class="st">&quot;X89&quot;</span>, <span class="st">&quot;X90&quot;</span>, <span class="st">&quot;X91&quot;</span>, <span class="st">&quot;OECD&quot;</span>, <span class="st">&quot;OECDE&quot;</span>, <span class="st">&quot;OECDAO&quot;</span>, <span class="st">&quot;OECDAM&quot;</span>, <span class="st">&quot;OAVG_A&quot;</span>, <span class="st">&quot;ANT&quot;</span>, <span class="st">&quot;XDN&quot;</span>)</span>
+<span id="cb21-13"><a href="#cb21-13"></a></span>
+<span id="cb21-14"><a href="#cb21-14"></a>clist&lt;-<span class="kw">countrycode</span>(benchmark<span class="op">$</span>iso3c, <span class="dt">origin =</span> <span class="st">&#39;iso3c&#39;</span>, <span class="dt">destination =</span> <span class="st">&#39;country.name&#39;</span>)</span>
+<span id="cb21-15"><a href="#cb21-15"></a><span class="kw">unique</span>(clist) <span class="co"># Values missing ANT, CHA, KOS, XDN, XKO (remove ANT, XDN)</span></span>
+<span id="cb21-16"><a href="#cb21-16"></a></span>
+<span id="cb21-17"><a href="#cb21-17"></a>benchmark &lt;-<span class="st"> </span><span class="kw">filter</span>(benchmark, <span class="op">!</span>(iso3c <span class="op">%in%</span><span class="st"> </span>drops))</span></code></pre></div>
+<p>We can then export the Benchmark dataframe as a csv file.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="kw">write.csv</span>(benchmark, <span class="st">&quot;~/Desktop/OECD/benchmark_data_r.csv&quot;</span>)</span></code></pre></div>
+<p>And with that it’s done and ready to be uploaded onto Stata!</p>
+<hr />
+</div>
+<div id="final-comments" class="section level3">
+<h3>Final comments</h3>
+I think there are several things that may be possible to make this process more integrated and smooth moving forward:
+<p>
+<ol style="list-style-type: decimal">
+<li>Integrating R script into Stata (it is possible). Alternatively,</li>
+<li>Move entire database onto R (Stata better with WDI though)</li>
+<li>Better way to access OECD data - I think this would require a Python script to access website, download onto temporary files and aggregate a dataframe. This would take a long time but totally possible with access to OECD library.</li>
+</ol>
+<hr />
+<div id="tips" class="section level4">
+<h4>Tips</h4>
+<ol style="list-style-type: decimal">
+<li><p>If ever there is an error in one of the datasets it easy to reset the benchmark dataframe using the below command and re-add each dataset to find where the issue stems from.</p></li>
+<li><p>If indicators are added make sure they are correctly categorized and sub-categorized with the existing code. It may be advised eventually to change the code to assign cat and subcat individually (like indicator name and code).</p></li>
+</ol>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>benchmark &lt;-<span class="st"> &quot;&quot;</span></span></code></pre></div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
