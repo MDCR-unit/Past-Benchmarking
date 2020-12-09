@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Kate Chalmers &amp; Hicham Moustaine" />
+
+<meta name="date" content="2020-11-25" />
+
+<title>GDP Structure Analysis</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      code.sourceCode > span { display: inline-block; line-height: 1.25; }
+  code.sourceCode > span { color: inherit; text-decoration: inherit; }
+  code.sourceCode > span:empty { height: 1.2em; }
+  .sourceCode { overflow: visible; }
+  code.sourceCode { white-space: pre; position: relative; }
+  div.sourceCode { margin: 1em 0; }
+  pre.sourceCode { margin: 0; }
+  @media screen {
+  div.sourceCode { overflow: auto; }
+  }
+  @media print {
+  code.sourceCode { white-space: pre-wrap; }
+  code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+  }
+  pre.numberSource code
+    { counter-reset: source-line 0; }
+  pre.numberSource code > span
+    { position: relative; left: -4em; counter-increment: source-line; }
+  pre.numberSource code > span > a:first-child::before
+    { content: counter(source-line);
+      position: relative; left: -1em; text-align: right; vertical-align: baseline;
+      border: none; display: inline-block;
+      -webkit-touch-callout: none; -webkit-user-select: none;
+      -khtml-user-select: none; -moz-user-select: none;
+      -ms-user-select: none; user-select: none;
+      padding: 0 4px; width: 4em;
+      color: #aaaaaa;
+    }
+  pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+  div.sourceCode
+    {  background-color: #f8f8f8; }
+  @media screen {
+  code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+  }
+  code span.al { color: #ef2929; } /* Alert */
+  code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+  code span.at { color: #c4a000; } /* Attribute */
+  code span.bn { color: #0000cf; } /* BaseN */
+  code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+  code span.ch { color: #4e9a06; } /* Char */
+  code span.cn { color: #000000; } /* Constant */
+  code span.co { color: #8f5902; font-style: italic; } /* Comment */
+  code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+  code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+  code span.dt { color: #204a87; } /* DataType */
+  code span.dv { color: #0000cf; } /* DecVal */
+  code span.er { color: #a40000; font-weight: bold; } /* Error */
+  code span.ex { } /* Extension */
+  code span.fl { color: #0000cf; } /* Float */
+  code span.fu { color: #000000; } /* Function */
+  code span.im { } /* Import */
+  code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+  code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+  code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+  code span.ot { color: #8f5902; } /* Other */
+  code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+  code span.sc { color: #000000; } /* SpecialChar */
+  code span.ss { color: #4e9a06; } /* SpecialString */
+  code span.st { color: #4e9a06; } /* String */
+  code span.va { color: #000000; } /* Variable */
+  code span.vs { color: #4e9a06; } /* VerbatimString */
+  code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+    </style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">MDCR Unit</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Past benchmarking
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Past_benchmarking_Albania_overview.html">Albania</a>
+    </li>
+    <li>
+      <a href="Past_benchmarking_SLV_overview.html">El Salvador</a>
+    </li>
+    <li>
+      <a href="Past_benchmarking_Laos_overview.html">Laos</a>
+    </li>
+    <li>
+      <a href="Past_benchmarking_CIV_overview.html">Cote d'Ivoire</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Morocco_GDP_prediction.html">GDP Prediction Analysis</a>
+</li>
+<li>
+  <a href="User_guide.html">Database update guide</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">GDP Structure Analysis</h1>
+<h4 class="author">Kate Chalmers &amp; Hicham Moustaine</h4>
+<h4 class="date">11/25/2020</h4>
+
+</div>
+
+
+<div id="estimation-outlier-removal" class="section level3">
+<h3>Estimation &amp; Outlier Removal</h3>
+<p>A simple OLS regression is run in order to evaluate how well our sample of country explains Morocco’s 2020 Q2 GDP growth.</p>
+<p>Breaking down GDP into 12 contributing sub-sectors by country, we regress the average value of these sectors first onto GDP to see how well the model fits overall.</p>
+<p>The following countries are included in our estimation:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">unique</span>(tot.wide<span class="op">$</span>country)</span></code></pre></div>
+<pre><code>##  [1] &quot;Austria&quot;        &quot;Belgium&quot;        &quot;Bulgaria&quot;       &quot;Colombia&quot;      
+##  [5] &quot;Costa Rica&quot;     &quot;Czechia&quot;        &quot;Denmark&quot;        &quot;Estonia&quot;       
+##  [9] &quot;Finland&quot;        &quot;France&quot;         &quot;Germany&quot;        &quot;Greece&quot;        
+## [13] &quot;Hungary&quot;        &quot;India&quot;          &quot;Ireland&quot;        &quot;Italy&quot;         
+## [17] &quot;Latvia&quot;         &quot;Lithuania&quot;      &quot;Luxembourg&quot;     &quot;Netherlands&quot;   
+## [21] &quot;Norway&quot;         &quot;Poland&quot;         &quot;Portugal&quot;       &quot;Romania&quot;       
+## [25] &quot;Slovakia&quot;       &quot;Slovenia&quot;       &quot;South Korea&quot;    &quot;Spain&quot;         
+## [29] &quot;Sweden&quot;         &quot;Switzerland&quot;    &quot;Tunisia&quot;        &quot;Turkey&quot;        
+## [33] &quot;Ukraine&quot;        &quot;United Kingdom&quot;</code></pre>
+<p>With the following sectors:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">unique</span>(gdp.tot<span class="op">$</span>subject)</span></code></pre></div>
+<pre><code>##  [1] &quot;Agriculture, forestry and fishing (ISIC Rev.4)&quot;                             
+##  [2] &quot;Construction (ISIC Rev.4)&quot;                                                  
+##  [3] &quot;Distrib. trade, repairs; transp.; accommod., food serv. activ. (ISIC Rev.4)&quot;
+##  [4] &quot;Financial and insurance activities (ISIC Rev.4)&quot;                            
+##  [5] &quot;Gross domestic product at market prices - output approach&quot;                  
+##  [6] &quot;Gross value added at basic prices, total activity&quot;                          
+##  [7] &quot;Industry, including energy (ISIC Rev.4)&quot;                                    
+##  [8] &quot;Information and communication (ISIC Rev.4)&quot;                                 
+##  [9] &quot;of which: Manufacturing (ISIC Rev.4)&quot;                                       
+## [10] &quot;Other service activities (ISIC Rev.4)&quot;                                      
+## [11] &quot;Prof., scientif., techn. activ.; admin., support service activ.(ISIC Rev.4)&quot;
+## [12] &quot;Public admin.; compulsory s.s.; education; human health (ISIC Rev.4)&quot;       
+## [13] &quot;Real estate activities (ISIC Rev.4)&quot;                                        
+## [14] &quot;Services (ISIC Rev.4)&quot;                                                      
+## [15] &quot;Subsidies on products&quot;                                                      
+## [16] &quot;Taxes less subsidies on products&quot;                                           
+## [17] &quot;Taxes on products&quot;</code></pre>
+<p>Take a glimpse at the data structure and the sectors we will be using in the model, the values are the percentage change from Q2 2019 to Q2 2020:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">head</span>(tot.wide)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 14
+##   country  agri    cons trade    fin    gdp industry  info  manuf  other   tech
+##   &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Austria -2.49  -6.35  -36.4  -2.51 -15.4    -21.7  -2.20 -25.2  -23.9  -36.3 
+## 2 Belgium  7.08 -17.9   -32.1  -7.44 -15.9    -17.6  -5.49 -18.2  -45.0  -18.2 
+## 3 Bulgar… -2.89   9.36  -35.2 -10.2   -6.97     3.61  9.61  -5.52 -15.1    2.89
+## 4 Colomb… 12.6  -40.3   -46.6   1.46 -18.3    -35.5  -7.46 -27.5  -55.5   -8.22
+## 5 Costa … -4.98   0.245 -42.6  -5.53 -12.0    -16.0   2.83 -19.9   -6.38  -1.24
+## 6 Czechia -6.75   2.78  -19.5  -8.56  -7.68   -14.8   4.80 -17.9  -21.7   -3.05
+## # … with 3 more variables: public &lt;dbl&gt;, estate &lt;dbl&gt;, services &lt;dbl&gt;</code></pre>
+<p>The first regression is the full set of countries, excluding Morocco, the main focus of this estimation. We also drop Egypt due to errors in matching quarters, but would like to keep it aside in case we would like to evaluate robustness through its inclusion.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>full.set&lt;-<span class="kw">lm</span>(gdp <span class="op">~</span><span class="st"> </span>agri <span class="op">+</span><span class="st"> </span>cons <span class="op">+</span><span class="st"> </span>trade <span class="op">+</span><span class="st"> </span>fin <span class="op">+</span><span class="st"> </span>industry <span class="op">+</span><span class="st"> </span>info <span class="op">+</span><span class="st"> </span>manuf <span class="op">+</span><span class="st"> </span>other <span class="op">+</span><span class="st"> </span>tech <span class="op">+</span><span class="st"> </span>public <span class="op">+</span><span class="st"> </span>estate <span class="op">+</span><span class="st"> </span>services, <span class="dt">data=</span>tot.wide)</span>
+<span id="cb7-2"><a href="#cb7-2"></a></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="kw">summary</span>(full.set)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = gdp ~ agri + cons + trade + fin + industry + info + 
+##     manuf + other + tech + public + estate + services, data = tot.wide)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.16780 -0.33209  0.02167  0.46888  2.16933 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -1.077751   0.798769  -1.349 0.192330    
+## agri         0.009737   0.011375   0.856 0.402120    
+## cons        -0.027547   0.016780  -1.642 0.116297    
+## trade        0.087425   0.047924   1.824 0.083093 .  
+## fin          0.145743   0.034768   4.192 0.000449 ***
+## industry     0.287506   0.050530   5.690 1.44e-05 ***
+## info         0.174891   0.045401   3.852 0.000994 ***
+## manuf       -0.007683   0.039043  -0.197 0.845975    
+## other       -0.014737   0.010192  -1.446 0.163678    
+## tech         0.003927   0.034165   0.115 0.909642    
+## public      -0.091518   0.073815  -1.240 0.229385    
+## estate       0.030948   0.037415   0.827 0.417909    
+## services     0.340527   0.189296   1.799 0.087142 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.193 on 20 degrees of freedom
+##   (1 observation deleted due to missingness)
+## Multiple R-squared:  0.9759, Adjusted R-squared:  0.9614 
+## F-statistic: 67.49 on 12 and 20 DF,  p-value: 1.777e-13</code></pre>
+<p>It is useful to note that the R-squared is very high so our model does fit the data well. But the relationship between sectors is only weakly significant, though this is not extremely important in prediction. In any case, this could be influenced by the outliers that we noted in our original GDP structure analysis. So after conducting a more thorough outlier analysis, we will evaluate how their removal improves the model.</p>
+<p>We next run a first test of the model’s predictive ability with Morocco. The model produces a fitted value of <strong>-13.34%</strong> predicted for Morocco’s GDP growth with a RMSE of <strong>8.4</strong>. When compared to Morocco’s observed GDP contraction of <strong>9.3424</strong> this is close but could be improved.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>train.mar<span class="fl">.1</span>&lt;-<span class="kw">lm</span>(gdp <span class="op">~</span><span class="st"> </span>agri <span class="op">+</span><span class="st"> </span>trade <span class="op">+</span><span class="st"> </span>fin <span class="op">+</span><span class="st"> </span>manuf <span class="op">+</span><span class="st"> </span>other <span class="op">+</span><span class="st"> </span>tech <span class="op">+</span><span class="st"> </span>public <span class="op">+</span><span class="st"> </span>services, <span class="dt">data=</span>tot.wide)</span>
+<span id="cb9-2"><a href="#cb9-2"></a></span>
+<span id="cb9-3"><a href="#cb9-3"></a>pred.mar1&lt;-<span class="kw">predict</span>(train.mar<span class="fl">.1</span>, <span class="dt">newdata =</span> mar.gdp, <span class="dt">interval =</span> <span class="st">&quot;prediction&quot;</span>)</span>
+<span id="cb9-4"><a href="#cb9-4"></a></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="kw">rmse</span>(mar.gdp<span class="op">$</span>gdp,pred.mar1)</span></code></pre></div>
+<pre><code>## [1] 8.443227</code></pre>
+<p>We run some quick plots to evaluate linearity and check those with high standard deviations to decide which values to drop.</p>
+<p><img src="Morocco_GDP_prediction_files/figure-html/unnamed-chunk-1-1.png" width="33%" /><img src="Morocco_GDP_prediction_files/figure-html/unnamed-chunk-1-2.png" width="33%" /><img src="Morocco_GDP_prediction_files/figure-html/unnamed-chunk-1-3.png" width="33%" /></p>
+<p>Given the bunching in Agriculture which is the result of a far outlying value in Ireland, we remove that observation and another one from Estonia. We also remove the outlier in Other Services (Ireland again) and a final one in Estate.</p>
+<p>We can see that this has led to a more linear shape, meaning better estimates can be made from the data.</p>
+<p><img src="Morocco_GDP_prediction_files/figure-html/unnamed-chunk-2-1.png" width="33%" /><img src="Morocco_GDP_prediction_files/figure-html/unnamed-chunk-2-2.png" width="33%" /><img src="Morocco_GDP_prediction_files/figure-html/unnamed-chunk-2-3.png" width="33%" /></p>
+<p>We run a final assessment through boxplots and feel the rest are representative of the sample.</p>
+<p><img src="Morocco_GDP_prediction_files/figure-html/cleaned-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="prediction" class="section level3">
+<h3>Prediction</h3>
+<p>The model has improved slightly for GDP with a higher R-squared and more significant variables. Now we can see how well it predicts GDP for Morocco. We use only the sectors that are found in the data we have for Morocco, build the model with them and run the training set. Next we add in Morocco as the validation set to see how well this model predicts GDP using the coefficients from the model.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>train.mar<span class="fl">.2</span>&lt;-<span class="kw">lm</span>(gdp <span class="op">~</span><span class="st"> </span>agri <span class="op">+</span><span class="st"> </span>trade <span class="op">+</span><span class="st"> </span>fin <span class="op">+</span><span class="st"> </span>manuf <span class="op">+</span><span class="st"> </span>other <span class="op">+</span><span class="st"> </span>tech <span class="op">+</span><span class="st"> </span>public <span class="op">+</span><span class="st"> </span>services, <span class="dt">data=</span>tot.wide)</span>
+<span id="cb11-2"><a href="#cb11-2"></a></span>
+<span id="cb11-3"><a href="#cb11-3"></a>pred.mar<span class="fl">.2</span>&lt;-<span class="kw">predict</span>(train.mar<span class="fl">.2</span>, <span class="dt">newdata =</span> mar.gdp, <span class="dt">interval =</span> <span class="st">&quot;prediction&quot;</span>)</span>
+<span id="cb11-4"><a href="#cb11-4"></a></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="kw">summary</span>(pred.mar<span class="fl">.2</span>)</span></code></pre></div>
+<pre><code>##       fit              lwr             upr        
+##  Min.   :-11.33   Min.   :-19.5   Min.   :-3.161  
+##  1st Qu.:-11.33   1st Qu.:-19.5   1st Qu.:-3.161  
+##  Median :-11.33   Median :-19.5   Median :-3.161  
+##  Mean   :-11.33   Mean   :-19.5   Mean   :-3.161  
+##  3rd Qu.:-11.33   3rd Qu.:-19.5   3rd Qu.:-3.161  
+##  Max.   :-11.33   Max.   :-19.5   Max.   :-3.161</code></pre>
+<p>The fitted value shows that this model predicts Morocco’s GDP to be at <strong>-11.32872</strong>.</p>
+<p>This is not far from the actual observed value of <strong>-9.3424</strong>. This could mean that this model does a decent job of representing Covid’s impact by sector and could be applied to other applications in the future, including making inferences on the impact C19 has had on employment.</p>
+<p>When checking the RMSE of the model, we find it lower than the full set, confirming that removing the outliers improved our model.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">rmse</span>(mar.gdp<span class="op">$</span>gdp,pred.mar<span class="fl">.2</span>)</span></code></pre></div>
+<pre><code>## [1] 6.958245</code></pre>
+<p>We run this for several more countries, a mix between our developing sample and OECD countries with more average and “extreme” GDP impacts. We also include Ireland because it includes several removed values that were considered outliers and would like to see how this effects prediction for this value.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Country</th>
+<th align="center">Predicted value</th>
+<th align="right">Observed value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Ireland</td>
+<td align="center">-5.889</td>
+<td align="right">-1.635</td>
+</tr>
+<tr class="even">
+<td align="left">Tunisia</td>
+<td align="center">-14.040</td>
+<td align="right">-11.816</td>
+</tr>
+<tr class="odd">
+<td align="left">France</td>
+<td align="center">-20.08</td>
+<td align="right">-18.384</td>
+</tr>
+<tr class="even">
+<td align="left">Switzerland</td>
+<td align="center">-10.49</td>
+<td align="right">-10.777</td>
+</tr>
+<tr class="odd">
+<td align="left">Spain</td>
+<td align="center">-25.58</td>
+<td align="right">-26.173</td>
+</tr>
+</tbody>
+</table>
+<p>Seeing that this model predicts close to the observed GDP impact, we can use it to extrapolate impact on the labour market in Morocco.</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

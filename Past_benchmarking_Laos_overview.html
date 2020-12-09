@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="OECD Development Centre - MDCR Unit" />
+
+
+<title>Past Benchmarking - Lao PDR</title>
+
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<link href="site_libs/bokehjs-0.12.5/bokeh.min.css" rel="stylesheet" />
+<link href="site_libs/bokehjs-0.12.5/loader.css" rel="stylesheet" />
+<script src="site_libs/bokehjs-0.12.5/bokeh.min.js"></script>
+<script src="site_libs/rbokeh-binding-0.5.1/rbokeh.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.16/datatables.js"></script>
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+      </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">MDCR Unit</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Past benchmarking
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Past_benchmarking_Albania_overview.html">Albania</a>
+    </li>
+    <li>
+      <a href="Past_benchmarking_SLV_overview.html">El Salvador</a>
+    </li>
+    <li>
+      <a href="Past_benchmarking_Laos_overview.html">Laos</a>
+    </li>
+    <li>
+      <a href="Past_benchmarking_CIV_overview.html">Cote d'Ivoire</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="Morocco_GDP_prediction.html">GDP Prediction Analysis</a>
+</li>
+<li>
+  <a href="User_guide.html">Database update guide</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Past Benchmarking - Lao PDR</h1>
+<h4 class="author">OECD Development Centre - MDCR Unit</h4>
+
+</div>
+
+
+<p>This page is a collection of the results for the Multi-dimensional Country Review’s Past Benchmarking algorithm for the country <strong>Lao PDR</strong>. <br></p>
+<p>This algorithm finds an indicator’s present day value for Lao PDR and searches for countries with similar levels in the past. Countries who have been at or near the same value become Benchmark Candidate Countries, which are then filtered further by a “goal” each of these countries have met. This goal is explicitly defined for each indicator and is adjusted by the application of the algorithm. The Candidate Countries are then summarized into a data table with information such as matching year, length of time to reach goal and other relevant information. A series of time series graphs for each of the Candidate Countries is also included to evaluate sustained performance over time. <br></p>
+<p>The uses of this algorithm are multi-faceted. Seeing how other, comparable countries have developed over time for an indicator can help us find stories in the past, provide reference points for effective policies and guide feasible goal-setting. <br></p>
+The following indicators are currently available:
+<p>
+<ul>
+<li><a href="#GDP">Constant GDP per capita (2010 USD)</a> <br></li>
+<li><a href="#Emp">Employment to population (%)</a> <br></li>
+<li><a href="#Lit">Literacy rate (%)</a><br></li>
+<li><a href="#Mskool">Mean years of schooling</a> <br></li>
+<li><a href="#Noskool">Percent of population without schooling</a> <br></li>
+<li><a href="#ECI">Economic complexity index</a> <br></li>
+<li><a href="#Lab">Output per worker (GDP constant 2010 USD)</a> <br></li>
+</ul>
+<p>The summary of the results for Lao PDR for each of these indicators are found below.</p>
+<hr />
+<div id="GDP" class="section level4">
+<h4><strong>Indicator:</strong> Constant GDP per capita (2010 USD)</h4>
+<strong>2019 Constant GDP per capita in Lao PDR :</strong> 1 840.50 USD <br> <strong>Match threshold :</strong> ±250 USD<br> <strong>Goal :</strong> Double (2x) <br> <strong>Source :</strong> WDI
+<p>
+<div id="map-of-comparison-countries" class="section level5">
+<h5><strong>Map of comparison countries</strong></h5>
+<p>Below is a map populated with each country that met the matching criteria.</p>
+<p>preserve5e6f9252f23a29a3</p>
+</div>
+<div id="table-output-of-comparison-countries" class="section level5">
+<h5><strong>Table output of comparison countries</strong></h5>
+<p>This table is a summary of the results of the algorithm.</p>
+<p>preserve583cee7f0fb03ad3</p>
+</div>
+<div id="time-series-of-comparison-countries" class="section level5">
+<h5><strong>Time series of comparison countries</strong></h5>
+<p>These graphs show the full time series for the indicator. The solid line represents the comparison country whereas the dotted line is the time series for the country of interest, Lao PDR. The red dots indicate the match values for both countries. Finally, the vertical dashed lines show the window from which the country indicator value matched current day Lao PDR until it surpasses its goal.</p>
+<p><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-1.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-2.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-3.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-4.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-5.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-6.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-7.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-8.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-9.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-10.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-11.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-12.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-13.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-14.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-15.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-16.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-17.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-18.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-19.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-20.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-21.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-22.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-23.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-3-24.png" width="50%" /></p>
+</div>
+<div id="similarity-measure" class="section level5">
+<h5><strong>Similarity measure</strong></h5>
+<p>In order to narrow down the list of candidate countries further, a similarity measure is constructed. To calculate this, we compare country structures through standardizing the values of certain structural indicators of the comparison country at the match year with present day Lao PDR. We calculate this value for seven indicators: <br></p>
+<ul>
+<li>Total land area (sq. km)<br></li>
+<li>Population density (people per sq. km of land area)<br></li>
+<li>Services, valued added (% of GDP)<br></li>
+<li>Industry (including construction), valued added (% of GDP)<br></li>
+<li>Oil rents (% of GDP)<br></li>
+<li>Agricultural land (% of land area)<br></li>
+<li>Total population<br></li>
+</ul>
+<p>The values closest to zero being the most similar to Lao PDR, when we sum these we want the smallest value possible. The results of this summation are seen above under Similarity Measure in the table of the algorithm’s results.</p>
+<p>It also possible to compare using radar charts, which gives a global idea of which countries had similar values for each structural indicators. This makes it possible to compare countries when a particular structural indicator is more important for your comparison, such as by size, economic composition, etc.</p>
+<p><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-1.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-2.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-3.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-4.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-5.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-6.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-7.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-8.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-9.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-10.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-11.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-12.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-13.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-14.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-15.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-16.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-17.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-18.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-19.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-20.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-21.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-22.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-4-23.png" width="33%" /></p>
+<hr />
+</div>
+</div>
+<div id="Emp" class="section level4">
+<h4><strong>Indicator:</strong> Employment to population (%)</h4>
+<p><strong>2019 Employment in Lao PDR :</strong> 77.98% <br> <strong>Match threshold :</strong> ±2.5% <br> <strong>Goal :</strong> 1.25x <strong>Source</strong>: WDI</p>
+<p>preserveb67938718719130e</p>
+<div id="table-output-of-comparison-countries-1" class="section level5">
+<h5><strong>Table output of comparison countries</strong></h5>
+<p>preserve7a5e3f775e81fcb2</p>
+</div>
+<div id="time-series-of-comparison-countries-1" class="section level5">
+<h5><strong>Time series of comparison countries</strong></h5>
+<p>These graphs show the full time series for the indicator. The solid line represents the comparison country whereas the dotted line is the time series for the country of interest, Lao PDR. The red dots indicate the match values for both countries. Finally, the vertical dashed lines show the window from which the country indicator value matched current day Lao PDR until it surpasses its goal.</p>
+<p><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-7-1.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-7-2.png" width="50%" /></p>
+</div>
+<div id="similarity-measure-1" class="section level5">
+<h5><strong>Similarity measure</strong></h5>
+<p><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-8-1.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-8-2.png" width="33%" /></p>
+<hr />
+</div>
+</div>
+<div id="Mskool" class="section level4">
+<h4><strong>Indicator:</strong> Mean years of schooling</h4>
+<p><strong>2010 mean years of schooling in Lao PDR :</strong> 4.57 years <br> <strong>Match threshold :</strong> ±0.25 years <br> <strong>Goal :</strong> 1.25x <strong>Source:</strong> Barro-Lee Education Attainment dataset</p>
+<p>preserve63b139312c5cb5f4</p>
+<div id="table-output-of-comparison-countries-2" class="section level5">
+<h5><strong>Table output of comparison countries</strong></h5>
+<p>preserve51d3e669f5b742c3</p>
+</div>
+<div id="time-series-of-comparison-countries-2" class="section level5">
+<h5><strong>Time series of comparison countries</strong></h5>
+<p>These graphs show the full time series for the indicator. The solid line represents the comparison country whereas the dotted line is the time series for the country of interest, Lao PDR. The red dots indicate the match values for both countries. Finally, the vertical dashed lines show the window from which the country indicator value matched current day Lao PDR until it surpasses its goal.</p>
+<p><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-1.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-2.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-3.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-4.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-5.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-6.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-7.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-8.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-9.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-10.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-11.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-12.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-13.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-14.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-15.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-16.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-17.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-18.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-19.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-20.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-11-21.png" width="50%" /></p>
+</div>
+<div id="similarity-measure-2" class="section level5">
+<h5><strong>Similarity measure</strong></h5>
+<p><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-1.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-2.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-3.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-4.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-5.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-6.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-7.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-8.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-9.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-10.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-11.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-12.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-13.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-14.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-15.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-16.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-17.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-18.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-19.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-20.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-12-21.png" width="33%" /> ________</p>
+</div>
+</div>
+<div id="Noskool" class="section level4">
+<h4><strong>Indicator:</strong> Percent of population without schooling</h4>
+<p><strong>2010 percentage of population with no schooling in Lao PDR :</strong> 34.59% <br> <strong>Match threshold :</strong> ±0.25% <strong>Goal :</strong> Half (-0.5x) <strong>Source:</strong> Barro-Lee Education Attainment dataset</p>
+<p>preserve0ee08fc7f2031ed7</p>
+<div id="table-output-of-comparison-countries-3" class="section level5">
+<h5><strong>Table output of comparison countries</strong></h5>
+<p>preserve4401eaca15e2f12b</p>
+</div>
+<div id="time-series-of-comparison-countries-3" class="section level5">
+<h5><strong>Time series of comparison countries</strong></h5>
+<p>These graphs show the full time series for the indicator. The solid line represents the comparison country whereas the dotted line is the time series for the country of interest, Lao PDR. The red dots indicate the match values for both countries. Finally, the vertical dashed lines show the window from which the country indicator value matched current day Lao PDR until it surpasses its goal.</p>
+<p><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-15-1.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-15-2.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-15-3.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-15-4.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-15-5.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-15-6.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-15-7.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-15-8.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-15-9.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-15-10.png" width="50%" /></p>
+</div>
+<div id="similarity-measure-3" class="section level5">
+<h5><strong>Similarity measure</strong></h5>
+<p><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-16-1.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-16-2.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-16-3.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-16-4.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-16-5.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-16-6.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-16-7.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-16-8.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-16-9.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-16-10.png" width="33%" /></p>
+<hr />
+</div>
+</div>
+<div id="ECI" class="section level4">
+<h4><strong>Indicator:</strong> Economic complexity index</h4>
+<p><strong>2019 economic complexity in Lao PDR :</strong> -1.251 <br> <strong>Match threshold :</strong> ±0.01 <strong>Goal :</strong> +0.5 <strong>Source:</strong> OEC</p>
+<p>preserve4c079524cae7a044</p>
+<div id="table-output-of-comparison-countries-4" class="section level5">
+<h5><strong>Table output of comparison countries</strong></h5>
+<p>preserved72d7d5c8171809d</p>
+</div>
+<div id="time-series-of-comparison-countries-4" class="section level5">
+<h5><strong>Time series of comparison countries</strong></h5>
+<p>These graphs show the full time series for the indicator. The solid line represents the comparison country whereas the dotted line is the time series for the country of interest, Lao PDR. The red dots indicate the match values for both countries. Finally, the vertical dashed lines show the window from which the country indicator value matched current day Lao PDR until it surpasses its goal.</p>
+<p><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-19-1.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-19-2.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-19-3.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-19-4.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-19-5.png" width="50%" /></p>
+</div>
+<div id="similarity-measure-4" class="section level5">
+<h5><strong>Similarity measure</strong></h5>
+<p><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-20-1.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-20-2.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-20-3.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-20-4.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-20-5.png" width="33%" /></p>
+<hr />
+</div>
+</div>
+<div id="Lab" class="section level4">
+<h4><strong>Indicator:</strong> Output per worker (GDP constant 2010 USD)</h4>
+<p><strong>2019 output per worker in Lao PDR :</strong> 3 552.04 USD <br> <strong>Match threshold :</strong> ±250 USD <br> <strong>Goal :</strong> 1.5x <strong>Source:</strong> ILO</p>
+<p>preserve5a29bb285dd0ae76</p>
+<div id="table-output-of-comparison-countries-5" class="section level5">
+<h5><strong>Table output of comparison countries</strong></h5>
+<p>preserve315912b65449a766</p>
+</div>
+<div id="time-series-of-comparison-countries-5" class="section level5">
+<h5><strong>Time series of comparison countries</strong></h5>
+<p>These graphs show the full time series for the indicator. The solid line represents the comparison country whereas the dotted line is the time series for the country of interest, Lao PDR. The red dots indicate the match values for both countries. Finally, the vertical dashed lines show the window from which the country indicator value matched current day Lao PDR until it surpasses its goal.</p>
+<p><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-23-1.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-23-2.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-23-3.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-23-4.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-23-5.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-23-6.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-23-7.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-23-8.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-23-9.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-23-10.png" width="50%" /></p>
+</div>
+<div id="similarity-measure-5" class="section level5">
+<h5><strong>Similarity measure</strong></h5>
+<p><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-24-1.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-24-2.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-24-3.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-24-4.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-24-5.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-24-6.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-24-7.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-24-8.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-24-9.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-24-10.png" width="33%" /></p>
+<hr />
+</div>
+</div>
+<div id="Lit" class="section level4">
+<h4><strong>Indicator:</strong> Literacy rate (%)</h4>
+<p><strong>2018 literacy rate in Lao PDR :</strong> 84.6%<br> <strong>Match threshold :</strong> ±1.0% <br> <strong>Goal :</strong> &gt;98.1% <strong>Source:</strong> WDI</p>
+<p>preserve5fdae150ba54cee2</p>
+<div id="table-output-of-comparison-countries-6" class="section level5">
+<h5><strong>Table output of comparison countries</strong></h5>
+<p>preserve9af796a976f54ad6</p>
+</div>
+<div id="time-series-of-comparison-countries-6" class="section level5">
+<h5><strong>Time series of comparison countries</strong></h5>
+<p>These graphs show the full time series for the indicator. The solid line represents the comparison country whereas the dotted line is the time series for the country of interest, Lao PDR. The red dots indicate the match values for both countries. Finally, the vertical dashed lines show the window from which the country indicator value matched current day Lao PDR until it surpasses its goal.</p>
+<p><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-27-1.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-27-2.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-27-3.png" width="50%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-27-4.png" width="50%" /></p>
+</div>
+<div id="similarity-measure-6" class="section level5">
+<h5><strong>Similarity measure</strong></h5>
+<p><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-28-1.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-28-2.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-28-3.png" width="33%" /><img src="Past_benchmarking_Laos_overview_files/figure-html/unnamed-chunk-28-4.png" width="33%" /></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
