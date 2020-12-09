@@ -2,7 +2,12 @@ name: "Past-Benchmarking"
 output_dir: "docs"
 navbar:
   title: "MDCR Unit"
+  herf: index.html
   left:
+  - text: "GDP Prediction Analysis"
+    href: Morocco_GDP_prediction.html
+  - text: "Database update guide"
+    href: User_guide.html
   - text: "Past benchmarking"
     menu:
     - text: "Albania"
@@ -13,10 +18,6 @@ navbar:
       href: Past_benchmarking_Laos_overview.html
     - text: "Cote d'Ivoire"
       href: Past_benchmarking_CIV_overview.html
-  - text: "GDP Prediction Analysis"
-    href: Morocco_GDP_prediction.html
-  - text: "Database update guide"
-    href: User_guide.html
 output:
   html_document:
     theme: cosmo
