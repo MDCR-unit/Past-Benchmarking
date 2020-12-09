@@ -3,8 +3,8 @@ output_dir: "docs"
 navbar:
   title: "MDCR Unit"
   left:
-    - text: "Past Benchmarking"
-      href: index.html
+  - text: "Past benchmarking"
+    menu:
     - text: "Albania"
       href: Past_benchmarking_Albania_overview.html
     - text: "El Salvador"
