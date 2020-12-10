@@ -210,7 +210,7 @@ In order to narrow down the list of candidate countries further, a similarity me
 
 The values closest to zero being the most similar to Cote d'Ivoire, when we sum these we want the smallest value possible. The results of this summation are seen above under Similarity Measure in the table of the algorithm's results. 
 
-It also possible to compare using radar charts, which gives a global idea of which countries had similar values for each structural indicators. This makes it possible to compare countries when a particular structural indicator is more important for your comparison, such as by size, economic composition, etc.
+It also possible to compare using radar charts, which gives a global idea of which countries had similar values for each structural indicators. This can be used when a particular structural indicator is more important for your comparison, such as by size, economic composition, etc.They are found below, in order from most similar to least similar. 
 
 ```{r,fig.show="hold", out.width="33%",message=FALSE,echo=FALSE}
 library(fmsb)
@@ -219,12 +219,23 @@ library(readxl)
 sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "gdp.sim.sum")
 sim.val <- na.omit(sim.val)
 
-wheel.slice <- sim.val[,-c(1,9)]
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+gdp.output <- read_excel("0_Indicator_Tables/2019_CIV_gdp.xlsx")
+gdp.output <- gdp.output[,c(2,3)]
 
+colnames(gdp.output)[1]<-"country"
+sim.val<-merge(sim.val,gdp.output,by="country")
+
+sim.val <- arrange(sim.val, sum.std.val)
 mytitle<-sim.val$country
+myear <-sim.val$`Match year`
+
+mytitle<-paste(mytitle,myear)
 row <- nrow(sim.val)
 
-par(mar=rep(0.8,4))
+wheel.slice <- sim.val[,-c(1,9:10)]
+
+par(mar=rep(1,4))
 
 for(i in 1:row){
   slice.1 <- wheel.slice[i,]
@@ -232,23 +243,23 @@ for(i in 1:row){
   col <- ncol(slice.1)
   
   for(x in 1:col){
-    slice.1[x]<-ifelse(slice.1[x] > 3, (slice.1[x]/4), slice.1[x])
-    }
-
+    slice.1[x]<-ifelse(slice.1[x] > 4, (slice.1[x]=4), slice.1[x])
+  }
+  
   max.1 <- max(slice.1)
   min.1 <- min(slice.1)
   data <- rbind(rep(0,1) , rep(max.1,1) , slice.1)
   data2 = data
   data2[2:1,] = data2[1:2,]
   data2[2:1,] = data2[1:2,]
-
+  
   radarchart(data2, axistype = 2, 
              pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=2 ,
              cglcol="grey", cglty=1, axislabcol="grey",
              caxislabels=seq(1,1,-1), cglwd=0.9,
              vlcex=0.8,
              title=mytitle[i]
-             )
+  )
 }
 
 ```
@@ -397,13 +408,24 @@ library(readxl)
 
 sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "emp.sim.sum")
 
-wheel.slice <- sim.val[,-c(1,9)]
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+emp.output <- read_excel("0_Indicator_Tables/2019_CIV_employ.xlsx")
+emp.output <- emp.output[,c(2,3)]
 
+colnames(emp.output)[1]<-"country"
+
+sim.val<-merge(sim.val,emp.output,by="country")
+
+sim.val <- arrange(sim.val, sum.std.val)
 mytitle<-sim.val$country
+myear <-sim.val$`Match year`
+
+mytitle<-paste(mytitle,myear)
 row <- nrow(sim.val)
 
-par(mar=rep(1,4))
+wheel.slice <- sim.val[,-c(1,9:10)]
 
+par(mar=rep(1,4))
 
 for(i in 1:row){
   slice.1 <- wheel.slice[i,]
@@ -411,24 +433,23 @@ for(i in 1:row){
   col <- ncol(slice.1)
   
   for(x in 1:col){
-    slice.1[x]<-ifelse(slice.1[x] > 3, (slice.1[x]/4), slice.1[x])
-    }
-
+    slice.1[x]<-ifelse(slice.1[x] > 4, (slice.1[x]=4), slice.1[x])
+  }
+  
   max.1 <- max(slice.1)
   min.1 <- min(slice.1)
-  data <- rbind(rep(0,1) , rep(max.1,1) , slice.1)
-
+  data <- rbind(rep(0,1) , rep(3,1) , slice.1)
   data2 = data
   data2[2:1,] = data2[1:2,]
   data2[2:1,] = data2[1:2,]
-
+  
   radarchart(data2, axistype = 2, 
              pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=2 ,
              cglcol="grey", cglty=1, axislabcol="grey",
              caxislabels=seq(1,1,-1), cglwd=0.9,
              vlcex=0.8,
              title=mytitle[i]
-             )
+  )
 }
 ```
 
@@ -574,12 +595,24 @@ library(fmsb)
 
 sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "myears.sim.sum")
 
-wheel.slice <- sim.val[,-c(1,9)]
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+myrs.output <- read_excel("0_Indicator_Tables/2019_CIV_meanyrs.xlsx")
+myrs.output <- myrs.output[,c(2,3)]
 
+colnames(myrs.output)[1]<-"country"
+
+sim.val<-merge(sim.val,myrs.output,by="country")
+
+sim.val <- arrange(sim.val, sum.std.val)
 mytitle<-sim.val$country
+myear <-sim.val$`Match year`
+
+mytitle<-paste(mytitle,myear)
 row <- nrow(sim.val)
 
-par(mar=rep(0.8,4))
+wheel.slice <- sim.val[,-c(1,9:10)]
+
+par(mar=rep(1,4))
 
 for(i in 1:row){
   slice.1 <- wheel.slice[i,]
@@ -587,24 +620,23 @@ for(i in 1:row){
   col <- ncol(slice.1)
   
   for(x in 1:col){
-    slice.1[x]<-ifelse(slice.1[x] > 3, (slice.1[x]/4), slice.1[x])
-    }
-
+    slice.1[x]<-ifelse(slice.1[x] > 4, (slice.1[x]=4), slice.1[x])
+  }
+  
   max.1 <- max(slice.1)
   min.1 <- min(slice.1)
-  data <- rbind(rep(0,1) , rep(max.1,1) , slice.1)
-
+  data <- rbind(rep(0,1) , rep(3,1) , slice.1)
   data2 = data
   data2[2:1,] = data2[1:2,]
   data2[2:1,] = data2[1:2,]
-
+  
   radarchart(data2, axistype = 2, 
              pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=2 ,
              cglcol="grey", cglty=1, axislabcol="grey",
              caxislabels=seq(1,1,-1), cglwd=0.9,
              vlcex=0.8,
              title=mytitle[i]
-             )
+  )
 }
 ```
 ________
@@ -749,12 +781,24 @@ library(fmsb)
 
 sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "noskl.sim.sum")
 
-wheel.slice <- sim.val[,-c(1,9)]
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+noskl.output <- read_excel("0_Indicator_Tables/2019_CIV_noschool.xlsx")
+noskl.output <- noskl.output[,c(2,3)]
 
+colnames(noskl.output)[1]<-"country"
+
+sim.val<-merge(sim.val,noskl.output,by="country")
+
+sim.val <- arrange(sim.val, sum.std.val)
 mytitle<-sim.val$country
+myear <-sim.val$`Match year`
+
+mytitle<-paste(mytitle,myear)
 row <- nrow(sim.val)
 
-par(mar=rep(0.8,4))
+wheel.slice <- sim.val[,-c(1,9:10)]
+
+par(mar=rep(1,4))
 
 for(i in 1:row){
   slice.1 <- wheel.slice[i,]
@@ -762,24 +806,23 @@ for(i in 1:row){
   col <- ncol(slice.1)
   
   for(x in 1:col){
-    slice.1[x]<-ifelse(slice.1[x] > 3, (slice.1[x]/4), slice.1[x])
-    }
-
+    slice.1[x]<-ifelse(slice.1[x] > 4, (slice.1[x]=4), slice.1[x])
+  }
+  
   max.1 <- max(slice.1)
   min.1 <- min(slice.1)
-  data <- rbind(rep(0,1) , rep(max.1,1) , slice.1)
-
+  data <- rbind(rep(0,1) , rep(3,1) , slice.1)
   data2 = data
   data2[2:1,] = data2[1:2,]
   data2[2:1,] = data2[1:2,]
-
+  
   radarchart(data2, axistype = 2, 
              pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=2 ,
              cglcol="grey", cglty=1, axislabcol="grey",
              caxislabels=seq(1,1,-1), cglwd=0.9,
              vlcex=0.8,
              title=mytitle[i]
-             )
+  )
 }
 ```
 
@@ -924,12 +967,24 @@ library(fmsb)
 
 sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "eci.sim.sum")
 
-wheel.slice <- sim.val[,-c(1,9)]
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+eci.output <- read_excel("0_Indicator_Tables/2019_CIV_eci.xlsx")
+eci.output <- eci.output[,c(2,3)]
 
+colnames(eci.output)[1]<-"country"
+
+sim.val<-merge(sim.val,eci.output,by="country")
+
+sim.val <- arrange(sim.val, sum.std.val)
 mytitle<-sim.val$country
+myear <-sim.val$`Match year`
+
+mytitle<-paste(mytitle,myear)
 row <- nrow(sim.val)
 
-par(mar=rep(0.8,4))
+wheel.slice <- sim.val[,-c(1,9:10)]
+
+par(mar=rep(1,4))
 
 for(i in 1:row){
   slice.1 <- wheel.slice[i,]
@@ -937,24 +992,23 @@ for(i in 1:row){
   col <- ncol(slice.1)
   
   for(x in 1:col){
-    slice.1[x]<-ifelse(slice.1[x] > 3, (slice.1[x]/4), slice.1[x])
-    }
-
+    slice.1[x]<-ifelse(slice.1[x] > 4, (slice.1[x]=4), slice.1[x])
+  }
+  
   max.1 <- max(slice.1)
   min.1 <- min(slice.1)
-  data <- rbind(rep(0,1) , rep(max.1,1) , slice.1)
-
+  data <- rbind(rep(0,1) , rep(3,1) , slice.1)
   data2 = data
   data2[2:1,] = data2[1:2,]
   data2[2:1,] = data2[1:2,]
-
+  
   radarchart(data2, axistype = 2, 
              pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=2 ,
              cglcol="grey", cglty=1, axislabcol="grey",
              caxislabels=seq(1,1,-1), cglwd=0.9,
              vlcex=0.8,
              title=mytitle[i]
-             )
+  )
 }
 ```
 
@@ -1100,12 +1154,24 @@ library(fmsb)
 
 sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "lab.sim.sum")
 
-wheel.slice <- sim.val[,-c(1,9)]
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+lab.output <- read_excel("0_Indicator_Tables/2019_CIV_lab.xlsx")
+lab.output <- lab.output[,c(2,3)]
 
+colnames(lab.output)[1]<-"country"
+
+sim.val<-merge(sim.val,lab.output,by="country")
+
+sim.val <- arrange(sim.val, sum.std.val)
 mytitle<-sim.val$country
+myear <-sim.val$`Match year`
+
+mytitle<-paste(mytitle,myear)
 row <- nrow(sim.val)
 
-par(mar=rep(0.8,4))
+wheel.slice <- sim.val[,-c(1,9:10)]
+
+par(mar=rep(1,4))
 
 for(i in 1:row){
   slice.1 <- wheel.slice[i,]
@@ -1113,24 +1179,23 @@ for(i in 1:row){
   col <- ncol(slice.1)
   
   for(x in 1:col){
-    slice.1[x]<-ifelse(slice.1[x] > 3, (slice.1[x]/4), slice.1[x])
-    }
-
+    slice.1[x]<-ifelse(slice.1[x] > 4, (slice.1[x]=4), slice.1[x])
+  }
+  
   max.1 <- max(slice.1)
   min.1 <- min(slice.1)
-  data <- rbind(rep(0,1) , rep(max.1,1) , slice.1)
-
+  data <- rbind(rep(0,1) , rep(3,1) , slice.1)
   data2 = data
   data2[2:1,] = data2[1:2,]
   data2[2:1,] = data2[1:2,]
-
+  
   radarchart(data2, axistype = 2, 
              pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=2 ,
              cglcol="grey", cglty=1, axislabcol="grey",
              caxislabels=seq(1,1,-1), cglwd=0.9,
              vlcex=0.8,
              title=mytitle[i]
-             )
+  )
 }
 ```
 
@@ -1278,12 +1343,24 @@ library(fmsb)
 
 sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "lit.sim.sum")
 
-wheel.slice <- sim.val[,-c(1,9)]
+setwd("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/")
+lit.output <- read_excel("0_Indicator_Tables/2019_CIV_liter.xlsx")
+lit.output <- lit.output[,c(2,3)]
+
+colnames(lit.output)[1]<-"country"
+
+sim.val<-merge(sim.val,lit.output,by="country")
+sim.val <- arrange(sim.val, sum.std.val)
 
 mytitle<-sim.val$country
+myear <-sim.val$`Match year`
+
+mytitle<-paste(mytitle,myear)
 row <- nrow(sim.val)
 
-par(mar=rep(0.8,4))
+wheel.slice <- sim.val[,-c(1,9:10)]
+
+par(mar=rep(1,4))
 
 for(i in 1:row){
   slice.1 <- wheel.slice[i,]
@@ -1291,23 +1368,22 @@ for(i in 1:row){
   col <- ncol(slice.1)
   
   for(x in 1:col){
-    slice.1[x]<-ifelse(slice.1[x] > 3, (slice.1[x]/4), slice.1[x])
-    }
-
+    slice.1[x]<-ifelse(slice.1[x] > 4, (slice.1[x]=4), slice.1[x])
+  }
+  
   max.1 <- max(slice.1)
   min.1 <- min(slice.1)
-  data <- rbind(rep(0,1) , rep(max.1,1) , slice.1)
-
+  data <- rbind(rep(0,1) , rep(3,1) , slice.1)
   data2 = data
   data2[2:1,] = data2[1:2,]
   data2[2:1,] = data2[1:2,]
-
+  
   radarchart(data2, axistype = 2, 
              pcol=rgb(0.2,0.5,0.5,0.9) , pfcol=rgb(0.2,0.5,0.5,0.5) , plwd=2 ,
              cglcol="grey", cglty=1, axislabcol="grey",
              caxislabels=seq(1,1,-1), cglwd=0.9,
              vlcex=0.8,
              title=mytitle[i]
-             )
+  )
 }
 ```

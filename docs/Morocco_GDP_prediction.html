@@ -472,15 +472,13 @@ $(document).ready(function () {
 <p>Breaking down GDP into 12 contributing sub-sectors by country, we regress the average value of these sectors first onto GDP to see how well the model fits overall.</p>
 <p>The following countries are included in our estimation:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">unique</span>(tot.wide<span class="op">$</span>country)</span></code></pre></div>
-<pre><code>##  [1] &quot;Austria&quot;        &quot;Belgium&quot;        &quot;Bulgaria&quot;       &quot;Colombia&quot;      
-##  [5] &quot;Costa Rica&quot;     &quot;Czechia&quot;        &quot;Denmark&quot;        &quot;Estonia&quot;       
-##  [9] &quot;Finland&quot;        &quot;France&quot;         &quot;Germany&quot;        &quot;Greece&quot;        
-## [13] &quot;Hungary&quot;        &quot;India&quot;          &quot;Ireland&quot;        &quot;Italy&quot;         
-## [17] &quot;Latvia&quot;         &quot;Lithuania&quot;      &quot;Luxembourg&quot;     &quot;Netherlands&quot;   
-## [21] &quot;Norway&quot;         &quot;Poland&quot;         &quot;Portugal&quot;       &quot;Romania&quot;       
-## [25] &quot;Slovakia&quot;       &quot;Slovenia&quot;       &quot;South Korea&quot;    &quot;Spain&quot;         
-## [29] &quot;Sweden&quot;         &quot;Switzerland&quot;    &quot;Tunisia&quot;        &quot;Turkey&quot;        
-## [33] &quot;Ukraine&quot;        &quot;United Kingdom&quot;</code></pre>
+<pre><code>##  [1] &quot;Austria&quot;        &quot;Belgium&quot;        &quot;Bulgaria&quot;       &quot;Colombia&quot;       &quot;Costa Rica&quot;    
+##  [6] &quot;Czechia&quot;        &quot;Denmark&quot;        &quot;Estonia&quot;        &quot;Finland&quot;        &quot;France&quot;        
+## [11] &quot;Germany&quot;        &quot;Greece&quot;         &quot;Hungary&quot;        &quot;India&quot;          &quot;Ireland&quot;       
+## [16] &quot;Italy&quot;          &quot;Latvia&quot;         &quot;Lithuania&quot;      &quot;Luxembourg&quot;     &quot;Netherlands&quot;   
+## [21] &quot;Norway&quot;         &quot;Poland&quot;         &quot;Portugal&quot;       &quot;Romania&quot;        &quot;Slovakia&quot;      
+## [26] &quot;Slovenia&quot;       &quot;South Korea&quot;    &quot;Spain&quot;          &quot;Sweden&quot;         &quot;Switzerland&quot;   
+## [31] &quot;Tunisia&quot;        &quot;Turkey&quot;         &quot;Ukraine&quot;        &quot;United Kingdom&quot;</code></pre>
 <p>With the following sectors:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">unique</span>(gdp.tot<span class="op">$</span>subject)</span></code></pre></div>
 <pre><code>##  [1] &quot;Agriculture, forestry and fishing (ISIC Rev.4)&quot;                             
@@ -503,15 +501,14 @@ $(document).ready(function () {
 <p>Take a glimpse at the data structure and the sectors we will be using in the model, the values are the percentage change from Q2 2019 to Q2 2020:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">head</span>(tot.wide)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 14
-##   country  agri    cons trade    fin    gdp industry  info  manuf  other   tech
-##   &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-## 1 Austria -2.49  -6.35  -36.4  -2.51 -15.4    -21.7  -2.20 -25.2  -23.9  -36.3 
-## 2 Belgium  7.08 -17.9   -32.1  -7.44 -15.9    -17.6  -5.49 -18.2  -45.0  -18.2 
-## 3 Bulgar… -2.89   9.36  -35.2 -10.2   -6.97     3.61  9.61  -5.52 -15.1    2.89
-## 4 Colomb… 12.6  -40.3   -46.6   1.46 -18.3    -35.5  -7.46 -27.5  -55.5   -8.22
-## 5 Costa … -4.98   0.245 -42.6  -5.53 -12.0    -16.0   2.83 -19.9   -6.38  -1.24
-## 6 Czechia -6.75   2.78  -19.5  -8.56  -7.68   -14.8   4.80 -17.9  -21.7   -3.05
-## # … with 3 more variables: public &lt;dbl&gt;, estate &lt;dbl&gt;, services &lt;dbl&gt;</code></pre>
+##   country  agri    cons trade    fin    gdp industry  info  manuf  other   tech public estate services
+##   &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;
+## 1 Austria -2.49  -6.35  -36.4  -2.51 -15.4    -21.7  -2.20 -25.2  -23.9  -36.3   0.722   4.30   -14.2 
+## 2 Belgium  7.08 -17.9   -32.1  -7.44 -15.9    -17.6  -5.49 -18.2  -45.0  -18.2  -7.28    2.36   -14.0 
+## 3 Bulgar… -2.89   9.36  -35.2 -10.2   -6.97     3.61  9.61  -5.52 -15.1    2.89  5.22   -5.89    -8.64
+## 4 Colomb… 12.6  -40.3   -46.6   1.46 -18.3    -35.5  -7.46 -27.5  -55.5   -8.22 -0.809   4.49   -13.4 
+## 5 Costa … -4.98   0.245 -42.6  -5.53 -12.0    -16.0   2.83 -19.9   -6.38  -1.24 -1.37    2.34    -8.53
+## 6 Czechia -6.75   2.78  -19.5  -8.56  -7.68   -14.8   4.80 -17.9  -21.7   -3.05  3.66    2.49    -4.77</code></pre>
 <p>The first regression is the full set of countries, excluding Morocco, the main focus of this estimation. We also drop Egypt due to errors in matching quarters, but would like to keep it aside in case we would like to evaluate robustness through its inclusion.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>full.set&lt;-<span class="kw">lm</span>(gdp <span class="op">~</span><span class="st"> </span>agri <span class="op">+</span><span class="st"> </span>cons <span class="op">+</span><span class="st"> </span>trade <span class="op">+</span><span class="st"> </span>fin <span class="op">+</span><span class="st"> </span>industry <span class="op">+</span><span class="st"> </span>info <span class="op">+</span><span class="st"> </span>manuf <span class="op">+</span><span class="st"> </span>other <span class="op">+</span><span class="st"> </span>tech <span class="op">+</span><span class="st"> </span>public <span class="op">+</span><span class="st"> </span>estate <span class="op">+</span><span class="st"> </span>services, <span class="dt">data=</span>tot.wide)</span>
 <span id="cb7-2"><a href="#cb7-2"></a></span>
