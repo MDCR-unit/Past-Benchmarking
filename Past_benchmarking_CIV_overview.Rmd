@@ -26,7 +26,7 @@ The summary of the results for Cote d'Ivoire for each of these indicators are fo
 
 #### **Indicator:** Constant GDP per capita (2010 USD) {#GDP} 
 
-**2019 Constant GDP per capita in Cote d'Ivoire :** 1 735.80 USD <br>
+**Constant GDP per capita in Cote d'Ivoire in 2019:** 1 735.80 USD <br>
 **Match threshold :** ±250 USD<br> 
 **Goal :** Double (2x) <br>
 **Source :** WDI <p>
@@ -259,8 +259,8 @@ ________
 
 **2019 Employment in Cote d'Ivoire :** 55.06% <br>
 **Match threshold :** ±2.5% <br>
-**Goal :** 1.25x
-**Source**: WDI
+**Goal :** 1.25x <br>
+**Source: ** WDI <p>
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
@@ -438,8 +438,8 @@ ________
 
 **2010 mean years of schooling in Cote d'Ivoire :** 4.22 years <br>
 **Match threshold :** ±0.25 years <br>
-**Goal :** 1.25x
-**Source:** Barro-Lee Education Attainment dataset
+**Goal :** 1.25x <br>
+**Source:** Barro-Lee Education Attainment dataset <p>
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
@@ -612,9 +612,9 @@ ________
 #### **Indicator:** Percent of population without schooling {#Noskool}
 
 **2010 percentage of population with no schooling in Cote d'Ivoire :**  46.95% <br>
-**Match threshold :** ±0.25%
-**Goal :** Half (-0.5x)
-**Source:** Barro-Lee Education Attainment dataset
+**Match threshold :** ±0.25% <br>
+**Goal :** Half (-0.5x) <br>
+**Source:** Barro-Lee Education Attainment dataset <p>
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
@@ -787,9 +787,9 @@ ________
 #### **Indicator:** Economic complexity index {#ECI}
 
 **2019 economic complexity in Cote d'Ivoire :** -1.127 <br>
-**Match threshold :** ±0.01
-**Goal :** +0.5
-**Source:** OEC
+**Match threshold :** ±0.01 <br>
+**Goal :** +0.5 <br>
+**Source:** OEC <p>
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
@@ -961,10 +961,10 @@ for(i in 1:row){
 ________
 #### **Indicator:** Output per worker (GDP constant 2010 USD){#Lab}
 
-**2019 output per worker in Cote d'Ivoire :** 5 532.63 USD <br>
+**Output per worker in Cote d'Ivoire in 2019:** 5 532.63 USD <br>
 **Match threshold :** ±250 USD <br>
-**Goal :** 1.5x
-**Source:** ILO
+**Goal :** 1.5x <br>
+**Source:** ILO <p>
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
@@ -1140,8 +1140,8 @@ ________
 
 **2018 literacy rate in Cote d'Ivoire :** 47.16%<br>
 **Match threshold :** ±1.0% <br>
-**Goal :** >98.1%
-**Source:** WDI
+**Goal :** >98.1% <br>
+**Source:** WDI <p>
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 

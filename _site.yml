@@ -10,10 +10,10 @@ navbar:
       href: Past_benchmarking_Albania_overview.html
     - text: "El Salvador"
       href: Past_benchmarking_SLV_overview.html
-    - text: "Laos"
-      href: Past_benchmarking_Laos_overview.html
     - text: "Cote d'Ivoire"
       href: Past_benchmarking_CIV_overview.html
+    - text: "Laos"
+      href: Past_benchmarking_Laos_overview.html
   - text: "GDP Prediction Analysis"
     href: Morocco_GDP_prediction.html
   - text: "Database update guide"

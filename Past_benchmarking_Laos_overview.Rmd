@@ -26,7 +26,7 @@ The summary of the results for Lao PDR for each of these indicators are found be
 
 #### **Indicator:** Constant GDP per capita (2010 USD) {#GDP} 
 
-**2019 Constant GDP per capita in Lao PDR :** 1 840.50 USD <br>
+**Constant GDP per capita in Lao PDR in 2019 :** 1 840.50 USD <br>
 **Match threshold :** ±250 USD<br> 
 **Goal :** Double (2x) <br>
 **Source :** WDI <p>
@@ -436,10 +436,10 @@ ________
 
 #### **Indicator:** Mean years of schooling {#Mskool}
 
-**2010 mean years of schooling in Lao PDR :** 4.57 years <br>
-**Match threshold :** ±0.25 years <br>
-**Goal :** 1.25x
-**Source:** Barro-Lee Education Attainment dataset
+**2010 mean years of schooling in Lao PDR:** 4.57 years <br>
+**Match threshold:** ±0.25 years <br>
+**Goal:** 1.25x <br>
+**Source:** Barro-Lee Education Attainment dataset<p>
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
@@ -612,9 +612,9 @@ ________
 #### **Indicator:** Percent of population without schooling {#Noskool}
 
 **2010 percentage of population with no schooling in Lao PDR :**  34.59% <br>
-**Match threshold :** ±0.25%
-**Goal :** Half (-0.5x)
-**Source:** Barro-Lee Education Attainment dataset
+**Match threshold :** ±0.25% <br>
+**Goal :** Half (-0.5x) <br>
+**Source:** Barro-Lee Education Attainment dataset <p>
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
@@ -787,9 +787,9 @@ ________
 #### **Indicator:** Economic complexity index {#ECI}
 
 **2019 economic complexity in Lao PDR :** -1.251 <br>
-**Match threshold :** ±0.01
-**Goal :** +0.5
-**Source:** OEC
+**Match threshold :** ±0.01 <br>
+**Goal :** +0.5 <br>
+**Source:** OEC <p>
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
@@ -961,10 +961,10 @@ for(i in 1:row){
 ________
 #### **Indicator:** Output per worker (GDP constant 2010 USD){#Lab}
 
-**2019 output per worker in Lao PDR :** 3 552.04 USD <br>
+**Output per worker in Lao PDR in 2019:** 3 552.04 USD <br>
 **Match threshold :** ±250 USD <br>
-**Goal :** 1.5x
-**Source:** ILO
+**Goal :** 1.5x <br>
+**Source:** ILO <p>
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
@@ -1140,8 +1140,8 @@ ________
 
 **2018 literacy rate in Lao PDR :** 84.6%<br>
 **Match threshold :** ±1.0% <br>
-**Goal :** >98.1%
-**Source:** WDI
+**Goal :** >98.1% <br>
+**Source:** WDI <p>
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 

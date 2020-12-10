@@ -26,7 +26,7 @@ The summary of the results for El Salvador for each of these indicators are foun
 
 #### **Indicator:** Constant GDP per capita (2010 USD) {#GDP} 
 
-**2019 Constant GDP per capita in El Salvador :** 3 572.40 USD <br>
+**Constant GDP per capita in El Salvador in 2019:** 3 572.40 USD <br>
 **Match threshold :** ±250 USD<br> 
 **Goal :** Double (2x) <br>
 **Source :** WDI <p>
@@ -436,8 +436,8 @@ ________
 
 **2010 mean years of schooling in El Salvador :** 7.66 years <br>
 **Match threshold :** ±0.25 years <br>
-**Goal :** 1.25x
-**Source:** Barro-Lee Education Attainment dataset
+**Goal :** 1.25x <br>
+**Source:** Barro-Lee Education Attainment dataset <p>
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
@@ -610,9 +610,9 @@ ________
 #### **Indicator:** Percent of population without schooling {#Noskool}
 
 **2010 percentage of population with no schooling in El Salvador :**  4.22% <br>
-**Match threshold :** ±0.25%
-**Goal :** Half (-0.5x)
-**Source:** Barro-Lee Education Attainment dataset
+**Match threshold :** ±0.25% <br>
+**Goal :** Half (-0.5x) <br>
+**Source:** Barro-Lee Education Attainment dataset <p>
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
@@ -784,10 +784,10 @@ for(i in 1:row){
 ________
 #### **Indicator:** Economic complexity index {#ECI}
 
-**2019 economic complexity in El Salvador :** -0.336211 <br>
-**Match threshold :** ±0.01
-**Goal :** +0.5
-**Source:** OEC
+**2019 economic complexity in El Salvador :** -0.336 <br>
+**Match threshold :** ±0.01 <br>
+**Goal :** +0.5 <br>
+**Source:** OEC <p>
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
@@ -959,10 +959,10 @@ for(i in 1:row){
 ________
 #### **Indicator:** Output per worker (GDP constant 2010 USD){#Lab}
 
-**2019 output per worker in El Salvador :** 8 640.25 USD <br>
+**Output per worker in El Salvador in 2019:** 8 640.25 USD <br>
 **Match threshold :** ±250 USD <br>
-**Goal :** 1.5x
-**Source:** ILO
+**Goal :** 1.5x <br>
+**Source:** ILO <p>
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
@@ -1138,8 +1138,8 @@ ________
 
 **2018 literacy rate in El Salvador :** 89.00% <br>
 **Match threshold :** ±1.0% <br>
-**Goal :** >98.1%
-**Source:** WDI
+**Goal :** >98.1% <br>
+**Source:** WDI <p>
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
 
