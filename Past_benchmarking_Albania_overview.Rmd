@@ -260,6 +260,7 @@ for(i in 1:row){
   )
 }
 ```
+[Back to top](#)
 
 ________
 
@@ -447,6 +448,7 @@ for(i in 1:row){
   )
 }
 ```
+[Back to top](#)
 
 ________
 
@@ -819,6 +821,7 @@ for(i in 1:row){
   )
 }
 ```
+[Back to top](#)
 
 ________
 #### **Indicator:** Economic complexity index {#ECI}
@@ -1004,6 +1007,7 @@ for(i in 1:row){
   )
 }
 ```
+[Back to top](#)
 
 ________
 #### **Indicator:** Output per worker (GDP constant 2010 USD){#Lab}
@@ -1189,6 +1193,7 @@ for(i in 1:row){
   )
 }
 ```
+[Back to top](#)
 
 ________
 
@@ -1200,3 +1205,6 @@ ________
 **Source:** WDI <p>
 
 Current value is too high to have comparisons - meaning the country is doing well for this indicator. 
+
+[Back to top](#)
+
