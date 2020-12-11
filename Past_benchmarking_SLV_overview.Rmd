@@ -262,6 +262,7 @@ for(i in 1:row){
 }
 
 ```
+[Back to top](#)
 
 ________
 
@@ -451,6 +452,7 @@ for(i in 1:row){
   )
 }
 ```
+[Back to top](#)
 
 ________
 
@@ -637,6 +639,8 @@ for(i in 1:row){
   )
 }
 ```
+[Back to top](#)
+
 ________
 
 #### **Indicator:** Percent of population without schooling {#Noskool}
@@ -822,6 +826,7 @@ for(i in 1:row){
   )
 }
 ```
+[Back to top](#)
 
 ________
 #### **Indicator:** Economic complexity index {#ECI}
@@ -1007,6 +1012,7 @@ for(i in 1:row){
   )
 }
 ```
+[Back to top](#)
 
 ________
 #### **Indicator:** Output per worker (GDP constant 2010 USD){#Lab}
@@ -1195,6 +1201,7 @@ for(i in 1:row){
   )
 }
 ```
+[Back to top](#)
 
 ________
 
@@ -1202,7 +1209,7 @@ ________
 
 **2018 literacy rate in El Salvador :** 89.00% <br>
 **Match threshold :** ±1.0% <br>
-**Goal :** >98.1% <br>
+**Goal :** 1.10 x <br>
 **Source:** WDI <p>
 
 ```{r , message=FALSE, fig.align = "center", class.source="bg-success", echo=FALSE}
@@ -1383,3 +1390,6 @@ for(i in 1:row){
   )
 }
 ```
+
+[Back to top](#)
+
