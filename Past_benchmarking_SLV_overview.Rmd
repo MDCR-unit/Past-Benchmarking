@@ -19,6 +19,7 @@ The following indicators are currently available: <p>
 * [Percent of population without schooling](#Noskool) <br>
 * [Economic complexity index](#ECI) <br>
 * [Output per worker (GDP constant 2010 USD)](#Lab) <br>
+* [Historical GDP](#hist)<br>
 
 The summary of the results for El Salvador for each of these indicators are found below. 
 
@@ -1392,4 +1393,96 @@ for(i in 1:row){
 ```
 
 [Back to top](#)
+
+________
+
+#### **Indicator:** Real GDP per capita in 2011 USD {#Hist}
+
+**Real GDP in El Salvador in 2018:** 8 598.19 USD <br>
+**Match threshold :** ±25 <br>
+**Goal :** 2x (Doubled) <br>
+**Source**: Maddison Project Database <br>
+
+##### **Table output of comparison countries** 
+
+```{r , message=FALSE, warning = FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"}
+library(readxl)
+
+hist.output <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/SLV_historical.xlsx")
+
+hist.output <- hist.output[,-1]
+hist.output$`Match value`<-round(hist.output$`Match value`, digits=2)
+hist.output$`Value at goal`<-round(hist.output$`Value at goal`, digits=2)
+hist.output$`Match value`<-formatC(hist.output$`Match value`, format="d", big.mark=",")
+hist.output$`Value at goal`<-formatC(hist.output$`Value at goal`, format="d", big.mark=",")
+
+DT::datatable(hist.output, rownames = FALSE)
+```
+
+##### **Time series of comparison countries** 
+
+These graphs show the full time series for the indicator. The solid line represents the comparison country whereas the dotted line is the time series for the country of interest, El Salvador. The red dots indicate the match values for both countries. Finally, the vertical dashed lines show the window from which the country indicator value matched current day El Salvador until it surpasses its goal.  
+
+```{r , message=FALSE, warning = FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"}
+library(tidyverse)
+library(foreach)
+
+hist.output <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/SLV_historical.xlsx")
+ind.db<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/mpd2020.xlsx", sheet="Full data")
+
+indicator <- ind.db[,c(2:4)]
+names(indicator)[3]<-"value"
+indicator<-na.omit(indicator)
+cname <-hist.output$`Comparison country`
+hist.ts <- indicator[indicator$country %in% c("El Salvador",cname) ,]
+hist.ts$country[hist.ts$country=="El Salvador"] <-"aaaEl Salvador"
+
+hist.output <- hist.output[order(hist.output$`Comparison country`),]
+hist.ts <- hist.ts[order(hist.ts$country),]
+
+cname <-hist.output$`Comparison country`
+myear <- hist.output$`Match year`
+gyear <- hist.output$`Year reached goal`
+mval <- hist.output$`Match value`
+
+glist<-hist.ts%>%
+  group_split(country)
+
+COI <- glist[[1]]
+coi.current <- COI %>% filter(abs(year) == max(abs(year)))
+cur.val <- coi.current$value
+cur.year <- coi.current$year
+glist<-glist[-1]
+
+ts.plotter<-function(x){
+  vertical.lines <- c(myear[x],gyear[x])
+
+  ggplot(data = glist[[x]])  + theme_linedraw()+
+    geom_line(aes(y = value, x = year))+
+    geom_line(data = COI, aes(y=value, x=year), linetype=3,color="black")+
+    labs(title=cname[[x]], x="Year",y="Real GDP (2011 USD)")+
+    theme(plot.title = element_text(hjust = 0.5))+
+    geom_point(aes(x=myear[x],y=mval[x]), color="red")+
+    geom_point(aes(x=cur.year,y=cur.val), color="red")+
+    xlim(1900,2020)+
+    geom_vline(xintercept=vertical.lines,
+               linetype=2, colour="black")+
+    annotate("rect", xmin=myear[x], xmax =gyear[x], ymin=-Inf, ymax=Inf,alpha = .1)+
+    theme(axis.text = element_text(face="bold"))
+}
+
+num<-nrow(hist.output)
+
+gdp.plots<-foreach(x=1:num) %do%
+  ts.plotter(x)
+
+for(i in 1:num)
+  {plot(gdp.plots[[i]])}
+
+
+```
+
+[Back to top](#)
+
+
 
