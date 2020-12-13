@@ -263,6 +263,7 @@ for(i in 1:row){
 }
 
 ```
+
 [Back to top](#)
 
 ________
@@ -453,6 +454,7 @@ for(i in 1:row){
   )
 }
 ```
+
 [Back to top](#)
 
 ________
@@ -640,6 +642,7 @@ for(i in 1:row){
   )
 }
 ```
+
 [Back to top](#)
 
 ________
@@ -827,9 +830,11 @@ for(i in 1:row){
   )
 }
 ```
+
 [Back to top](#)
 
 ________
+
 #### **Indicator:** Economic complexity index {#ECI}
 
 **2019 economic complexity in El Salvador :** -0.336 <br>
@@ -1013,9 +1018,11 @@ for(i in 1:row){
   )
 }
 ```
+
 [Back to top](#)
 
 ________
+
 #### **Indicator:** Output per worker (GDP constant 2010 USD){#Lab}
 
 **Output per worker in El Salvador in 2019:** 8 640.25 USD <br>
@@ -1202,6 +1209,7 @@ for(i in 1:row){
   )
 }
 ```
+
 [Back to top](#)
 
 ________

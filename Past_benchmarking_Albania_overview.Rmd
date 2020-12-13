@@ -1217,7 +1217,7 @@ Current value is too high to have comparisons - meaning the country is doing wel
 
 ________
 
-#### **Indicator:** Real GDP per capita in 2011 USD {#Hist}
+#### **Indicator:** Real GDP per capita in 2011 USD {#hist}
 
 **Real GDP in Albania in 2018:** 11 104.17 USD <br>
 **Match threshold :** ±250 <br>
