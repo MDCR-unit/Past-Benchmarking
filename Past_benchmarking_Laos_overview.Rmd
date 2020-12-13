@@ -264,6 +264,7 @@ for(i in 1:row){
 }
 
 ```
+
 [Back to top](#)
 
 ________
@@ -453,6 +454,7 @@ for(i in 1:row){
   )
 }
 ```
+
 [Back to top](#)
 
 ________
@@ -640,6 +642,7 @@ for(i in 1:row){
   )
 }
 ```
+
 [Back to top](#)
 
 ________
@@ -827,9 +830,11 @@ for(i in 1:row){
   )
 }
 ```
+
 [Back to top](#)
 
 ________
+
 #### **Indicator:** Economic complexity index {#ECI}
 
 **2019 economic complexity in Lao PDR :** -1.251 <br>
@@ -1013,9 +1018,11 @@ for(i in 1:row){
   )
 }
 ```
+
 [Back to top](#)
 
 ________
+
 #### **Indicator:** Output per worker (GDP constant 2010 USD){#Lab}
 
 **Output per worker in Lao PDR in 2019:** 3 552.04 USD <br>
@@ -1200,6 +1207,7 @@ for(i in 1:row){
   )
 }
 ```
+
 [Back to top](#)
 
 ________
