@@ -86,7 +86,7 @@ figure(width = 800, height = 450, padding_factor = 0) %>%
   ly_points(long, lat, data = caps, size = 10,
             hover = c(Country,`Match year`,
                       `Years to reach goal`,
-                      Employment,Population,Land.area,
+                      Population,Land.area,
                       Pop.density,Industry,Services,Oil.rents,
                       Agriculture.land))
 ```
@@ -108,6 +108,10 @@ library(ggpubr)
 gdp.output <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_gdp.xlsx")
 # Upload similarity measure
 sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "gdp.sim.sum")
+# Upload wb classifications
+wb <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/wb_classification.xlsx")
+gdp.output <- merge(wb,gdp.output)
+
 
 # Keep only values wanted on table
 sim.val <- sim.val[,c(1,9)]
@@ -115,7 +119,7 @@ colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
 gdp.output <- merge(gdp.output,sim.val)
 
 # Data cleaning
-gdp.output <- gdp.output[,-2]
+gdp.output <- gdp.output[,-3]
 gdp.output$`Match value`<-round(gdp.output$`Match value`, digits=2)
 gdp.output$`Value at goal`<-round(gdp.output$`Value at goal`, digits=2)
 gdp.output$`Similarity value`<-round(gdp.output$`Similarity value`, digits=2)
@@ -321,7 +325,7 @@ figure(width = 800, height = 450, padding_factor = 0) %>%
   ly_points(long, lat, data = caps, size = 10,
             hover = c(Country,`Match year`,
                       `Years to reach goal`,
-                      Employment,Population,Land.area,
+                      Population,Land.area,
                       Pop.density,Industry,Services,Oil.rents,
                       Agriculture.land))
 ```
@@ -331,12 +335,16 @@ figure(width = 800, height = 450, padding_factor = 0) %>%
 ```{r , message=FALSE, warning = FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"}
 emp.output <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_employ.xlsx")
 sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "emp.sim.sum")
+# Upload wb classifications
+wb <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/wb_classification.xlsx")
+emp.output <- merge(wb,emp.output)
+
 
 sim.val <- sim.val[,c(1,9)]
 colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
 emp.output <- merge(emp.output,sim.val)
 
-emp.output <- emp.output[,-2]
+emp.output <- emp.output[,-3]
 emp.output$`Match value`<-round(emp.output$`Match value`, digits=2)
 emp.output$`Value at goal`<-round(emp.output$`Value at goal`, digits=2)
 emp.output$`Similarity value`<-round(emp.output$`Similarity value`, digits=2)
@@ -359,7 +367,7 @@ emp.ts <- indicator[indicator$country %in% c("Cote d'Ivoire",cname) ,]
 emp.ts$country[emp.ts$country=="Cote d'Ivoire"] <-"aaaCote d'Ivoire"
 
 emp.output <- emp.output[order(emp.output$`Comparison country`),]
-emp.ts <- emp.ts[order(gdp.ts$country),]
+emp.ts <- emp.ts[order(emp.ts$country),]
 
 cname <-emp.output$`Comparison country`
 myear <- emp.output$`Match year`
@@ -512,7 +520,7 @@ figure(width = 800, height = 450, padding_factor = 0) %>%
   ly_points(long, lat, data = caps, size = 10,
             hover = c(Country,`Match year`,
                       `Years to reach goal`,
-                      Employment,Population,Land.area,
+                      Population,Land.area,
                       Pop.density,Industry,Services,Oil.rents,
                       Agriculture.land))
 ```
@@ -522,12 +530,16 @@ figure(width = 800, height = 450, padding_factor = 0) %>%
 ```{r , class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%", message=FALSE}
 myrs.output<- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_meanyrs.xlsx")
 sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "myears.sim.sum")
+# Upload wb classifications
+wb <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/wb_classification.xlsx")
+myrs.output <- merge(wb,myrs.output)
+
 
 sim.val <- sim.val[,c(1,9)]
 colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
 myrs.output <- merge(myrs.output,sim.val)
 
-myrs.output <- myrs.output[,-2]
+myrs.output <- myrs.output[,-3]
 myrs.output$`Match value`<-round(myrs.output$`Match value`, digits=2)
 myrs.output$`Value at goal`<-round(myrs.output$`Value at goal`, digits=2)
 myrs.output$`Similarity value`<-round(myrs.output$`Similarity value`, digits=2)
@@ -701,7 +713,7 @@ figure(width = 800, height = 450, padding_factor = 0) %>%
   ly_points(long, lat, data = caps, size = 10,
             hover = c(Country,`Match year`,
                       `Years to reach goal`,
-                      Employment,Population,Land.area,
+                      Population,Land.area,
                       Pop.density,Industry,Services,Oil.rents,
                       Agriculture.land))
 ```
@@ -711,12 +723,16 @@ figure(width = 800, height = 450, padding_factor = 0) %>%
 ```{r , message=FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"}
 noskl.output<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_noschool.xlsx")
 sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "noskl.sim.sum")
+# Upload wb classifications
+wb <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/wb_classification.xlsx")
+noskl.output <- merge(wb,noskl.output)
+
 
 sim.val <- sim.val[,c(1,9)]
 colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
 noskl.output <- merge(noskl.output,sim.val)
 
-noskl.output <- noskl.output[,-2]
+noskl.output <- noskl.output[,-3]
 noskl.output$`Match value`<-round(noskl.output$`Match value`, digits=2)
 noskl.output$`Value at goal`<-round(noskl.output$`Value at goal`, digits=2)
 noskl.output$`Similarity value`<-round(noskl.output$`Similarity value`, digits=2)
@@ -890,7 +906,7 @@ figure(width = 800, height = 450, padding_factor = 0) %>%
   ly_points(long, lat, data = caps, size = 10,
             hover = c(Country,`Match year`,
                       `Years to reach goal`,
-                      Employment,Population,Land.area,
+                      Population,Land.area,
                       Pop.density,Industry,Services,Oil.rents,
                       Agriculture.land))
 ```
@@ -900,12 +916,16 @@ figure(width = 800, height = 450, padding_factor = 0) %>%
 ```{r , class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%", message=FALSE}
 eci.output<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_eci.xlsx")
 sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "eci.sim.sum")
+# Upload wb classifications
+wb <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/wb_classification.xlsx")
+eci.output <- merge(wb,eci.output)
+
 
 sim.val <- sim.val[,c(1,9)]
 colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
 eci.output <- merge(eci.output,sim.val)
 
-eci.output <- eci.output[,-2]
+eci.output <- eci.output[,-3]
 eci.output$`Match value`<-round(eci.output$`Match value`, digits=2)
 eci.output$`Value at goal`<-round(eci.output$`Value at goal`, digits=2)
 eci.output$`Similarity value`<-round(eci.output$`Similarity value`, digits=2)
@@ -1026,7 +1046,7 @@ for(i in 1:row){
 [Back to top](#)
 
 ________
-#### **Indicator:** Output per worker (GDP constant 2010 USD){#Lab}
+#### **Indicator:** Output (GDP constant 2010 USD) per worker {#Lab}
 
 **Output per worker in Cote d'Ivoire in 2019:** 5 532.63 USD <br>
 **Match threshold :** ±250 USD <br>
@@ -1078,7 +1098,7 @@ figure(width = 800, height = 450, padding_factor = 0) %>%
   ly_points(long, lat, data = caps, size = 10,
             hover = c(Country,`Match year`,
                       `Years to reach goal`,
-                      Employment,Population,Land.area,
+                      Population,Land.area,
                       Pop.density,Industry,Services,Oil.rents,
                       Agriculture.land))
 ```
@@ -1088,12 +1108,16 @@ figure(width = 800, height = 450, padding_factor = 0) %>%
 ```{r , message=FALSE, class.source="bg-success", echo=FALSE, fig.show="hold", out.width="50%"}
 lab.output<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_lab.xlsx")
 sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "lab.sim.sum")
+# Upload wb classifications
+wb <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/wb_classification.xlsx")
+lab.output <- merge(wb,lab.output)
+
 
 sim.val <- sim.val[,c(1,9)]
 colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
 lab.output <- merge(lab.output,sim.val)
 
-lab.output <- lab.output[,-2]
+lab.output <- lab.output[,-3]
 lab.output$`Match value`<-round(lab.output$`Match value`, digits=2)
 lab.output$`Value at goal`<-round(lab.output$`Value at goal`, digits=2)
 lab.output$`Similarity value`<-round(lab.output$`Similarity value`, digits=2)
@@ -1268,7 +1292,7 @@ figure(width = 800, height = 450, padding_factor = 0) %>%
   ly_points(long, lat, data = caps, size = 10,
             hover = c(Country,`Match year`,
                       `Years to reach goal`,
-                      Employment,Population,Land.area,
+                      Population,Land.area,
                       Pop.density,Industry,Services,Oil.rents,
                       Agriculture.land))
 ```
@@ -1280,12 +1304,16 @@ library(readxl)
 
 lit.output<-read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/2019_CIV_liter.xlsx")
 sim.val <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/Similarity measures/CIV_similarity_list.xlsx", sheet = "lit.sim.sum")
+# Upload wb classifications
+wb <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/wb_classification.xlsx")
+lit.output <- merge(wb,lit.output)
+
 
 sim.val <- sim.val[,c(1,9)]
 colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
 lit.output <- merge(lit.output,sim.val)
 
-lit.output <- lit.output[,-2]
+lit.output <- lit.output[,-3]
 lit.output$`Match value`<-round(lit.output$`Match value`, digits=2)
 lit.output$`Value at goal`<-round(lit.output$`Value at goal`, digits=2)
 lit.output$`Similarity value`<-round(lit.output$`Similarity value`, digits=2)
@@ -1407,7 +1435,7 @@ for(i in 1:row){
 
 ________
 
-#### **Indicator:** Real GDP per capita in 2011 USD {#Hist}
+#### **Indicator:** Real GDP per capita in 2011 USD {#hist}
 
 **Real GDP in Cote d'Ivoire in 2018:** 3 713.64 USD <br>
 **Match threshold :** ±25 <br>
@@ -1420,12 +1448,14 @@ ________
 library(readxl)
 
 hist.output <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/0_Indicator_Tables/CIV_historical.xlsx")
+# Upload wb classifications
+wb <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/wb_classification.xlsx")
+hist.output <- merge(wb,hist.output)
+
 
 hist.output <- hist.output[,-1]
 hist.output$`Match value`<-round(hist.output$`Match value`, digits=2)
 hist.output$`Value at goal`<-round(hist.output$`Value at goal`, digits=2)
-hist.output$`Match value`<-formatC(hist.output$`Match value`, format="d", big.mark=",")
-hist.output$`Value at goal`<-formatC(hist.output$`Value at goal`, format="d", big.mark=",")
 
 DT::datatable(hist.output, rownames = FALSE)
 ```
