@@ -119,6 +119,7 @@ gdp.output <- merge(gdp.output,sim.val)
 
 # Data cleaning
 gdp.output <- gdp.output[,-3]
+gdp.output <- gdp.output[,c(2,1,3:8)]
 gdp.output$`Match value`<-round(gdp.output$`Match value`, digits=2)
 gdp.output$`Value at goal`<-round(gdp.output$`Value at goal`, digits=2)
 gdp.output$`Similarity value`<-round(gdp.output$`Similarity value`, digits=2)
@@ -342,6 +343,7 @@ colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
 emp.output <- merge(emp.output,sim.val)
 
 emp.output <- emp.output[,-3]
+emp.output <- emp.output[,c(2,1,3:8)]
 emp.output$`Match value`<-round(emp.output$`Match value`, digits=2)
 emp.output$`Value at goal`<-round(emp.output$`Value at goal`, digits=2)
 emp.output$`Similarity value`<-round(emp.output$`Similarity value`, digits=2)
@@ -536,6 +538,7 @@ colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
 myrs.output <- merge(myrs.output,sim.val)
 
 myrs.output <- myrs.output[,-3]
+myrs.output <- myrs.output[,c(2,1,3:8)]
 myrs.output$`Match value`<-round(myrs.output$`Match value`, digits=2)
 myrs.output$`Value at goal`<-round(myrs.output$`Value at goal`, digits=2)
 myrs.output$`Similarity value`<-round(myrs.output$`Similarity value`, digits=2)
@@ -727,6 +730,7 @@ colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
 noskl.output <- merge(noskl.output,sim.val)
 
 noskl.output <- noskl.output[,-3]
+noskl.output <- noskl.output[,c(2,1,3:8)]
 noskl.output$`Match value`<-round(noskl.output$`Match value`, digits=2)
 noskl.output$`Value at goal`<-round(noskl.output$`Value at goal`, digits=2)
 noskl.output$`Similarity value`<-round(noskl.output$`Similarity value`, digits=2)
@@ -918,6 +922,7 @@ colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
 eci.output <- merge(eci.output,sim.val)
 
 eci.output <- eci.output[,-3]
+eci.output <- eci.output[,c(2,1,3:8)]
 eci.output$`Match value`<-round(eci.output$`Match value`, digits=2)
 eci.output$`Value at goal`<-round(eci.output$`Value at goal`, digits=2)
 eci.output$`Similarity value`<-round(eci.output$`Similarity value`, digits=2)
@@ -1109,6 +1114,7 @@ colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
 lab.output <- merge(lab.output,sim.val)
 
 lab.output <- lab.output[,-3]
+lab.output <- lab.output[,c(2,1,3:8)]
 lab.output$`Match value`<-round(lab.output$`Match value`, digits=2)
 lab.output$`Value at goal`<-round(lab.output$`Value at goal`, digits=2)
 lab.output$`Similarity value`<-round(lab.output$`Similarity value`, digits=2)
@@ -1305,6 +1311,7 @@ colnames(sim.val)[1:2]<- c("Comparison country","Similarity value")
 lit.output <- merge(lit.output,sim.val)
 
 lit.output <- lit.output[,-3]
+lit.output <- lit.output[,c(2,1,3:8)]
 lit.output$`Match value`<-round(lit.output$`Match value`, digits=2)
 lit.output$`Value at goal`<-round(lit.output$`Value at goal`, digits=2)
 lit.output$`Similarity value`<-round(lit.output$`Similarity value`, digits=2)
@@ -1440,7 +1447,8 @@ hist.output <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past B
 wb <- read_excel("~/Desktop/OECD/DEV-Multi-dimensional Reviews - Past Benchmarking Tool/Past_Benchmarking/wb_classification.xlsx")
 hist.output <- merge(wb,hist.output)
 
-hist.output <- hist.output[,-1]
+hist.output <- hist.output[,-3]
+hist.output <- hist.output[,c(2,1,3:7)]
 hist.output$`Match value`<-round(hist.output$`Match value`, digits=2)
 hist.output$`Value at goal`<-round(hist.output$`Value at goal`, digits=2)
 
